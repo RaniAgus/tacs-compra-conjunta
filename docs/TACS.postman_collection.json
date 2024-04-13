@@ -1,0 +1,27 @@
+{
+	"info": {
+		"_postman_id": "b29c8331-a6df-4f78-aaff-af9b1cb6c10b",
+		"name": "TACS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16182491"
+	},
+	"item": [
+		{
+			"name": "Healthcheck",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{TACS_BASE_URL}}/health",
+					"host": [
+						"{{TACS_BASE_URL}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,6 +1,6 @@
 package com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model;
 
-public enum Rol {
-    ADMIN,
-    USUARIO,
+public enum TipoCosto {
+  POR_PERSONA,
+  TOTAL,
 }

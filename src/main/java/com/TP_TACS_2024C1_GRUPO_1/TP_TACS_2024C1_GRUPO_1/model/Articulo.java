@@ -15,8 +15,8 @@ public class Articulo {
     private LocalDate deadline;
     private int minPersonas;
     private int maxPersonas;
-    private Costo costo; // PREGUNTAR
-    private Recepcion recepcion; // PREGUNTAR
+    private Costo costo;
+    private String recepcion;
     private List<Usuario> compradores;
     private Usuario publicador;
     private Estado estado;
