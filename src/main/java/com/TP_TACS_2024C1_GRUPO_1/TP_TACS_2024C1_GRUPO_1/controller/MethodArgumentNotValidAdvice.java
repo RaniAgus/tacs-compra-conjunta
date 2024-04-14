@@ -3,6 +3,10 @@ package com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.controller;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.CredencialesInvalidas;
+import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.TokenNoValido;
+import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.UsuarioYaExiste;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -11,6 +15,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -35,6 +40,28 @@ public class MethodArgumentNotValidAdvice extends ResponseEntityExceptionHandler
         return ResponseEntity.status(status).body(Map.of(
                 "status", status.value(),
                 "errors", Map.of("global", globalErrors, "fields", fieldErrors)
+        ));
+    }
+
+    @ExceptionHandler(TokenNoValido.class)
+    public ResponseEntity<Object> handleTokenNoValido(TokenNoValido ex) {
+        return buildDefaultException(ex.getStatusCode(), ex.getMessage());
+    }
+
+    @ExceptionHandler(CredencialesInvalidas.class)
+    public ResponseEntity<Object> handleCredencialesInvalidas(CredencialesInvalidas ex) {
+        return buildDefaultException(ex.getStatusCode(), ex.getMessage());
+    }
+
+    @ExceptionHandler(UsuarioYaExiste.class)
+    public ResponseEntity<Object> handleUsuarioYaExiste(UsuarioYaExiste ex) {
+        return buildDefaultException(ex.getStatusCode(), ex.getMessage());
+    }
+
+    private ResponseEntity<Object> buildDefaultException(int statusCode, String message) {
+        return ResponseEntity.status(statusCode).body(Map.of(
+                "status", statusCode,
+                "error", message
         ));
     }
 }

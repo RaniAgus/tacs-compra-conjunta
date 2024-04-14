@@ -19,7 +19,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
     }
 
     public UserDetails superAdmin() {
-        return usuarioRepository.findByUsername("superadmin")
+        return usuarioRepository.findByUsername("admin")
                 .orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
 }

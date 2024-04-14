@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,34 +22,26 @@ public class Usuario implements UserDetails {
 
     public static Usuario registrarBuilder(RegistrarseDTO registrarseDTO) {
         Usuario usuario = new Usuario();
-        usuario.setNombreDeUsuario(registrarseDTO.getNombreDeUsuario());
-        usuario.setEmail(registrarseDTO.getEmail());
-        usuario.setContrasenia(registrarseDTO.getContrasenia());
-        return usuario;
-    }
-
-    public static Usuario testUsuario() {
-        Usuario usuario = new Usuario();
-        usuario.setNombreDeUsuario("nombreDeUsuario");
-        usuario.setEmail("email@test.com");
-        usuario.setContrasenia("contrasenia");
-        usuario.setRoles(List.of(Rol.ADMIN));
+        usuario.setNombreDeUsuario(registrarseDTO.nombreDeUsuario());
+        usuario.setEmail(registrarseDTO.email());
+        usuario.setContrasenia(registrarseDTO.contrasenia());
         return usuario;
     }
 
 
 
 
-
-
+    @Transient
     public String getPassword() {
         return getContrasenia();
     }
 
+    @Transient
     public String getUsername() {
         return getNombreDeUsuario();
     }
 
+    @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
@@ -59,18 +52,22 @@ public class Usuario implements UserDetails {
         return authorities;
     }
 
+    @Transient
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @Transient
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @Transient
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @Transient
     public boolean isEnabled() {
         return true;
     }
