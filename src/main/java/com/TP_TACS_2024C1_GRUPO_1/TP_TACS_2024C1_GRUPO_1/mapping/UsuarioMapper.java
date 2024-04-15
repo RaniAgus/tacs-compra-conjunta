@@ -1,6 +1,7 @@
 package com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.mapping;
 
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.dto.RegistrarseDTO;
+import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.dto.UsuarioDTO;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Rol;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Usuario;
 import java.util.List;
@@ -18,6 +19,8 @@ public abstract class UsuarioMapper {
 
     @Mapping(target = "contrasenia", ignore = true)
     public abstract Usuario mapToUsuario(RegistrarseDTO registrarseDTO);
+
+    public abstract UsuarioDTO mapToUsuarioDTO(Usuario usuario);
 
     @AfterMapping
     protected void afterMapToUsuario(@MappingTarget Usuario usuario, RegistrarseDTO registrarseDTO) {

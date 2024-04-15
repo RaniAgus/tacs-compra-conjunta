@@ -4,6 +4,8 @@ import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.dto.ArticuloDTO;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.dto.CrearArticuloDTO;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Articulo;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Estado;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -26,6 +28,6 @@ public interface ArticuloMapper extends ImagenMapper {
     @AfterMapping
     default void afterMapToArticulo(@MappingTarget Articulo articulo, CrearArticuloDTO dto) {
         articulo.setEstado(Estado.ABIERTO);
-        articulo.setCompradores(List.of());
+        articulo.setCompradores(new ArrayList<>());
     }
 }
