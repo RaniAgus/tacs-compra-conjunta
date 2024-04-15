@@ -1,6 +1,7 @@
 package com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.Data;
@@ -19,4 +20,8 @@ public class Articulo {
     private List<Usuario> compradores;
     private Usuario publicador;
     private Estado estado;
+
+    public void agregarComprador(Usuario usuario) {
+        compradores.add(usuario);
+    }
 }

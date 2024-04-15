@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.CredencialesInvalidas;
+import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.LimiteCompradores;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.TokenNoValido;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.UsuarioYaExiste;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -55,6 +56,11 @@ public class MethodArgumentNotValidAdvice extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(UsuarioYaExiste.class)
     public ResponseEntity<Object> handleUsuarioYaExiste(UsuarioYaExiste ex) {
+        return buildDefaultException(ex.getStatusCode(), ex.getMessage());
+    }
+
+    @ExceptionHandler(LimiteCompradores.class)
+    public ResponseEntity<Object> handleLimiteCompradores(LimiteCompradores ex) {
         return buildDefaultException(ex.getStatusCode(), ex.getMessage());
     }
 

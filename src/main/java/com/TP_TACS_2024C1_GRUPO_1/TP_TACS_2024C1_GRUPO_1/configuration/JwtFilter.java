@@ -2,6 +2,7 @@ package com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.configuration;
 
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.TokenNoValido;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.service.JwtService;
+import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
-    private final UserDetailsService userDetailService;
+    private final UserDetailsServiceImpl userDetailService;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
