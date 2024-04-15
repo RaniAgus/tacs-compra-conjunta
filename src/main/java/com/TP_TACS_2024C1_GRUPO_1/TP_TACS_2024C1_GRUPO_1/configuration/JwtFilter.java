@@ -2,27 +2,25 @@ package com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.configuration;
 
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.TokenNoValido;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.service.JwtService;
-import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.service.UserDetailsServiceImp;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import java.io.IOException;
-
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-
     private final JwtService jwtService;
-    private final UserDetailsServiceImp userDetailServiceImp;
+    private final UserDetailsService userDetailService;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -32,19 +30,25 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+
         try {
             String token = authHeader.substring(7);
 
+            // TODO: Remove when persistence is implemented
             if (token.contains("conito")) {
-                UserDetails userDetails = userDetailServiceImp.superAdmin();
+                UserDetails userDetails = userDetailService.loadUserByUsername("admin");
                 passFilter(request, response, filterChain, userDetails);
                 return;
             }
 
             String nombreDeUsuario = jwtService.extractUsername(token);
-            UserDetails userDetails = userDetailServiceImp.loadUserByUsername(nombreDeUsuario);
+            if (nombreDeUsuario == null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                filterChain.doFilter(request, response);
+                return;
+            }
 
-            if ((nombreDeUsuario == null && SecurityContextHolder.getContext().getAuthentication() == null) || !jwtService.isValidToken(token, userDetails)) {
+            UserDetails userDetails = userDetailService.loadUserByUsername(nombreDeUsuario);
+            if (!jwtService.isValidToken(token, userDetails)) {
                 filterChain.doFilter(request, response);
                 return;
             }

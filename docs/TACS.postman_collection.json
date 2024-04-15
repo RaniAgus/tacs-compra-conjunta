@@ -22,6 +22,127 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Crear Articulo",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"pepito\",\n    \"descripcion\": \"grillo\",\n    \"precio\": \"19.98\",\n    \"imagen\": \"data:image/gif;base64,R0lGODlhAQABAAAAACw=\",\n    \"tipoPrecio\": \"POR_PERSONA\",\n    \"minPersonas\": 1,\n    \"maxPersonas\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{TACS_BASE_URL}}/articulos",
+					"host": [
+						"{{TACS_BASE_URL}}"
+					],
+					"path": [
+						"articulos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Iniciar Sesion (User)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const { token } = pm.response.json();",
+							"pm.environment.set(\"AUTH_TOKEN\", token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombreDeUsuario\": \"user\",\n    \"contrasenia\": \"contrasenia\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{TACS_BASE_URL}}/iniciarSesion",
+					"host": [
+						"{{TACS_BASE_URL}}"
+					],
+					"path": [
+						"iniciarSesion"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{AUTH_TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
