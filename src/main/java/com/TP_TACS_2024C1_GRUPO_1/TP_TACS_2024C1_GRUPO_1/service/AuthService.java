@@ -5,19 +5,19 @@ import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.dto.IniciarSesionDTO;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.dto.RegistrarseDTO;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.CredencialesInvalidas;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.UsuarioYaExiste;
+import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.mapping.UsuarioMapper;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Usuario;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+    private final UsuarioMapper usuarioMapper;
     private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
@@ -26,8 +26,7 @@ public class AuthService {
             throw new UsuarioYaExiste();
         }
 
-        Usuario usuario = Usuario.registrarBuilder(registrarseDTO);
-        usuario.setContrasenia(passwordEncoder.encode(registrarseDTO.contrasenia()));
+        Usuario usuario = usuarioMapper.mapToUsuario(registrarseDTO);
         usuarioRepository.save(usuario);
 
         return new AuthResponseDTO(jwtService.generarToken(usuario));
