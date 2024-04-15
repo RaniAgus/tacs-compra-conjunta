@@ -8,10 +8,12 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Mapper(componentModel = "spring", uses = {PasswordEncoder.class})
+@Mapper(componentModel = "spring")
 public abstract class UsuarioMapper {
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Mapping(target = "contrasenia", ignore = true)
