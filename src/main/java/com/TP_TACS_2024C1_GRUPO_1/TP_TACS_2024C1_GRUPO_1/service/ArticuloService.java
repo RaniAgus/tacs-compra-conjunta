@@ -9,13 +9,10 @@ import org.springframework.stereotype.Service;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.dto.ArticuloDTO;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.dto.CrearArticuloDTO;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.mapping.ArticuloMapper;
-import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Accion;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Articulo;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Estado;
-import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Interaccion;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Usuario;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.repository.ArticuloRepository;
-import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.repository.InteraccionRepository;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.utils.UsuarioUtils;
 
 import lombok.AllArgsConstructor;
@@ -25,7 +22,6 @@ import lombok.AllArgsConstructor;
 public class ArticuloService {
     private final ArticuloMapper articuloMapper;
     private final ArticuloRepository articuloRepository;
-    private final InteraccionRepository interaccionRepository;
 
     public ArticuloDTO verArticulo(UUID id) {
         Articulo articulo = articuloRepository.findById(id).orElseThrow();
@@ -39,15 +35,6 @@ public class ArticuloService {
         articulo.setPublicador(usuario);
         articuloRepository.save(articulo);
 
-        Interaccion interaccion = Interaccion.builder()
-            .id(UUID.randomUUID())
-            .articulo(articulo)
-            .usuario(usuario)
-            .accion(Accion.CREACION)
-            .fecha(OffsetDateTime.now())
-            .build();
-        interaccionRepository.save(interaccion);
-
         return articuloMapper.mapToArticuloDTO(articulo);
     }
 
@@ -56,15 +43,6 @@ public class ArticuloService {
         Articulo articulo = articuloRepository.findById(id).orElseThrow();
         articulo.agregarComprador(usuario);
 
-        Interaccion interaccion = Interaccion.builder()
-            .id(UUID.randomUUID())
-            .articulo(articulo)
-            .usuario(usuario)
-            .accion(Accion.TOMA)
-            .fecha(OffsetDateTime.now())
-            .build();
-        interaccionRepository.save(interaccion);
-        
         return articuloMapper.mapToArticuloDTO(articuloRepository.update(articulo));
     }
 
