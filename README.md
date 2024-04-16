@@ -28,7 +28,7 @@ Una vez que la aplicación esté corriendo, se podrá corroborar que está
 funcionando correctamente accediendo a la siguiente URL:
 
 ```
-http://localhost:8080/healthcheck
+http://localhost:8080/health
 ```
 
 ### Dockerfile
