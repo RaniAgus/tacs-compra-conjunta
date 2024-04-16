@@ -7,110 +7,533 @@
 	},
 	"item": [
 		{
-			"name": "Healthcheck",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{TACS_BASE_URL}}/health",
-					"host": [
-						"{{TACS_BASE_URL}}"
-					],
-					"path": [
-						"health"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Crear Articulo",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text",
-						"disabled": true
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"nombre\": \"pepito\",\n    \"descripcion\": \"grillo\",\n    \"precio\": \"19.98\",\n    \"imagen\": \"data:image/gif;base64,R0lGODlhAQABAAAAACw=\",\n    \"tipoPrecio\": \"POR_PERSONA\",\n    \"minPersonas\": 1,\n    \"maxPersonas\": 2\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{TACS_BASE_URL}}/articulos",
-					"host": [
-						"{{TACS_BASE_URL}}"
-					],
-					"path": [
-						"articulos"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Iniciar Sesion (User)",
-			"event": [
+			"name": "Articulos",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const { token } = pm.response.json();",
-							"pm.environment.set(\"AUTH_TOKEN\", token);"
+					"name": "Crear Articulo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const { id } = pm.response.json();",
+									"pm.collectionVariables.set(\"ARTICULO_ID\", id);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
 						],
-						"type": "text/javascript",
-						"packages": {}
-					}
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Frutos Secos 10kg\",\n    \"descripcion\": \"Cada uno se lleva 2kg\",\n    \"precio\": \"19.98\",\n    \"imagen\": \"data:image/gif;base64,R0lGODlhAQABAAAAACw=\",\n    \"tipoPrecio\": \"POR_PERSONA\",\n    \"minPersonas\": 5,\n    \"maxPersonas\": 5,\n    \"deadline\": \"2024-05-10T00:00:00-03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{TACS_BASE_URL}}/articulos",
+							"host": [
+								"{{TACS_BASE_URL}}"
+							],
+							"path": [
+								"articulos"
+							]
+						}
+					},
+					"response": []
 				},
 				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text",
-						"disabled": true
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"nombreDeUsuario\": \"user\",\n    \"contrasenia\": \"contrasenia\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "Agregar Comprador",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"pepito\",\n    \"descripcion\": \"grillo\",\n    \"precio\": \"19.98\",\n    \"imagen\": \"data:image/gif;base64,R0lGODlhAQABAAAAACw=\",\n    \"tipoPrecio\": \"POR_PERSONA\",\n    \"minPersonas\": 1,\n    \"maxPersonas\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{TACS_BASE_URL}}/articulos/:id/compradores",
+							"host": [
+								"{{TACS_BASE_URL}}"
+							],
+							"path": [
+								"articulos",
+								":id",
+								"compradores"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{ARTICULO_ID}}"
+								}
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{TACS_BASE_URL}}/iniciarSesion",
-					"host": [
-						"{{TACS_BASE_URL}}"
-					],
-					"path": [
-						"iniciarSesion"
-					]
+				{
+					"name": "Ver Artículo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{TACS_BASE_URL}}/articulos/:id",
+							"host": [
+								"{{TACS_BASE_URL}}"
+							],
+							"path": [
+								"articulos",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{ARTICULO_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Estado",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{TACS_BASE_URL}}/articulos/:id?estado=CANCELADO",
+							"host": [
+								"{{TACS_BASE_URL}}"
+							],
+							"path": [
+								"articulos",
+								":id"
+							],
+							"query": [
+								{
+									"key": "estado",
+									"value": "CANCELADO"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{ARTICULO_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver Todos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{TACS_BASE_URL}}/articulos",
+							"host": [
+								"{{TACS_BASE_URL}}"
+							],
+							"path": [
+								"articulos"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "Healthcheck",
+			"item": [
+				{
+					"name": "Healthcheck",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{TACS_BASE_URL}}/health",
+							"host": [
+								"{{TACS_BASE_URL}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Ver mis artículos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{TACS_BASE_URL}}/usuarios/me/articulos",
+							"host": [
+								"{{TACS_BASE_URL}}"
+							],
+							"path": [
+								"usuarios",
+								"me",
+								"articulos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver mi usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const { id } = pm.response.json();",
+									"pm.collectionVariables.set(\"USER_ID\", id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{TACS_BASE_URL}}/usuarios/me",
+							"host": [
+								"{{TACS_BASE_URL}}"
+							],
+							"path": [
+								"usuarios",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver usuarios",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const [{id: adminId}, {id: userId}] = pm.response.json();",
+									"pm.collectionVariables.set(\"ADMIN_ID\", adminId);",
+									"pm.collectionVariables.set(\"USER_ID\", userId);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{TACS_BASE_URL}}/usuarios",
+							"host": [
+								"{{TACS_BASE_URL}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver artículos del usuario",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{TACS_BASE_URL}}/usuarios/:id/articulos",
+							"host": [
+								"{{TACS_BASE_URL}}"
+							],
+							"path": [
+								"usuarios",
+								":id",
+								"articulos"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{USER_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Iniciar Sesion (User)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const { token } = pm.response.json();",
+									"pm.environment.set(\"AUTH_TOKEN\", token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombreDeUsuario\": \"user\",\n    \"contrasenia\": \"contrasenia\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{TACS_BASE_URL}}/iniciarSesion",
+							"host": [
+								"{{TACS_BASE_URL}}"
+							],
+							"path": [
+								"iniciarSesion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Iniciar Sesion (Admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const { token } = pm.response.json();",
+									"pm.environment.set(\"AUTH_TOKEN\", token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombreDeUsuario\": \"admin\",\n    \"contrasenia\": \"contrasenia\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{TACS_BASE_URL}}/iniciarSesion",
+							"host": [
+								"{{TACS_BASE_URL}}"
+							],
+							"path": [
+								"iniciarSesion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registrarse",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const { token } = pm.response.json();",
+									"pm.environment.set(\"AUTH_TOKEN\", token);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombreDeUsuario\": \"RaniAgus\",\n    \"email\": \"rani@agus.com\",\n    \"contrasenia\": \"ra\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{TACS_BASE_URL}}/registrarse",
+							"host": [
+								"{{TACS_BASE_URL}}"
+							],
+							"path": [
+								"registrarse"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"auth": {
@@ -143,6 +566,20 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ARTICULO_ID",
+			"value": ""
+		},
+		{
+			"key": "ADMIN_ID",
+			"value": ""
+		},
+		{
+			"key": "USER_ID",
+			"value": ""
 		}
 	]
 }

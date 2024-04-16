@@ -4,8 +4,8 @@ import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.ArticuloFinal
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.CompradorInvalidoException;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.CupoArticuloExcedidoException;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.LimiteCompradores;
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
+
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.Data;
@@ -16,7 +16,7 @@ public class Articulo {
     private String nombre;
     private Imagen imagen;
     private String link;
-    private LocalDate deadline;
+    private ZonedDateTime deadline;
     private int minPersonas;
     private int maxPersonas;
     private Costo costo;
@@ -61,8 +61,8 @@ public class Articulo {
             throw new CupoArticuloExcedidoException("Hay más compradores de los permitidos", getCompradores().size(), getMaxPersonas());
         }
         
-        OffsetDateTime tiempo = OffsetDateTime.now();
-        if (tiempo.isAfter(OffsetDateTime.from(this.getDeadline()))) {
+        ZonedDateTime tiempo = ZonedDateTime.now();
+        if (tiempo.isAfter(this.getDeadline())) {
             // TODO: cambiar el estado si estuviera desactualizado
             throw new ArticuloFinalizadoException("El articulo expiró");
         }

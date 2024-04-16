@@ -12,7 +12,7 @@ import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Imagen;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.TipoCosto;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.TipoImagen;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -29,7 +29,7 @@ class ArticuloMapperTest {
                 .nombre("nombre")
                 .imagen("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7")
                 .link("link")
-                .deadline(LocalDate.now())
+                .deadline(ZonedDateTime.now())
                 .minPersonas(1)
                 .maxPersonas(2)
                 .precio(new BigDecimal("19.98"))
@@ -80,7 +80,7 @@ class ArticuloMapperTest {
                 .tipo(TipoImagen.GIF)
                 .build());
         articulo.setLink("link");
-        articulo.setDeadline(LocalDate.now());
+        articulo.setDeadline(ZonedDateTime.now());
         articulo.setMinPersonas(1);
         articulo.setMaxPersonas(2);
         articulo.setCosto(Costo.builder().tipo(TipoCosto.POR_PERSONA).monto(new BigDecimal("19.98")).build());

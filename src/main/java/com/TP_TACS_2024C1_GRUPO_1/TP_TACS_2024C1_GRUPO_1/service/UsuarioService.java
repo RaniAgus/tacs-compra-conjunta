@@ -8,11 +8,11 @@ import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Articulo;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Usuario;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.repository.ArticuloRepository;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.repository.UsuarioRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +26,11 @@ public class UsuarioService {
         return usuarioRepository.findAll().stream()
                 .map(usuarioMapper::mapToUsuarioDTO)
                 .toList();
+    }
+
+    public UsuarioDTO getUsuario(UUID id) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
+        return usuarioMapper.mapToUsuarioDTO(usuario);
     }
 
     public List<ArticuloDTO> getArticulosDelUsuario(UUID id) {

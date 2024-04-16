@@ -14,7 +14,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import lombok.Builder;
 import org.hibernate.validator.constraints.URL;
 
@@ -37,7 +37,7 @@ public record CrearArticuloDTO(
 
     @Nullable
     @Future(message = "La fecha límite debe ser futura")
-    LocalDate deadline,
+    ZonedDateTime deadline,
 
     @NotNull(message = "La cantidad mínima de personas no puede estar vacía")
     @Positive(message = "La cantidad mínima de personas debe ser positiva")
