@@ -1,5 +1,6 @@
 package com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model;
 
+import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.LimiteCompradores;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -19,4 +20,11 @@ public class Articulo {
     private List<Usuario> compradores;
     private Usuario publicador;
     private Estado estado;
+
+    public void agregarComprador(Usuario usuario) {
+        if (this.getMaxPersonas() <= this.getCompradores().size()) {
+            throw new LimiteCompradores();
+        }
+        compradores.add(usuario);
+    }
 }

@@ -1,14 +1,16 @@
 package com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.repository;
 
+import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Articulo;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Usuario;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.*;
 
 @Repository
 public class UsuarioRepository {
+    @Autowired
+    private ArticuloRepository articuloRepository;
     private final List<Usuario> usuarios = new ArrayList<>();
 
     public Optional<Usuario> findByUsername(String username) {
@@ -27,5 +29,21 @@ public class UsuarioRepository {
 
     public List<Usuario> findAll() {
         return usuarios;
+    }
+
+    public Optional<Usuario> findById(UUID id) {
+        return usuarios.stream().filter(usuario -> usuario.getId().equals(id)).findFirst();
+    }
+
+    public int getTotalUsuariosInteractivos() {
+        Set<Usuario> usuariosInteractivos = new HashSet<>();
+
+        List<Usuario> usuariosPublicadores = articuloRepository.findAll().stream().map(Articulo::getPublicador).toList();
+        usuariosInteractivos.addAll(usuariosPublicadores);
+
+        List<Usuario> usuariosCompradores = articuloRepository.findAll().stream().flatMap(articulo -> articulo.getCompradores().stream()).toList();
+        usuariosInteractivos.addAll(usuariosCompradores);
+
+        return usuariosInteractivos.size();
     }
 }
