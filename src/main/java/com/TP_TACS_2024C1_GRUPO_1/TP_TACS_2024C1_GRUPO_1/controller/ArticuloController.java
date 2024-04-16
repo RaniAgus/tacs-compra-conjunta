@@ -38,21 +38,21 @@ public class ArticuloController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority(\"USUARIO\")")
+    @PreAuthorize("hasAnyAuthority('USUARIO')")
     public ResponseEntity<ArticuloDTO> crearArticulo(@Valid @RequestBody CrearArticuloDTO crearArticuloDTO) {
         var articulo = articuloService.crearArticulo(crearArticuloDTO);
         return ResponseEntity.ok(articulo);
     }
 
     @PostMapping("/{id}/compradores")
-    @PreAuthorize("hasAnyAuthority(\"USUARIO\")")
+    @PreAuthorize("hasAnyAuthority('USUARIO')")
     public ResponseEntity<ArticuloDTO> agregarComprador(@PathVariable UUID id) {
         var articulo = articuloService.agregarComprador(id);
         return ResponseEntity.ok(articulo);
     }
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority(\"USUARIO\")")
+    @PreAuthorize("hasAnyAuthority('USUARIO')")
     public ResponseEntity<ArticuloDTO> actualizarEstadoArticulo(@PathVariable UUID id, @RequestParam Estado estado) {
         var articulo = articuloService.actualizarEstadoArticulo(id, estado);
         return ResponseEntity.ok(articulo);

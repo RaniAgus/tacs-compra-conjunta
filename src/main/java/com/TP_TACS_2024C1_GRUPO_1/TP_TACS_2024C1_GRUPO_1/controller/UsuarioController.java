@@ -21,27 +21,27 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<List<UsuarioDTO>> getUsuarios() {
         return ResponseEntity.ok(usuarioService.getUsuarios());
     }
 
     @GetMapping("/me")
-    @PreAuthorize("hasAnyAuthority(\"USUARIO\",\"ADMIN\")")
+    @PreAuthorize("hasAnyAuthority('USUARIO','ADMIN')")
     public ResponseEntity<UsuarioDTO> getUsuario() {
         var usuario = UsuarioUtils.obtenerUsuario();
         return ResponseEntity.ok(usuarioService.getUsuario(usuario.getId()));
     }
 
     @GetMapping("/me/articulos")
-    @PreAuthorize("hasAnyAuthority(\"USUARIO\")")
+    @PreAuthorize("hasAnyAuthority('USUARIO')")
     public ResponseEntity<List<ArticuloDTO>> getArticulosDelUsuario() {
         var usuario = UsuarioUtils.obtenerUsuario();
         return ResponseEntity.ok(usuarioService.getArticulosDelUsuario(usuario.getId()));
     }
 
     @GetMapping("/{id}/articulos")
-    @PreAuthorize("hasAnyAuthority(\"ADMIN\")")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<List<ArticuloDTO>> getArticulosByUsuario(@PathVariable UUID id) {
         return ResponseEntity.ok(usuarioService.getArticulosDelUsuario(id));
     }

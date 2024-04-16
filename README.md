@@ -13,18 +13,22 @@ compra de un producto entre varias personas.
 El proyecto cuenta con un archivo `compose.yml` que permite correr la
 aplicación en un contenedor de Docker.
 
-Para correr la aplicación, ejecutar el siguiente comando en la raíz del
-proyecto:
+Para correr la aplicación, primero hay que configurar las variables de entorno
+creando un archivo `.env` en la raíz del proyecto basándose en el archivo
+`env.example`.
+
+Luego, simplemente debemos ejecutar el siguiente comando en el directorio raíz
+del proyecto:
 
 ```bash
 docker compose up
 ```
 
-Una vez que la aplicación esté corriendo, se podrá acceder a ella desde un
-navegador web en la siguiente URL:
+Una vez que la aplicación esté corriendo, se podrá corroborar que está
+funcionando correctamente accediendo a la siguiente URL:
 
 ```
-http://localhost:8080
+http://localhost:8080/healthcheck
 ```
 
 ### Dockerfile
