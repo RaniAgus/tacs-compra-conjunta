@@ -3,12 +3,7 @@ package com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.UUID;
 
@@ -143,8 +138,8 @@ class ArticuloTest {
         
         Articulo articulo = generarArticulo(Estado.ABIERTO, usuario);
         articulo.agregarComprador(generarUsuario("martin"));
-        articulo.setDeadline(ZonedDateTime.now().minus(1, ChronoUnit.HOURS));
-        
+        articulo.setDeadline(ZonedDateTime.now().minusHours(1));
+
         assertThrows(ArticuloFinalizadoException.class, () -> {
                 articulo.setEstado(Estado.CANCELADO);
         });

@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.*;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Spy;
@@ -13,12 +14,6 @@ import org.mockito.Spy;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.dto.ArticuloDTO;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.dto.CostoDTO;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.dto.CrearArticuloDTO;
-import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Articulo;
-import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Costo;
-import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Estado;
-import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Imagen;
-import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.TipoCosto;
-import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.TipoImagen;
 
 class ArticuloMapperTest {
     @Spy
@@ -38,9 +33,10 @@ class ArticuloMapperTest {
                 .tipoPrecio("POR_PERSONA")
                 .descripcion("descripcion")
                 .build();
+        Usuario publicador = new Usuario();
 
         // Act
-        Articulo result = articuloMapper.mapToArticulo(dto);
+        Articulo result = articuloMapper.mapToArticulo(dto, publicador);
 
         // Assert
         assertThat(result).isNotNull().extracting(
@@ -55,7 +51,8 @@ class ArticuloMapperTest {
                 articulo -> articulo.getCosto().getMonto(),
                 Articulo::getRecepcion,
                 Articulo::getCompradores,
-                Articulo::getEstado
+                Articulo::getEstado,
+                Articulo::getPublicador
         ).containsExactly(
                 dto.nombre(),
                 new byte[]{71, 73, 70, 56, 57, 97, 1, 0, 1, 0, -128, 0, 0, 0, 0, 0, -1, -1, -1, 33, -7, 4, 1, 0, 0, 0, 0, 44, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 1, 68, 0, 59},
@@ -68,7 +65,8 @@ class ArticuloMapperTest {
                 new BigDecimal("19.98"),
                 dto.descripcion(),
                 List.of(),
-                Estado.ABIERTO
+                Estado.ABIERTO,
+                publicador
         );
     }
 

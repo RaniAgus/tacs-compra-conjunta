@@ -1,6 +1,7 @@
 package com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -11,7 +12,9 @@ import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.CompradorInva
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.CupoArticuloExcedidoException;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.LimiteCompradores;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
 
 @Data
 public class Articulo {
@@ -24,9 +27,10 @@ public class Articulo {
     private int maxPersonas;
     private Costo costo;
     private String recepcion;
-    private List<Usuario> compradores;
+    @Setter(AccessLevel.NONE)
+    private List<Usuario> compradores = new ArrayList<>();
     private Usuario publicador;
-    private Estado estado;
+    private Estado estado = Estado.ABIERTO;
 
     public void agregarComprador(Usuario usuario) {
         if (getMaxPersonas() <= getCompradores().size()) {
@@ -54,34 +58,29 @@ public class Articulo {
             return;
         }
 
+        if (getEstado().esFinal()) {
+            throw new ArticuloFinalizadoException("El articulo ya cerró por lo que no puede ser modificado");
+        }
+
         switch (estado) {
             case Estado.VENDIDO -> validarVenta();
             case Estado.CANCELADO -> validarCancelacion();
-            case Estado.ABIERTO -> validarApertura();
+            case Estado.ABIERTO -> {
+                // No se necesita validar nada más
+            }
         }
         this.estado = estado;
     }
 
-    public void setCompradores(List<Usuario> compradores) {
-        if (compradores.size() > maxPersonas) {
-            throw new CupoArticuloExcedidoException("Hay más compradores de los permitidos", getCompradores().size(), getMinPersonas(), getMaxPersonas());
-        }
-        this.compradores = compradores;
-    }
-
     private void validarVenta() {
-        if (getEstado().esFinal()) {
-            throw new ArticuloFinalizadoException("El articulo está cerrado por lo que no puede ser modificado");
-        }
-        
         if (getCompradores().size() < getMinPersonas()) {
             throw new CupoArticuloExcedidoException("Hay menos compradores de los permitidos", getCompradores().size(), getMinPersonas(), getMaxPersonas());
         }
 
-        if (getCompradores().size() >= getMaxPersonas()) {
+        if (getCompradores().size() > getMaxPersonas()) {
             throw new CupoArticuloExcedidoException("Hay más compradores de los permitidos", getCompradores().size(), getMinPersonas(), getMaxPersonas());
         }
-        
+
         ZonedDateTime tiempo = ZonedDateTime.now();
         if (getDeadline() != null && tiempo.isAfter(this.getDeadline())) {
             throw new ArticuloFinalizadoException("El articulo está por encima del deadline por lo que será finalizado automáticamente");
@@ -89,20 +88,9 @@ public class Articulo {
     }
 
     private void validarCancelacion() {
-        if (getEstado().esFinal()) {
-            throw new ArticuloFinalizadoException("El artículo esta cerrado por lo que no puede ser modificado");
-        }
-
         ZonedDateTime tiempo = ZonedDateTime.now();
-        
         if (getDeadline() != null && tiempo.isAfter(this.getDeadline())) {
             throw new ArticuloFinalizadoException("El articulo está por encima del deadline por lo que será finalizado automáticamente");
-        }
-    }
-
-    private void validarApertura() {
-        if (getEstado().esFinal()) {
-            throw new ArticuloFinalizadoException("El articulo ya cerró por lo que no puede ser modificado");
         }
     }
 }

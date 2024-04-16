@@ -1,6 +1,5 @@
 package com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.service;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,12 +28,8 @@ public class ArticuloService {
     }
 
     public ArticuloDTO crearArticulo(CrearArticuloDTO crearArticuloDTO) {
-        Usuario usuario = UsuarioUtils.obtenerUsuario();
-        var articulo = articuloMapper.mapToArticulo(crearArticuloDTO);
-
-        articulo.setPublicador(usuario);
+        var articulo = articuloMapper.mapToArticulo(crearArticuloDTO, UsuarioUtils.obtenerUsuario());
         articuloRepository.save(articulo);
-
         return articuloMapper.mapToArticuloDTO(articulo);
     }
 
