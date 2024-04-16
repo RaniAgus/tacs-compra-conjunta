@@ -59,7 +59,7 @@ public class Articulo {
             case Estado.CANCELADO -> validarCancelacion();
             case Estado.ABIERTO -> validarApertura();
         }
-
+        System.err.println("CANCELADO");
         this.estado = estado;
     }
 
@@ -95,6 +95,10 @@ public class Articulo {
         }
 
         ZonedDateTime tiempo = ZonedDateTime.now();
+        System.err.println();
+        System.err.println(tiempo.toString());
+        System.err.println(getDeadline().toString());
+        
         if (getDeadline() != null && tiempo.isAfter(this.getDeadline())) {
             throw new ArticuloFinalizadoException("El articulo está por encima del deadline por lo que será finalizado automáticamente");
         }
