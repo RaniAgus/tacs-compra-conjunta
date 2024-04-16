@@ -73,12 +73,8 @@ public class ArticuloService {
 
     public ArticuloDTO actualizarEstadoArticulo(UUID id, Estado estado) {
         Articulo articulo = articuloRepository.findById(id).orElseThrow();
-
-        if (estado.equals(articulo.getEstado())) {
-            return articuloMapper.mapToArticuloDTO(articulo);
-        }
-        
         articulo.setEstado(estado);
+        
         return articuloMapper.mapToArticuloDTO(articuloRepository.update(articulo));
     }
 }
