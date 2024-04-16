@@ -1,15 +1,16 @@
 package com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.controller;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.CredencialesInvalidas;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.LimiteCompradores;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.TokenNoValido;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.exception.UsuarioYaExiste;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
@@ -21,7 +22,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class MethodArgumentNotValidAdvice extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
@@ -64,9 +65,15 @@ public class MethodArgumentNotValidAdvice extends ResponseEntityExceptionHandler
         return buildDefaultException(ex.getStatusCode(), ex.getMessage());
     }
 
-    private ResponseEntity<Object> buildDefaultException(int statusCode, String message) {
-        return ResponseEntity.status(statusCode).body(Map.of(
-                "status", statusCode,
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException ex) {
+        return buildDefaultException(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    private ResponseEntity<Object> buildDefaultException(HttpStatus status, String message) {
+        return ResponseEntity.status(status.value()).body(Map.of(
+                "code", status.value(),
+                "status", status.getReasonPhrase(),
                 "error", message
         ));
     }
