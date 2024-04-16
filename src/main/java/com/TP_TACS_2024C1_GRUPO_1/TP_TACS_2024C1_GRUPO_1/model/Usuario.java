@@ -50,4 +50,8 @@ public class Usuario implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public boolean esIgualA(Usuario usuario) {
+        return this.getId().equals(usuario.getId());
+    }
 }
