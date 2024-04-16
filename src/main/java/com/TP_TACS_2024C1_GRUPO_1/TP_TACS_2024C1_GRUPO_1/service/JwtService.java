@@ -1,27 +1,31 @@
 package com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.service;
 
+import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.configuration.JwtProperties;
 import com.TP_TACS_2024C1_GRUPO_1.TP_TACS_2024C1_GRUPO_1.model.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
-    private String SECRET_KEY = "f965324bb6f15c2451ea3d66d361e17f9ddd64cfa4bf76c0860adeb85e3e36c3";
-    private long EXPIRATION_TIME = 1000 * 60 * 60 * 10;
+    private final JwtProperties jwtProperties;
 
     public String generarToken(Usuario usuario) {
         return Jwts.builder()
                 .subject(usuario.getNombreDeUsuario())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .issuedAt(Date.from(Instant.now()))
+                .expiration(Date.from(Instant.now().plus(jwtProperties.getExpirationTime(), ChronoUnit.MINUTES)))
                 .signWith(getSigningKey())
                 .compact();
     }
@@ -53,7 +57,7 @@ public class JwtService {
     }
 
     private SecretKey getSigningKey() {
-        byte[] secretBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] secretBytes = Decoders.BASE64.decode(jwtProperties.getSecretKey());
         return Keys.hmacShaKeyFor(secretBytes);
     }
 

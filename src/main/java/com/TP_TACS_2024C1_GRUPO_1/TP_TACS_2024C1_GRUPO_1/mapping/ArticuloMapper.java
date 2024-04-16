@@ -10,16 +10,13 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
 public interface ArticuloMapper extends ImagenMapper {
-    @Mappings({
-            @Mapping(target = "id", ignore = true),
-            @Mapping(target = "costo.monto", source = "precio", numberFormat = "#.##"),
-            @Mapping(target = "costo.tipo", source = "tipoPrecio"),
-            @Mapping(target = "recepcion", source = "descripcion"),
-    })
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "costo.monto", source = "precio", numberFormat = "#.##")
+    @Mapping(target = "costo.tipo", source = "tipoPrecio")
+    @Mapping(target = "recepcion", source = "descripcion")
     Articulo mapToArticulo(CrearArticuloDTO dto);
 
     ArticuloDTO mapToArticuloDTO(Articulo articulo);

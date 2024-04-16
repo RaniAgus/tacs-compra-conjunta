@@ -138,7 +138,7 @@ class ArticuloTest {
         
         Articulo articulo = generarArticulo(Estado.ABIERTO, usuario);
         articulo.agregarComprador(generarUsuario("martin"));
-        articulo.setDeadline(ZonedDateTime.now());
+        // articulo.setDeadline(ZonedDateTime.of(2024, 01, 01, 00, 00, 00));
         
         assertThrows(ArticuloFinalizadoException.class, () -> {
                 articulo.setEstado(Estado.CANCELADO);
