@@ -1,10 +1,11 @@
 package ar.edu.utn.frba.tacs.tp2024c1.grupo1.model;
 
 import java.beans.Transient;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,7 +15,16 @@ public class Usuario implements UserDetails {
     private String email;
     private String contrasenia;
     private String nombreDeUsuario;
-    private List<Rol> roles;
+    @Setter(AccessLevel.NONE)
+    private Set<Rol> roles = new HashSet<>();
+
+    public void agregarRol(Rol rol) {
+        roles.add(rol);
+    }
+
+    public Set<Rol> getRoles() {
+        return Set.copyOf(roles);
+    }
 
     @Transient
     public String getPassword() {

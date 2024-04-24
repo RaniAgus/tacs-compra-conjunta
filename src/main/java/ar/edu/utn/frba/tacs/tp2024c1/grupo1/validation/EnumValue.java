@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = EnumValidator.class)
+@SuppressWarnings("java:S1452")
 public @interface EnumValue {
     String message() default "Invalid value. This is not permitted.";
     Class<?>[] groups() default {};

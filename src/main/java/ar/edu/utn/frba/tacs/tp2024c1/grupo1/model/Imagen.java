@@ -1,9 +1,10 @@
 package ar.edu.utn.frba.tacs.tp2024c1.grupo1.model;
 
-import lombok.Builder;
+import lombok.*;
 
 @Builder
-public record Imagen(
-        byte[] bytes,
-        TipoImagen tipo
-) {}
+@Value
+public class Imagen {
+    byte[] bytes;
+    TipoImagen tipo;
+}

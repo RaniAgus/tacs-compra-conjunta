@@ -18,11 +18,12 @@ class ArticuloTest {
     @Test
     void noSePuedeModificarUnArticuloVendidoTest() {
         Usuario usuario = generarUsuario("carlos");
+        Usuario comprador = generarUsuario("maria");
 
         Articulo articulo = generarArticulo(Estado.VENDIDO, usuario);
 
         assertThrows(ArticuloFinalizadoException.class, () -> {
-                articulo.agregarComprador(generarUsuario("maria"));
+                articulo.agregarComprador(comprador);
         });
 
         assertThrows(ArticuloFinalizadoException.class, () -> {
@@ -37,11 +38,12 @@ class ArticuloTest {
     @Test
     void noSePuedeModificarUnArticuloCanceladoTest() {
         Usuario usuario = generarUsuario("carlos");
+        Usuario comprador = generarUsuario("maria");
 
         Articulo articulo = generarArticulo(Estado.CANCELADO, usuario);
 
         assertThrows(ArticuloFinalizadoException.class, () -> {
-                articulo.agregarComprador(generarUsuario("maria"));
+                articulo.agregarComprador(comprador);
         });
 
         assertThrows(ArticuloFinalizadoException.class, () -> {
@@ -67,6 +69,7 @@ class ArticuloTest {
     @Test
     void noSePuedeGenerarUnArticuloConMasCompradoresTest() {
         Usuario usuario = generarUsuario("carlos");
+        Usuario comprador = generarUsuario("ramiro");
 
         Articulo articulo = generarArticulo(Estado.ABIERTO, usuario);
         articulo.agregarComprador(generarUsuario("pedro"));
@@ -75,7 +78,7 @@ class ArticuloTest {
         articulo.agregarComprador(generarUsuario("agustina"));
 
         assertThrows(LimiteCompradores.class, () -> {
-                articulo.agregarComprador(generarUsuario("ramiro"));
+                articulo.agregarComprador(comprador);
         });
     }
 

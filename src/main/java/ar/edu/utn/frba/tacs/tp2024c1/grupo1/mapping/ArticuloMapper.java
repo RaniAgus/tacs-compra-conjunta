@@ -7,8 +7,8 @@ import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Usuario;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
-public interface ArticuloMapper extends ImagenMapper {
+@Mapper(uses = ImagenMapper.class)
+public interface ArticuloMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "costo.monto", source = "dto.precio", numberFormat = "#.##")
     @Mapping(target = "costo.tipo", source = "dto.tipoPrecio")

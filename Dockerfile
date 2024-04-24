@@ -6,9 +6,8 @@ COPY mvnw pom.xml ./
 
 COPY .mvn/ .mvn
 
-RUN chmod +x mvnw
-
-RUN ./mvnw -B dependency:go-offline
+RUN chmod +x mvnw; \
+    ./mvnw -B dependency:go-offline
 
 COPY src ./src
 
@@ -20,7 +19,7 @@ ARG UID=1001
 
 ARG GID=1001
 
-RUN addgroup -g "$GID" appuser && \
+RUN addgroup -g "$GID" appuser; \
     adduser -u "$UID" -G appuser -D appuser
 
 USER appuser
