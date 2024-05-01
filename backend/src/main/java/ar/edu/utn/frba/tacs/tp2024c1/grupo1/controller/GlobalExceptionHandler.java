@@ -1,6 +1,9 @@
 package ar.edu.utn.frba.tacs.tp2024c1.grupo1.controller;
 
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.ArticuloFinalizadoException;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.CompradorInvalidoException;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.CredencialesInvalidas;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.CupoArticuloExcedidoException;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.LimiteCompradores;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.TokenNoValido;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.UsuarioYaExiste;
@@ -70,6 +73,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException ex) {
         return buildDefaultException(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(ArticuloFinalizadoException.class)
+    public ResponseEntity<Object> handleArticuloFinalizadoException(ArticuloFinalizadoException ex) {
+        return buildDefaultException(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler(CupoArticuloExcedidoException.class)
+    public ResponseEntity<Object> handleCupoArticuloExcedidoException(CupoArticuloExcedidoException ex) {
+        return buildDefaultException(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler(CompradorInvalidoException.class)
+    public ResponseEntity<Object> handleCompradorInvalidoException(CompradorInvalidoException ex) {
+        return buildDefaultException(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
