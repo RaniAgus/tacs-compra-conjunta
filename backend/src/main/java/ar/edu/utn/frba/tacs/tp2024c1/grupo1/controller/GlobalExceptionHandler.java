@@ -1,13 +1,6 @@
 package ar.edu.utn.frba.tacs.tp2024c1.grupo1.controller;
 
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.CredencialesInvalidas;
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.LimiteCompradores;
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.TokenNoValido;
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.UsuarioYaExiste;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
@@ -15,12 +8,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 @Slf4j
@@ -41,35 +40,37 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         Collectors.mapping(DefaultMessageSourceResolvable::getDefaultMessage, Collectors.toList())
                 ));
 
-        return ResponseEntity.status(status).body(Map.of(
-                "status", status.value(),
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                "code", HttpStatus.BAD_REQUEST.value(),
+                "status", HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 "errors", Map.of("global", globalErrors, "fields", fieldErrors)
         ));
     }
 
-    @ExceptionHandler(TokenNoValido.class)
-    public ResponseEntity<Object> handleTokenNoValido(TokenNoValido ex) {
-        return buildDefaultException(ex.getStatusCode(), ex.getMessage());
+    @ExceptionHandler({TokenNoValido.class, CredencialesInvalidas.class})
+    public ResponseEntity<Object> handleUnauthorized(Exception ex) {
+        return buildDefaultException(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
-    @ExceptionHandler(CredencialesInvalidas.class)
-    public ResponseEntity<Object> handleCredencialesInvalidas(CredencialesInvalidas ex) {
-        return buildDefaultException(ex.getStatusCode(), ex.getMessage());
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity<Object> handleForbidden(Exception ex) {
+        return buildDefaultException(HttpStatus.FORBIDDEN, ex.getMessage());
     }
 
-    @ExceptionHandler(UsuarioYaExiste.class)
-    public ResponseEntity<Object> handleUsuarioYaExiste(UsuarioYaExiste ex) {
-        return buildDefaultException(ex.getStatusCode(), ex.getMessage());
-    }
-
-    @ExceptionHandler(LimiteCompradores.class)
-    public ResponseEntity<Object> handleLimiteCompradores(LimiteCompradores ex) {
-        return buildDefaultException(ex.getStatusCode(), ex.getMessage());
-    }
-
-    @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException ex) {
+    @ExceptionHandler({NoSuchElementException.class})
+    public ResponseEntity<Object> handleNotFoundException(NoSuchElementException ex) {
         return buildDefaultException(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler({
+            ArticuloFinalizadoException.class,
+            CompradorInvalidoException.class,
+            CupoArticuloExcedidoException.class,
+            LimiteCompradores.class,
+            UsuarioYaExiste.class,
+    })
+    public ResponseEntity<Object> handleConflict(Exception ex) {
+        return buildDefaultException(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
@@ -79,7 +80,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<Object> buildDefaultException(HttpStatus status, String message) {
-        return ResponseEntity.status(status.value()).body(Map.of(
+        return ResponseEntity.status(status).body(Map.of(
                 "code", status.value(),
                 "status", status.getReasonPhrase(),
                 "error", message

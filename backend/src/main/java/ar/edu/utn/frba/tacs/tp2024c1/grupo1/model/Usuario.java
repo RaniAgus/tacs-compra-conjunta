@@ -1,13 +1,16 @@
 package ar.edu.utn.frba.tacs.tp2024c1.grupo1.model;
 
-import java.beans.Transient;
-import java.util.*;
-
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.beans.Transient;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Data
 public class Usuario implements UserDetails {
@@ -38,7 +41,7 @@ public class Usuario implements UserDetails {
 
     @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+        return getRoles();
     }
 
     @Transient

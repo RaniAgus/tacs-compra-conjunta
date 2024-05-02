@@ -68,15 +68,6 @@
 								"disabled": true
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"nombre\": \"pepito\",\n    \"descripcion\": \"grillo\",\n    \"precio\": \"19.98\",\n    \"imagen\": \"data:image/gif;base64,R0lGODlhAQABAAAAACw=\",\n    \"tipoPrecio\": \"POR_PERSONA\",\n    \"minPersonas\": 1,\n    \"maxPersonas\": 2\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
 							"raw": "{{TACS_BASE_URL}}/articulos/:id/compradores",
 							"host": [
@@ -510,11 +501,14 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nombreDeUsuario\": \"RaniAgus\",\n    \"email\": \"rani@agus.com\",\n    \"contrasenia\": \"ra\"\n}\n",
+							"raw": "{\n    \"nombreDeUsuario\": \"RaniAgus\",\n    \"email\": \"rani@agus.com\",\n    \"contrasenia\": \"raniagus\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"

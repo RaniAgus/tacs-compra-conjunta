@@ -1,23 +1,21 @@
 package ar.edu.utn.frba.tacs.tp2024c1.grupo1.service;
 
-import java.util.List;
-import java.util.UUID;
-
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.repository.ArticuloRepository;
-import org.springframework.stereotype.Service;
-
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.dto.ArticuloDTO;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.dto.CrearArticuloDTO;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.mapping.ArticuloMapper;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Articulo;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Estado;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Usuario;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.repository.ArticuloRepository;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.utils.UsuarioUtils;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
+import java.util.List;
+import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ArticuloService {
     private final ArticuloMapper articuloMapper;
     private final ArticuloRepository articuloRepository;

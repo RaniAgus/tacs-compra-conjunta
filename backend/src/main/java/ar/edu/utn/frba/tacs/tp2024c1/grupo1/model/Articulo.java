@@ -1,20 +1,18 @@
 package ar.edu.utn.frba.tacs.tp2024c1.grupo1.model;
 
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.ArticuloFinalizadoException;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.CompradorInvalidoException;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.CupoArticuloExcedidoException;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.LimiteCompradores;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Setter;
+
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Stream;
-
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.ArticuloFinalizadoException;
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.CompradorInvalidoException;
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.CupoArticuloExcedidoException;
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.LimiteCompradores;
-
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Setter;
 
 @Data
 public class Articulo {
@@ -49,7 +47,7 @@ public class Articulo {
             throw new CompradorInvalidoException("El comprador ya tenía el artículo");
         }
 
-        this.compradores = Stream.concat(this.compradores.stream(), Stream.of(usuario)).toList();
+        this.compradores.add(usuario);
     }
 
     public void setEstado(Estado estado) {
