@@ -30,7 +30,7 @@ public class BoostrapUsersBean {
             usuarioUser.setNombreDeUsuario("user");
             usuarioUser.setEmail("usuario@test.com");
             usuarioUser.setContrasenia(passwordEncoder.encode("contrasenia"));
-            usuarioAdmin.agregarRol(Rol.USUARIO);
+            usuarioUser.agregarRol(Rol.USUARIO);
 
             usuarioRepository.save(usuarioUser);
         };

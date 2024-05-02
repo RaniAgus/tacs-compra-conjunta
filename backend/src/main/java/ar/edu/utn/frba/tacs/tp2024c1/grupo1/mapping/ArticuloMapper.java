@@ -10,6 +10,8 @@ import org.mapstruct.Mapping;
 @Mapper(uses = ImagenMapper.class)
 public interface ArticuloMapper {
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "estado", ignore = true)
+    @Mapping(target = "compradores", ignore = true)
     @Mapping(target = "costo.monto", source = "dto.precio", numberFormat = "#.##")
     @Mapping(target = "costo.tipo", source = "dto.tipoPrecio")
     @Mapping(target = "recepcion", source = "dto.descripcion")
