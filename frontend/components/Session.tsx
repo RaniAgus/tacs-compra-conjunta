@@ -1,20 +1,15 @@
-import AuthService from '@/service/AuthService'
-import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, NavbarContent, NavbarItem } from '@nextui-org/react'
+import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, NavbarItem } from '@nextui-org/react'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 function Session() {
     const [loggedIn, setLoggedIn] = useState(false)
-
-    const handleLogin = async() => {
-        //await AuthService.iniciarSesion();
-    }
 
     return (
         !loggedIn ? (
             <>
                 <NavbarItem className="hidden lg:flex">
-                    <Link href="#" onClick={handleLogin}>Iniciar Sesion</Link>
+                    <Link href="/login">Iniciar Sesion</Link>
                 </NavbarItem>
                 <NavbarItem>
                     <Button as={Link} color="warning" href="#" variant="flat">

@@ -1,4 +1,4 @@
 type IniciarSesionDTO = {
     nombreDeUsuario: string;
-    contrasena: string;
+    contrasenia: string;
 }

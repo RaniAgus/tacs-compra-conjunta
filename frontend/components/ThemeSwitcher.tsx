@@ -3,6 +3,7 @@
 
 import {useTheme} from "next-themes";
 import { useEffect, useState } from "react";
+import { IoMoon, IoSunny } from "react-icons/io5";
 
 export function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false)
@@ -17,9 +18,9 @@ export function ThemeSwitcher() {
   return (
     <div>
         {theme === 'dark' ? (
-            <button onClick={() => setTheme('light')}>L</button>
+            <button onClick={() => setTheme('light')}><IoMoon /></button>
         ) : (
-            <button onClick={() => setTheme('dark')}>D</button>
+            <button onClick={() => setTheme('dark')}><IoSunny /></button>
         )}
     </div>
   )
