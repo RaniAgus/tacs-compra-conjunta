@@ -21,7 +21,7 @@ export default function CrearPublicacion() {
         <Input type="text" placeholder="Ingrese el que recibe el comprador"/>
         <Button
           type="submit"
-          className="mt-4 dark:bg-blue-400 text-foreground-50 bg-blue-700 font-semibold text-lg"
+          color="primary"
         >
           Crear
         </Button>

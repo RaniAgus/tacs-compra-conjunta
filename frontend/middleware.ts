@@ -1,17 +1,20 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { cookies } from "next/headers";
 
-// This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
-    const jwt = localStorage.getItem('token')
-    if (!jwt) return NextResponse.redirect(new URL('/login', request.url))
+    const token = cookies().get('token')
 
-    return NextResponse.redirect(new URL('/home', request.url))
+    if (!token?.value) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/login'
+        return NextResponse.redirect(url)
+    }
+
+    return NextResponse.next()
 }
 
-// All routes except login, register and forgot-password
 export const config = {
   matcher: [
-    '/((?!login|register|forgot-password).*)',
+    '/((?!login|register|forgot-password|_next).*)',
   ],
 }

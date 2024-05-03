@@ -2,10 +2,10 @@
 import { Button, Divider, Input } from "@nextui-org/react"
 import Link from "next/link"
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoEyeOffSharp, IoEyeSharp } from 'react-icons/io5'
-import AuthService from '../../service/AuthService'
+import { iniciarSesion } from '../../service/AuthService'
 
 function Login() {
     const router = useRouter()
@@ -46,7 +46,7 @@ function Login() {
             nombreDeUsuario: formState.username.value,
             contrasenia: formState.password.value
         }
-        await AuthService.iniciarSesion(iniciarSesionDTO).then((_) => {
+        await iniciarSesion(iniciarSesionDTO).then((_) => {
             toast.success("Inicio de sesion exitoso")
             router.replace("/")
         }).catch((error) => toast.error(error.message))

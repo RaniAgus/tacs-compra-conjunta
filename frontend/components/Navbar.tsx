@@ -1,26 +1,18 @@
 "use client"
-import React, { useState } from "react"
 import {
   Navbar as Nav,
   NavbarBrand,
-  NavbarMenuToggle,
-  NavbarMenuItem,
-  NavbarMenu,
   NavbarContent,
   NavbarItem,
-  Link,
-  Button,
-  Dropdown,
-  DropdownTrigger,
-  Avatar,
-  DropdownMenu,
-  DropdownItem,
-  Input,
-  Kbd,
+  NavbarMenu,
+  NavbarMenuItem,
+  NavbarMenuToggle
 } from "@nextui-org/react"
+import { usePathname } from "next/navigation"
+import React, { useState } from "react"
 import Session from "./Session"
 import { ThemeSwitcher } from "./ThemeSwitcher"
-import { usePathname } from "next/navigation"
+import Link from "next/link"
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
@@ -96,7 +88,6 @@ export default function Navbar() {
               className="w-full"
               color="foreground"
               href={item.page}
-              size="lg"
             >
               {item.name}
             </Link>
@@ -108,7 +99,6 @@ export default function Navbar() {
               className="w-full"
               color="danger"
               href="/cerrar_sesion"
-              size="lg"
             >
               Logout
             </Link>
