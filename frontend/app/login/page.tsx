@@ -60,7 +60,7 @@ function Login() {
     }
 
     return (
-        <div className="flex flex-col gap-8 items-center">
+        <div className="flex flex-col gap-8 items-center w-full max-w-xl mx-auto">
             <h1 className="text-center font-bold text-2xl">Inciar Sesion</h1>
             <div className="flex flex-col items-center gap-4">
                 <Input
@@ -97,7 +97,7 @@ function Login() {
             </div>
             <div className="flex flex-col items-center gap-4">
                 <span>
-                    ¿No tienes cuenta? <Link href="/register">Registrate</Link>
+                    ¿No tienes cuenta? <Link href="/register" className="underline">Registrate</Link>
                 </span>
                 <Divider />
                 <Button color="success">Continuar con Google</Button>

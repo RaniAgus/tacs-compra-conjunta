@@ -1,7 +1,13 @@
-import React from "react"
+import { EstadisticaDTO } from "@/model/EstadisticaDTO"
+import { getEstadisticas } from "@/service/EstadisticasService"
+
+const fetchData = async (): Promise<EstadisticaDTO> => {
+  return await getEstadisticas()
+}
+
 
 export default async function Estadisticas() {
-  const estadisticas = await import(process.env.URL + "/estadisticas/basicas")
+  const estadisticas = await fetchData()
   return (
     <section>
       <div className="flex flex-row justify-between">

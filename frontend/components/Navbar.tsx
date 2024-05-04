@@ -9,7 +9,7 @@ import {
   NavbarItem,
   NavbarMenu,
   NavbarMenuItem,
-  NavbarMenuToggle
+  NavbarMenuToggle,
 } from "@nextui-org/react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
@@ -58,6 +58,7 @@ export default function Navbar() {
       </NavbarContent>
 
       <NavbarContent className="sm:hidden" justify="end">
+        <ThemeSwitcher />
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         />
@@ -104,11 +105,7 @@ export default function Navbar() {
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              className="w-full"
-              color="foreground"
-              href={item.page}
-            >
+            <Link className="w-full" color="foreground" href={item.page}>
               {item.name}
             </Link>
           </NavbarMenuItem>

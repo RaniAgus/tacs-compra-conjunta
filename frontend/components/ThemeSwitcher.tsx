@@ -16,12 +16,12 @@ export function ThemeSwitcher() {
   if (!mounted) return null
 
   return (
-    <div>
+    <>
         {theme === 'dark' ? (
             <button onClick={() => setTheme('light')}><IoMoon /></button>
         ) : (
             <button onClick={() => setTheme('dark')}><IoSunny /></button>
         )}
-    </div>
+    </>
   )
 }
