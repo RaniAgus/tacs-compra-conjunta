@@ -1,7 +1,7 @@
 export type CrearArticuloDTO = {
   nombre: string
   descripcion: string
-  imagen: string
+  imagen: File
   link?: string
   deadline?: string
   minPersonas: number

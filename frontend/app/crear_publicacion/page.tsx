@@ -3,15 +3,16 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button, Checkbox, DatePicker, Input } from "@nextui-org/react"
 import { DateValue } from "@internationalized/date"
-
 import toast from "react-hot-toast"
+
 import { CrearArticuloDTO } from "@/model/CrearArticuloDTO"
 import { crearArticulo } from "@/service/ArticulosService"
+import FileInput from "./FileInput"
 
 type FormState = {
   nombre: { value: string; error: string }
   link: { value: string; error: string }
-  imagen: { value: string; error: string }
+  imagen: { value: File | null; error: string }
   precio: { value: number; error: string }
   deadline: { value: DateValue | null; error: string }
   descripcion: { value: string; error: string }
@@ -25,7 +26,7 @@ export default function CrearPublicacion() {
   const [formState, setFormState] = useState<FormState>({
     nombre: { value: "", error: "" },
     link: { value: "", error: "" },
-    imagen: { value: "", error: "" },
+    imagen: { value: null, error: "" },
     precio: { value: 0, error: "" },
     deadline: {
       value: null,
@@ -37,10 +38,12 @@ export default function CrearPublicacion() {
     tipoPrecio: "Fijo",
   })
 
+  const reader = new FileReader()
+
   const isValidData = () => {
     const isValidNombre = formState.nombre.value !== ""
     const isValidDescripcion = formState.descripcion.value !== ""
-    const isValidImagen = formState.imagen.value !== ""
+    const isValidImagen = formState.imagen.value !== null
     const isValidPrecio = formState.precio.value > 0
     const isValidMinPersonas =
       formState.minPersonas.value > 0 &&
@@ -128,7 +131,7 @@ export default function CrearPublicacion() {
     const crearArticuloDTO: CrearArticuloDTO = {
       nombre: formState.nombre.value,
       descripcion: formState.descripcion.value,
-      imagen: formState.imagen.value,
+      imagen: formState.imagen.value!,
       link: formState.link.value ? formState.link.value : undefined,
       deadline: formState.deadline.value
         ? formState.deadline.value.toString()
@@ -154,7 +157,7 @@ export default function CrearPublicacion() {
       </h1>
       <form action="" className="grid gap-2" onSubmit={handleSubmit}>
         <Input
-          required
+          isRequired
           label="Nombre"
           labelPlacement="outside"
           type="text"
@@ -168,6 +171,19 @@ export default function CrearPublicacion() {
             })
           }
           errorMessage={formState.nombre.error}
+        />
+        <FileInput
+          isRequired
+          id="imagen"
+          name="imagen"
+          label="Imagen"
+          accept="image/*"
+          handleFileChange={(e) =>
+            setFormState({
+              ...formState,
+              imagen: { value: e.target.files![0], error: "" },
+            })
+          }
         />
         <Input
           label="Link"
@@ -199,7 +215,7 @@ export default function CrearPublicacion() {
           ¿Precio Fijo?
         </Checkbox>
         <Input
-          required
+          isRequired
           label="Precio"
           labelPlacement="outside"
           type="number"
@@ -221,7 +237,7 @@ export default function CrearPublicacion() {
         />
         <div className="grid grid-cols-2 gap-4">
           <Input
-            required
+            isRequired
             label="Minimo de personas"
             labelPlacement="outside"
             type="number"
@@ -237,7 +253,7 @@ export default function CrearPublicacion() {
             errorMessage={formState.minPersonas.error}
           />
           <Input
-            required
+            isRequired
             label="Maximo de personas"
             labelPlacement="outside"
             type="number"
@@ -268,7 +284,7 @@ export default function CrearPublicacion() {
           errorMessage={formState.deadline.error}
         />
         <Input
-          required
+          isRequired
           label="Descripcion"
           labelPlacement="outside"
           type="text"
