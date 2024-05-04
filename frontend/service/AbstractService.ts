@@ -17,8 +17,7 @@ export async function Request(url: string, method: HttpMethod, body: any = {}, u
     }
 
     if (useToken && !cookies().get(TOKEN)) {
-        console.log("No hay token")
-        return
+        return undefined
     }
 
     const response = await fetch(base_url + url, {

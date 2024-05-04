@@ -1,16 +1,15 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { NextUIProvider } from "@nextui-org/react";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
 import Navbar from "@/components/Navbar";
-import { Toaster } from "react-hot-toast";
-import { Provider, atom } from "jotai";
 import { UsuarioDTO } from "@/model/UsuarioDTO";
+import { NextUIProvider } from "@nextui-org/react";
+import { Provider, atom } from "jotai";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const user = atom<UsuarioDTO | null>(null)
+export const user = atom<UsuarioDTO | null | undefined>(null)
 
 export default function RootLayout({
   children,

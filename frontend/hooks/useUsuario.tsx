@@ -8,11 +8,11 @@ export default function useUsuario() {
 
     useEffect(() => {
         /* if !usuario and is not the initial render */
-        if (!usuario && typeof window !== 'undefined') {
+        if (usuario !== undefined && !usuario && typeof window !== 'undefined') {
             const usuarioDeToken = obtenerUsuario()
             Promise.resolve(usuarioDeToken)
                 .then(usuario => setUsuario(usuario))
-                .catch(() => setUsuario(null))
+                .catch(() => setUsuario(undefined))
         }
     }, [usuario, setUsuario])
 
