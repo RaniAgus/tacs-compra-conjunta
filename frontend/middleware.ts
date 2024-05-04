@@ -15,6 +15,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!login|register|forgot-password|_next).*)',
+    '/((?!login|register|forgot-password|_next|articulos).*)',
   ],
 }

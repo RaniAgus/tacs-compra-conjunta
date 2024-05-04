@@ -52,7 +52,7 @@ function Login() {
         }
 
         await iniciarSesion(iniciarSesionDTO).then(() => {
-            setUsuario(null)
+            setUsuario(null) // This is to trigger the useUsuario hook
             toast.success("Inicio de sesion exitoso")
             router.replace("/")
         }).catch((error) => toast.error(error.message))

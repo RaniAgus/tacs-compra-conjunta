@@ -1,6 +1,8 @@
 "use client"
 import useUsuario from "@/hooks/useUsuario"
 import {
+  Button,
+  Link as NextUILink,
   Navbar as Nav,
   NavbarBrand,
   NavbarContent,
@@ -10,10 +12,14 @@ import {
   NavbarMenuToggle
 } from "@nextui-org/react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import React from "react"
+import { usePathname, useRouter } from "next/navigation"
+import React, { useEffect } from "react"
 import Session from "./Session"
 import { ThemeSwitcher } from "./ThemeSwitcher"
+import { useAtom } from "jotai"
+import { user } from "@/app/layout"
+import { cerrarSesion } from "@/service/AuthService"
+import toast from "react-hot-toast"
 
 const menuItems = [
   { name: "Ver Articulos", page: "/articulos" },
@@ -25,7 +31,21 @@ const menuItems = [
 export default function Navbar() {
   const usuario = useUsuario()
   const pathname = usePathname()
+  const router = useRouter()
+  const [_, setUsuario] = useAtom(user)
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
+
+  const handleLogout = async () => {
+    await cerrarSesion().then(() => {
+      setUsuario(null)
+      router.replace("/login")
+      toast.success("Cierre de sesion exitoso")
+    }).catch((error) => toast.error(error.message))
+  }
+
+  useEffect(() => {
+    setIsMenuOpen(false)
+  }, [pathname])
 
   return (
     <Nav isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
@@ -78,7 +98,7 @@ export default function Navbar() {
 
       <NavbarContent className="hidden sm:flex" justify="end">
         <ThemeSwitcher />
-        <Session usuario={usuario} />
+        <Session usuario={usuario} handleLogout={handleLogout}/>
       </NavbarContent>
 
       <NavbarMenu>
@@ -94,38 +114,39 @@ export default function Navbar() {
           </NavbarMenuItem>
         ))}
         {usuario ? (
-          <NavbarMenuItem key={"logout-2"}>
-            <Link
-              className="w-full"
-              color="danger"
-              href="/cerrar_sesion"
-            >
-              Logout
-            </Link>
+          <NavbarMenuItem key={"logout"}>
+            <NextUILink color="danger" onClick={handleLogout}>
+              Cerrar Sesion
+            </NextUILink>
           </NavbarMenuItem>
         ) : (
           <>
             <NavbarMenuItem key={"login-2"}>
-              <Link
-                className="w-full"
-                color="primary"
-                href="/iniciar_sesion"
-              >
+              <SpecialLink color="primary" href="/login">
                 Iniciar Sesion
-              </Link>
+              </SpecialLink>
             </NavbarMenuItem>
             <NavbarMenuItem key={"login-2"}>
-              <Link
-                className="w-full"
-                color="warning"
-                href="/registrarse"
-              >
-                Registrase
-              </Link>
+              <SpecialLink color="warning" href="/registrarse">
+                Registrarse
+              </SpecialLink>
             </NavbarMenuItem>
           </>
         )}
       </NavbarMenu>
     </Nav>
+  )
+}
+
+function SpecialLink({ color, href, children }: { color: "primary" | "secondary" | "success" | "warning" | "danger" | "foreground", href: string, children: React.ReactNode }) {
+  return (
+    <NextUILink
+      as={Link}
+      className="w-full"
+      color={color}
+      href={href}
+    >
+      {children}
+    </NextUILink>
   )
 }

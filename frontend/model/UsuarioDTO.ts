@@ -3,7 +3,7 @@ import { ArticuloDTO } from './ArticuloDTO'
 export type UsuarioDTO = {
   id: string
   nombre: string
-  correo: string
+  email: string
   contrasena: string
   articulos: ArticuloDTO[]
   articulosComprados: ArticuloDTO[]
