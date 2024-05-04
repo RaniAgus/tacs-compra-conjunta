@@ -6,7 +6,7 @@ import {
   NavbarItem,
   NavbarMenu,
   NavbarMenuItem,
-  NavbarMenuToggle
+  NavbarMenuToggle,
 } from "@nextui-org/react"
 import { usePathname } from "next/navigation"
 import React, { useState } from "react"
@@ -38,6 +38,7 @@ export default function Navbar() {
       </NavbarContent>
 
       <NavbarContent className="sm:hidden" justify="end">
+        <ThemeSwitcher />
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         />
@@ -84,22 +85,14 @@ export default function Navbar() {
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              className="w-full"
-              color="foreground"
-              href={item.page}
-            >
+            <Link className="w-full" color="foreground" href={item.page}>
               {item.name}
             </Link>
           </NavbarMenuItem>
         ))}
         {loggedIn ? (
           <NavbarMenuItem key={"logout-2"}>
-            <Link
-              className="w-full"
-              color="danger"
-              href="/cerrar_sesion"
-            >
+            <Link className="w-full" color="danger" href="/cerrar_sesion">
               Logout
             </Link>
           </NavbarMenuItem>
@@ -110,7 +103,6 @@ export default function Navbar() {
                 className="w-full"
                 color="primary"
                 href="/iniciar_sesion"
-                size="lg"
               >
                 Iniciar Sesion
               </Link>
@@ -120,7 +112,6 @@ export default function Navbar() {
                 className="w-full"
                 color="warning"
                 href="/registrarse"
-                size="lg"
               >
                 Registrase
               </Link>

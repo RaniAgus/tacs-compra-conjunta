@@ -8,10 +8,10 @@ function Session() {
     return (
         !loggedIn ? (
             <>
-                <NavbarItem className="hidden lg:flex">
+                <NavbarItem className="hidden sm:flex">
                     <Link href="/login">Iniciar Sesion</Link>
                 </NavbarItem>
-                <NavbarItem>
+                <NavbarItem className="hidden sm:flex">
                     <Button as={Link} color="warning" href="#" variant="flat">
                         Registrarse
                     </Button>
