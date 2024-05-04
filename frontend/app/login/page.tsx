@@ -1,13 +1,17 @@
 "use client"
 import { Button, Divider, Input } from "@nextui-org/react"
+import { useAtom } from "jotai"
 import Link from "next/link"
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoEyeOffSharp, IoEyeSharp } from 'react-icons/io5'
 import { iniciarSesion } from '../../service/AuthService'
+import { user } from "../layout"
+import useUsuario from "@/hooks/useUsuario"
 
 function Login() {
+    const [usuario, setUsuario] = useAtom(user)
     const router = useRouter()
     const [isVisible, setIsVisible] = useState(false)
     const [formState, setFormState] = useState({
@@ -46,16 +50,19 @@ function Login() {
             nombreDeUsuario: formState.username.value,
             contrasenia: formState.password.value
         }
-        await iniciarSesion(iniciarSesionDTO).then((_) => {
+
+        await iniciarSesion(iniciarSesionDTO).then(() => {
+            setUsuario(null)
             toast.success("Inicio de sesion exitoso")
             router.replace("/")
         }).catch((error) => toast.error(error.message))
 
     }
+
     return (
         <div className="flex flex-col gap-8 items-center">
             <h1 className="text-center font-bold text-2xl">Inciar Sesion</h1>
-            <div className="flex flex-col items-center gap-4 w-1/4">
+            <div className="flex flex-col items-center gap-4">
                 <Input
                     placeholder="Ingrese su nombre de usuario"
                     label="Nombre de usuario"
@@ -88,7 +95,7 @@ function Login() {
                 <Link href="/forgot-password">¿Olvidaste tu contraseña?</Link>
                 <Button color="primary" fullWidth onClick={handleSubmit}>Iniciar Sesion</Button>
             </div>
-            <div className="flex flex-col items-center gap-4 w-1/4">
+            <div className="flex flex-col items-center gap-4">
                 <span>
                     ¿No tienes cuenta? <Link href="/register">Registrate</Link>
                 </span>

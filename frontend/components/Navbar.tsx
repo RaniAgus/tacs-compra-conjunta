@@ -1,4 +1,5 @@
 "use client"
+import useUsuario from "@/hooks/useUsuario"
 import {
   Navbar as Nav,
   NavbarBrand,
@@ -8,24 +9,23 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle
 } from "@nextui-org/react"
+import Link from "next/link"
 import { usePathname } from "next/navigation"
-import React, { useState } from "react"
+import React from "react"
 import Session from "./Session"
 import { ThemeSwitcher } from "./ThemeSwitcher"
-import Link from "next/link"
+
+const menuItems = [
+  { name: "Ver Articulos", page: "/articulos" },
+  { name: "Crear Publicacion", page: "/crear_publicacion" },
+  { name: "Mis Publicaciones", page: "/mis_publicaciones" },
+  { name: "Mis Compras", page: "/mis_compras" },
+]
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false)
-  const [loggedIn, setLoggedIn] = useState(false)
-
-  const menuItems = [
-    { name: "Ver Articulos", page: "/articulos" },
-    { name: "Crear Publicacion", page: "/crear_publicacion" },
-    { name: "Mis Publicaciones", page: "/mis_publicaciones" },
-    { name: "Mis Compras", page: "/mis_compras" },
-  ]
-
+  const usuario = useUsuario()
   const pathname = usePathname()
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false)
 
   return (
     <Nav isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
@@ -55,7 +55,7 @@ export default function Navbar() {
           </Link>
         </NavbarItem>
 
-        {loggedIn && (
+        {usuario && (
           <>
             <NavbarItem isActive={pathname == "/crear_publicacion"}>
               <Link color="foreground" href="/crear_publicacion">
@@ -78,7 +78,7 @@ export default function Navbar() {
 
       <NavbarContent className="hidden sm:flex" justify="end">
         <ThemeSwitcher />
-        <Session />
+        <Session usuario={usuario} />
       </NavbarContent>
 
       <NavbarMenu>
@@ -93,7 +93,7 @@ export default function Navbar() {
             </Link>
           </NavbarMenuItem>
         ))}
-        {loggedIn ? (
+        {usuario ? (
           <NavbarMenuItem key={"logout-2"}>
             <Link
               className="w-full"
@@ -110,7 +110,6 @@ export default function Navbar() {
                 className="w-full"
                 color="primary"
                 href="/iniciar_sesion"
-                size="lg"
               >
                 Iniciar Sesion
               </Link>
@@ -120,7 +119,6 @@ export default function Navbar() {
                 className="w-full"
                 color="warning"
                 href="/registrarse"
-                size="lg"
               >
                 Registrase
               </Link>

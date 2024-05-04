@@ -1,12 +1,30 @@
+import { user } from '@/app/layout'
+import { UsuarioDTO } from '@/model/UsuarioDTO'
+import { cerrarSesion } from '@/service/AuthService'
 import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, NavbarItem } from '@nextui-org/react'
+import { useAtom } from 'jotai'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
-function Session() {
-    const [loggedIn, setLoggedIn] = useState(false)
+interface Props {
+    usuario: UsuarioDTO | null
+}
+
+function Session(props: Props) {
+    const router = useRouter()
+    const [usuario, setUsuario] = useAtom(user)
+
+    const handleLogout = async () => {
+        await cerrarSesion().then(() => {
+            setUsuario(null)
+            router.replace("/login")
+            toast.success("Cierre de sesion exitoso")
+        }).catch((error) => toast.error(error.message))
+    }
 
     return (
-        !loggedIn ? (
+        !props.usuario ? (
             <>
                 <NavbarItem className="hidden lg:flex">
                     <Link href="/login">Iniciar Sesion</Link>
@@ -43,7 +61,7 @@ function Session() {
                     <DropdownItem key="system">System</DropdownItem>
                     <DropdownItem key="configurations">Configurations</DropdownItem>
                     <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-                    <DropdownItem key="logout" color="danger">
+                    <DropdownItem key="logout" color="danger" onClick={handleLogout}>
                         Log Out
                     </DropdownItem>
                 </DropdownMenu>
