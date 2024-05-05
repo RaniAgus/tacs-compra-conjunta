@@ -35,7 +35,7 @@ export default function CrearPublicacion() {
     descripcion: { value: "", error: "" },
     maxPersonas: { value: 0, error: "" },
     minPersonas: { value: 0, error: "" },
-    tipoPrecio: "Fijo",
+    tipoPrecio: "Variable",
   })
 
   const reader = new FileReader()
@@ -125,7 +125,8 @@ export default function CrearPublicacion() {
     )
   }
 
-  async function handleSubmit() {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
     if (!isValidData()) return
 
     const crearArticuloDTO: CrearArticuloDTO = {
@@ -145,7 +146,7 @@ export default function CrearPublicacion() {
     await crearArticulo(crearArticuloDTO)
       .then((_) => {
         toast.success("Publicacion creada exitosamente")
-        router.replace("/")
+        router.replace("/mis_publicaciones")
       })
       .catch((error) => toast.error(error.message))
   }
@@ -203,7 +204,7 @@ export default function CrearPublicacion() {
         <Checkbox
           name="tipoPrecio"
           id="tipoPrecio"
-          required
+          isRequired
           onChange={(e) =>
             setFormState({
               ...formState,
