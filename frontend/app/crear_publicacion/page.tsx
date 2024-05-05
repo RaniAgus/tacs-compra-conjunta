@@ -4,21 +4,19 @@ import { useRouter } from "next/navigation"
 import { Button, Checkbox, DatePicker, Input } from "@nextui-org/react"
 import { DateValue } from "@internationalized/date"
 import toast from "react-hot-toast"
-
-import { CrearArticuloDTO } from "@/model/CrearArticuloDTO"
 import { crearArticulo } from "@/service/ArticulosService"
 import FileInput from "./FileInput"
 
 type FormState = {
   nombre: { value: string; error: string }
   link: { value: string; error: string }
-  imagen: { value: File | null; error: string }
+  imagen: { value: string | null; error: string }
   precio: { value: number; error: string }
   deadline: { value: DateValue | null; error: string }
   descripcion: { value: string; error: string }
   maxPersonas: { value: number; error: string }
   minPersonas: { value: number; error: string }
-  tipoPrecio: string
+  tipoPrecio: TipoPrecio
 }
 
 export default function CrearPublicacion() {
@@ -35,7 +33,7 @@ export default function CrearPublicacion() {
     descripcion: { value: "", error: "" },
     maxPersonas: { value: 0, error: "" },
     minPersonas: { value: 0, error: "" },
-    tipoPrecio: "Fijo",
+    tipoPrecio: "POR_PERSONA",
   })
 
   const reader = new FileReader()
@@ -128,14 +126,14 @@ export default function CrearPublicacion() {
   async function handleSubmit() {
     if (!isValidData()) return
 
+    console.log(formState.imagen.value)
+
     const crearArticuloDTO: CrearArticuloDTO = {
       nombre: formState.nombre.value,
       descripcion: formState.descripcion.value,
       imagen: formState.imagen.value!,
-      link: formState.link.value ? formState.link.value : undefined,
-      deadline: formState.deadline.value
-        ? formState.deadline.value.toString()
-        : undefined,
+      link: formState.link.value,
+      deadline: formState.deadline.value?.toDate("UTC").toISOString(),
       minPersonas: formState.minPersonas.value,
       maxPersonas: formState.maxPersonas.value,
       precio: formState.precio.value,
@@ -143,7 +141,7 @@ export default function CrearPublicacion() {
     }
 
     await crearArticulo(crearArticuloDTO)
-      .then((_) => {
+      .then(() => {
         toast.success("Publicacion creada exitosamente")
         router.replace("/")
       })
@@ -155,7 +153,7 @@ export default function CrearPublicacion() {
       <h1 className="font-semibold text-foreground/90 mb-8">
         Crear Publicacion
       </h1>
-      <form action="" className="grid gap-2" onSubmit={handleSubmit}>
+      <form action="" className="grid gap-2">
         <Input
           isRequired
           label="Nombre"
@@ -179,10 +177,16 @@ export default function CrearPublicacion() {
           label="Imagen"
           accept="image/*"
           handleFileChange={(e) =>
-            setFormState({
-              ...formState,
-              imagen: { value: e.target.files![0], error: "" },
-            })
+            {
+              if (e.target.files) {
+                reader.readAsDataURL(e.target.files[0])
+                reader.onload = () =>
+                  setFormState({
+                    ...formState,
+                    imagen: { value: reader.result?.toString()!, error: "" },
+                  })
+              }
+            }
           }
         />
         <Input
@@ -207,10 +211,10 @@ export default function CrearPublicacion() {
           onChange={(e) =>
             setFormState({
               ...formState,
-              tipoPrecio: e.target.checked ? "Fijo" : "Variable",
+              tipoPrecio: e.target.checked ? "POR_PERSONA" : "TOTAL",
             })
           }
-          checked={formState.tipoPrecio === "Fijo"}
+          checked={formState.tipoPrecio === "TOTAL"}
         >
           ¿Precio Fijo?
         </Checkbox>
@@ -298,7 +302,7 @@ export default function CrearPublicacion() {
           }
           errorMessage={formState.descripcion.error}
         />
-        <Button type="submit" color="primary">
+        <Button color="primary" onClick={handleSubmit}>
           Crear
         </Button>
       </form>
