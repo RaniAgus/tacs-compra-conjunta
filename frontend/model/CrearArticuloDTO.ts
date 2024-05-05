@@ -1,11 +1,13 @@
-export type CrearArticuloDTO = {
+type CrearArticuloDTO = {
   nombre: string
   descripcion: string
-  imagen: File
+  imagen: string
   link?: string
   deadline?: string
   minPersonas: number
   maxPersonas: number
   precio: number
-  tipoPrecio: string
+  tipoPrecio: TipoPrecio
 }
+
+type TipoPrecio = "POR_PERSONA" | "TOTAL"

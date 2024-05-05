@@ -29,7 +29,7 @@ export async function Request(url: string, method: HttpMethod, body: any = {}, u
     const data = await response.json()
 
     if (!response.ok) {
-        throw new Error(data.error)
+        throw new Error(data.error || data.title)
     }
 
     return data

@@ -1,7 +1,5 @@
 "use server"
-
 import { Request } from "./AbstractService"
-import { CrearArticuloDTO } from "@/model/CrearArticuloDTO"
 
 
 export async function getArticulos() {
