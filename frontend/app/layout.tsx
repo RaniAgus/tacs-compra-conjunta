@@ -1,17 +1,15 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { NextUIProvider } from "@nextui-org/react";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
 import Navbar from "@/components/Navbar";
+import { UsuarioDTO } from "@/model/UsuarioDTO";
+import { NextUIProvider } from "@nextui-org/react";
+import { Provider, atom } from "jotai";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Compra Conjunta",
-  description: "La mejor pagina para comprar articulos entre varias personas",
-};
+export const user = atom<UsuarioDTO | null | undefined>(null)
 
 export default function RootLayout({
   children,
@@ -21,17 +19,27 @@ export default function RootLayout({
   return (
     <html lang="es" className='dark'>
       <body className={inter.className}>
-        <NextUIProvider>
-          <NextThemesProvider attribute="class" defaultTheme="dark">
-            <Toaster position="top-center" />
-            <Navbar />
+        <Providers>
+          <Toaster position="top-center" />
+          <Navbar />
 
-            <main className="container mx-auto max-w-7xl pt-8 px-6 flex-grow">
-              {children}
-            </main>
-          </NextThemesProvider>
-        </NextUIProvider>
+          <main className="container mx-auto max-w-7xl pt-8 flex-grow">
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );
+}
+
+function Providers({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <Provider>
+      <NextUIProvider>
+        <NextThemesProvider attribute="class" defaultTheme="dark">
+          {children}
+        </NextThemesProvider>
+      </NextUIProvider>
+    </Provider>
+  )
 }

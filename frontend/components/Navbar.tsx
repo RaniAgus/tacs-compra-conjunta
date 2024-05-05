@@ -1,5 +1,8 @@
 "use client"
+import useUsuario from "@/hooks/useUsuario"
 import {
+  Button,
+  Link as NextUILink,
   Navbar as Nav,
   NavbarBrand,
   NavbarContent,
@@ -8,24 +11,41 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
 } from "@nextui-org/react"
-import { usePathname } from "next/navigation"
-import React, { useState } from "react"
+import Link from "next/link"
+import { usePathname, useRouter } from "next/navigation"
+import React, { useEffect } from "react"
 import Session from "./Session"
 import { ThemeSwitcher } from "./ThemeSwitcher"
-import Link from "next/link"
+import { useAtom } from "jotai"
+import { user } from "@/app/layout"
+import { cerrarSesion } from "@/service/AuthService"
+import toast from "react-hot-toast"
+
+const menuItems = [
+  { name: "Ver Articulos", page: "/articulos" },
+  { name: "Crear Publicacion", page: "/crear_publicacion" },
+  { name: "Mis Publicaciones", page: "/mis_publicaciones" },
+  { name: "Mis Compras", page: "/mis_compras" },
+]
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false)
-  const [loggedIn, setLoggedIn] = useState(false)
-
-  const menuItems = [
-    { name: "Ver Articulos", page: "/articulos" },
-    { name: "Crear Publicacion", page: "/crear_publicacion" },
-    { name: "Mis Publicaciones", page: "/mis_publicaciones" },
-    { name: "Mis Compras", page: "/mis_compras" },
-  ]
-
+  const usuario = useUsuario()
   const pathname = usePathname()
+  const router = useRouter()
+  const [_, setUsuario] = useAtom(user)
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false)
+
+  const handleLogout = async () => {
+    await cerrarSesion().then(() => {
+      setUsuario(null)
+      router.replace("/login")
+      toast.success("Cierre de sesion exitoso")
+    }).catch((error) => toast.error(error.message))
+  }
+
+  useEffect(() => {
+    setIsMenuOpen(false)
+  }, [pathname])
 
   return (
     <Nav isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
@@ -56,7 +76,7 @@ export default function Navbar() {
           </Link>
         </NavbarItem>
 
-        {loggedIn && (
+        {usuario && (
           <>
             <NavbarItem isActive={pathname == "/crear_publicacion"}>
               <Link color="foreground" href="/crear_publicacion">
@@ -79,7 +99,7 @@ export default function Navbar() {
 
       <NavbarContent className="hidden sm:flex" justify="end">
         <ThemeSwitcher />
-        <Session />
+        <Session usuario={usuario} handleLogout={handleLogout}/>
       </NavbarContent>
 
       <NavbarMenu>
@@ -90,35 +110,40 @@ export default function Navbar() {
             </Link>
           </NavbarMenuItem>
         ))}
-        {loggedIn ? (
-          <NavbarMenuItem key={"logout-2"}>
-            <Link className="w-full" color="danger" href="/cerrar_sesion">
-              Logout
-            </Link>
+        {usuario ? (
+          <NavbarMenuItem key={"logout"}>
+            <NextUILink color="danger" onClick={handleLogout}>
+              Cerrar Sesion
+            </NextUILink>
           </NavbarMenuItem>
         ) : (
           <>
             <NavbarMenuItem key={"login-2"}>
-              <Link
-                className="w-full"
-                color="primary"
-                href="/iniciar_sesion"
-              >
+              <SpecialLink color="primary" href="/login">
                 Iniciar Sesion
-              </Link>
+              </SpecialLink>
             </NavbarMenuItem>
             <NavbarMenuItem key={"login-2"}>
-              <Link
-                className="w-full"
-                color="warning"
-                href="/registrarse"
-              >
-                Registrase
-              </Link>
+              <SpecialLink color="warning" href="/registrarse">
+                Registrarse
+              </SpecialLink>
             </NavbarMenuItem>
           </>
         )}
       </NavbarMenu>
     </Nav>
+  )
+}
+
+function SpecialLink({ color, href, children }: { color: "primary" | "secondary" | "success" | "warning" | "danger" | "foreground", href: string, children: React.ReactNode }) {
+  return (
+    <NextUILink
+      as={Link}
+      className="w-full"
+      color={color}
+      href={href}
+    >
+      {children}
+    </NextUILink>
   )
 }

@@ -3,6 +3,7 @@ package ar.edu.utn.frba.tacs.tp2024c1.grupo1.configuration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -29,6 +30,7 @@ public class SecurityConfiguration {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/iniciarSesion", "/registrarse", "/health").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/articulos").permitAll()
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)

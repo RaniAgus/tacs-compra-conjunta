@@ -1,13 +1,17 @@
 "use client"
 import { Button, Divider, Input } from "@nextui-org/react"
+import { useAtom } from "jotai"
 import Link from "next/link"
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoEyeOffSharp, IoEyeSharp } from 'react-icons/io5'
 import { iniciarSesion } from '../../service/AuthService'
+import { user } from "../layout"
+import useUsuario from "@/hooks/useUsuario"
 
 function Login() {
+    const [usuario, setUsuario] = useAtom(user)
     const router = useRouter()
     const [isVisible, setIsVisible] = useState(false)
     const [formState, setFormState] = useState({
@@ -46,12 +50,15 @@ function Login() {
             nombreDeUsuario: formState.username.value,
             contrasenia: formState.password.value
         }
-        await iniciarSesion(iniciarSesionDTO).then((_) => {
+
+        await iniciarSesion(iniciarSesionDTO).then(() => {
+            setUsuario(null) // This is to trigger the useUsuario hook
             toast.success("Inicio de sesion exitoso")
             router.replace("/")
         }).catch((error) => toast.error(error.message))
 
     }
+
     return (
         <div className="flex flex-col gap-8 items-center w-full max-w-xl mx-auto">
             <h1 className="text-center font-bold text-2xl">Inciar Sesion</h1>

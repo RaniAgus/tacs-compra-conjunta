@@ -1,12 +1,15 @@
+import { UsuarioDTO } from '@/model/UsuarioDTO'
 import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, NavbarItem } from '@nextui-org/react'
 import Link from 'next/link'
-import { useState } from 'react'
 
-function Session() {
-    const [loggedIn, setLoggedIn] = useState(false)
+interface Props {
+    usuario: UsuarioDTO | null | undefined
+    handleLogout: () => void
+}
 
+function Session(props: Props) {
     return (
-        !loggedIn ? (
+        !props.usuario ? (
             <>
                 <NavbarItem className="hidden sm:flex">
                     <Link href="/login">Iniciar Sesion</Link>
@@ -18,8 +21,6 @@ function Session() {
                 </NavbarItem>
             </>
         ) : (
-
-
             <Dropdown placement="bottom-end">
                 <DropdownTrigger>
                     <Avatar
@@ -34,17 +35,12 @@ function Session() {
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Profile Actions" variant="flat">
                     <DropdownItem key="profile" className="h-14 gap-2">
-                        <p className="font-semibold">Signed in as</p>
-                        <p className="font-semibold">zoey@example.com</p>
+                        <p className="font-semibold">Sesion Iniciada como</p>
+                        <p className="font-semibold">{props.usuario?.email}</p>
                     </DropdownItem>
-                    <DropdownItem key="settings">My Settings</DropdownItem>
-                    <DropdownItem key="team_settings">Team Settings</DropdownItem>
-                    <DropdownItem key="analytics">Analytics</DropdownItem>
-                    <DropdownItem key="system">System</DropdownItem>
-                    <DropdownItem key="configurations">Configurations</DropdownItem>
-                    <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-                    <DropdownItem key="logout" color="danger">
-                        Log Out
+                    <DropdownItem key="settings">Ajustes</DropdownItem>
+                    <DropdownItem key="logout" color="danger" onClick={props.handleLogout}>
+                        Cerrar Sesion
                     </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
