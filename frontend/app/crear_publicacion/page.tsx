@@ -36,7 +36,11 @@ export default function CrearPublicacion() {
     tipoPrecio: "POR_PERSONA",
   })
 
-  const reader = new FileReader()
+  let reader: FileReader
+
+  if (typeof window !== "undefined") {
+    reader = new FileReader()
+  }
 
   const isValidData = () => {
     const isValidNombre = formState.nombre.value !== ""
@@ -177,18 +181,16 @@ export default function CrearPublicacion() {
           name="imagen"
           label="Imagen"
           accept="image/*"
-          handleFileChange={(e) =>
-            {
-              if (e.target.files) {
-                reader.readAsDataURL(e.target.files[0])
-                reader.onload = () =>
-                  setFormState({
-                    ...formState,
-                    imagen: { value: reader.result?.toString()!, error: "" },
-                  })
-              }
+          handleFileChange={(e) => {
+            if (e.target.files) {
+              reader.readAsDataURL(e.target.files[0])
+              reader.onload = () =>
+                setFormState({
+                  ...formState,
+                  imagen: { value: reader.result?.toString()!, error: "" },
+                })
             }
-          }
+          }}
         />
         <Input
           label="Link"
