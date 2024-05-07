@@ -25,7 +25,6 @@ const menuItems = [
   { name: "Ver Articulos", page: "/articulos" },
   { name: "Crear Publicacion", page: "/crear_publicacion" },
   { name: "Mis Publicaciones", page: "/mis_publicaciones" },
-  { name: "Mis Compras", page: "/mis_compras" },
 ]
 
 export default function Navbar() {
@@ -70,36 +69,23 @@ export default function Navbar() {
             Compra Conjunta
           </Link>
         </NavbarBrand>
-        <NavbarItem isActive={pathname == "/articulos"}>
-          <Link color="foreground" href="/articulos">
-            Ver Articulos
-          </Link>
-        </NavbarItem>
 
         {usuario && (
           <>
-            <NavbarItem isActive={pathname == "/crear_publicacion"}>
-              <Link color="foreground" href="/crear_publicacion">
-                Crear Publicacion
-              </Link>
-            </NavbarItem>
-            <NavbarItem isActive={pathname == "/mis_publicaciones"}>
-              <Link color="foreground" href="/mis_publicaciones">
-                Mis Publicaciones
-              </Link>
-            </NavbarItem>
-            <NavbarItem isActive={pathname == "/mis_compras"}>
-              <Link color="foreground" href="/mis_compras">
-                Mis Compras
-              </Link>
-            </NavbarItem>
+            {menuItems.map((item, index) => (
+              <NavbarItem isActive={pathname == item.page} key={`${item}-${index}`}>
+                <Link color="foreground" href={item.page}>
+                  {item.name}
+                </Link>
+              </NavbarItem>
+            ))}
           </>
         )}
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex" justify="end">
         <ThemeSwitcher />
-        <Session usuario={usuario} handleLogout={handleLogout}/>
+        <Session usuario={usuario} handleLogout={handleLogout} />
       </NavbarContent>
 
       <NavbarMenu>
