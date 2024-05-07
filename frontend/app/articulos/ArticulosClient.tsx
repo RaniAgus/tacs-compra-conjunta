@@ -7,12 +7,14 @@ import { FaUsers } from "react-icons/fa6"
 import { IoCopy } from "react-icons/io5"
 import { useState } from "react"
 import toast from "react-hot-toast"
+import useUsuario from "@/hooks/useUsuario"
 
 function ArticulosClient({ articulos }: { articulos: ArticuloDTO[] }) {
   const { isOpen, onOpenChange } = useDisclosure()
   const [selectedArticulo, setSelectedArticulo] = useState<ArticuloDTO | null>(
     null
   )
+  const usuario = useUsuario()
 
   function cierraEn(deadline: string) {
     const now = new Date().getTime()
@@ -105,6 +107,10 @@ function ArticulosClient({ articulos }: { articulos: ArticuloDTO[] }) {
                           className="hidden md:block"
                           color="success"
                           onClick={() => {
+                            if (!usuario) {
+                              toast.error("Debes iniciar sesion para comprar")
+                              return
+                            }
                             onOpenChange()
                             setSelectedArticulo(articulo)
                           }}
@@ -129,7 +135,7 @@ function ArticulosClient({ articulos }: { articulos: ArticuloDTO[] }) {
             ))}
           </div>
           <ModalComprar
-            isOpen={isOpen}
+            isOpen={isOpen && !!usuario}
             onOpenChange={onOpenChange}
             selectedArticulo={selectedArticulo!}
           />

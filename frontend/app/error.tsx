@@ -1,6 +1,8 @@
 'use client' // Error components must be Client Components
 
+import { Button } from '@nextui-org/react'
 import { useEffect } from 'react'
+import toast from 'react-hot-toast'
 
 export default function Error({
     error,
@@ -10,21 +12,15 @@ export default function Error({
     reset: () => void
 }) {
     useEffect(() => {
-        // Log the error to an error reporting service
-        console.error(error)
+        toast.error(error.message)
     }, [error])
 
     return (
-        <div>
-            <h2>Something went wrong!</h2>
-            <button
-                onClick={
-                    // Attempt to recover by trying to re-render the segment
-                    () => reset()
-                }
-            >
-                Try again
-            </button>
+        <div className='flex flex-col justify-center items-center'>
+            <h2>Ha ocurrido un error</h2>
+            <Button onClick={() => reset()} color='primary'>
+                Reintentar
+            </Button>
         </div>
     )
 }

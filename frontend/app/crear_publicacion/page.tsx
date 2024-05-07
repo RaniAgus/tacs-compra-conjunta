@@ -131,8 +131,6 @@ export default function CrearPublicacion() {
     event.preventDefault()
     if (!isValidData()) return
 
-    console.log(formState.imagen.value)
-
     const crearArticuloDTO: CrearArticuloDTO = {
       nombre: formState.nombre.value,
       descripcion: formState.descripcion.value,
@@ -210,7 +208,6 @@ export default function CrearPublicacion() {
         <Checkbox
           name="tipoPrecio"
           id="tipoPrecio"
-          isRequired
           onChange={(e) =>
             setFormState({
               ...formState,

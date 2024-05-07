@@ -33,17 +33,17 @@ function FormComprar({ articuloId, onClose }: FormComprarState) {
     const formatedValue = value.slice(0, maxLength)
 
     if (name === "fechaExpiracion") {
-        const formatedDate = value
-            .split("-")
-            .map((part, index) => {
-            if (index === 0) return part
-            return part.length === 1 ? `0${part}` : part
-            })
-            .join("-")
-        setFormState({
-            ...formState,
-            [name]: { value: formatedDate, error: "" },
+      const formatedDate = value
+        .split("-")
+        .map((part, index) => {
+          if (index === 0) return part
+          return part.length === 1 ? `0${part}` : part
         })
+        .join("-")
+      setFormState({
+        ...formState,
+        [name]: { value: formatedDate, error: "" },
+      })
     } else {
       setFormState({
         ...formState,
@@ -126,8 +126,8 @@ function FormComprar({ articuloId, onClose }: FormComprarState) {
         toast.success("Articulo comprado exitosamente")
         onClose()
       })
-      .catch(() => {
-        toast.error("Error al comprar el articulo")
+      .catch((error) => {
+        toast.error(error.message)
       })
   }
 
