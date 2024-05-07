@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.tacs.tp2024c1.grupo1.dto;
 
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.mapping.ImagenMapper;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.TipoCosto;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.validation.EnumValue;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.validation.Range;
@@ -11,7 +10,6 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -28,7 +26,6 @@ public record CrearArticuloDTO(
     String descripcion,
 
     @NotBlank(message = "La imagen no puede estar vacía")
-    @Pattern(regexp = ImagenMapper.BASE64_IMAGE_PATTERN, message = "La imagen no es válida")
     String imagen,
 
     @Nullable

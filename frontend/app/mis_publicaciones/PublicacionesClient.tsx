@@ -14,10 +14,7 @@ import Link from "next/link"
 import ModalCompradores from "./ModalCompradores"
 
 function PublicacionesClient({ articulos }: { articulos: ArticuloDTO[] }) {
-  const [selectedArticulo, setSelectedArticulo] = useState<ArticuloDTO | null>(
-    null
-  )
-
+  const [selectedArticulo, setSelectedArticulo] = useState<ArticuloDTO | null>(null)
   const { isOpen, onOpenChange } = useDisclosure()
 
   function cierraEn(deadline: string) {
@@ -41,7 +38,7 @@ function PublicacionesClient({ articulos }: { articulos: ArticuloDTO[] }) {
 
   return (
     <>
-      {articulos.length === 0 && (
+      {articulos?.length === 0 && (
         <>
           <h2 className="text-center text-2xl">
             ¡Ups!, parece que no tenes publicaciones
@@ -54,7 +51,7 @@ function PublicacionesClient({ articulos }: { articulos: ArticuloDTO[] }) {
           </h3>
         </>
       )}
-      {articulos.length > 0 && (
+      {articulos?.length > 0 && (
         <>
           <div className="flex flex-col gap-4 pb-10">
             {articulos.map((articulo) => (

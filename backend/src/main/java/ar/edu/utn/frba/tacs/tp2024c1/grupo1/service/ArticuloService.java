@@ -7,8 +7,10 @@ import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Articulo;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Estado;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Usuario;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.repository.ArticuloRepository;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.utils.LinkUtils;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.utils.UsuarioUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +21,8 @@ import java.util.UUID;
 public class ArticuloService {
     private final ArticuloMapper articuloMapper;
     private final ArticuloRepository articuloRepository;
+    @Value("${frontendUrl}")
+    private String frontendUrl;
 
     public ArticuloDTO verArticulo(UUID id) {
         Articulo articulo = articuloRepository.findById(id).orElseThrow();
@@ -27,7 +31,8 @@ public class ArticuloService {
 
     public ArticuloDTO crearArticulo(CrearArticuloDTO crearArticuloDTO) {
         var articulo = articuloMapper.mapToArticulo(crearArticuloDTO, UsuarioUtils.obtenerUsuario());
-        articuloRepository.save(articulo);
+        articulo.setLink(frontendUrl + "/articulos/" + LinkUtils.toSlug(articulo.getNombre()));
+        articulo = articuloRepository.save(articulo);
         return articuloMapper.mapToArticuloDTO(articulo);
     }
 
