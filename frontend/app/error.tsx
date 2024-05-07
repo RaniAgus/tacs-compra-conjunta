@@ -1,8 +1,6 @@
 'use client' // Error components must be Client Components
-
 import { Button } from '@nextui-org/react'
 import { useEffect } from 'react'
-import toast from 'react-hot-toast'
 
 export default function Error({
     error,
@@ -12,7 +10,7 @@ export default function Error({
     reset: () => void
 }) {
     useEffect(() => {
-        toast.error(error.message)
+        console.error(error)
     }, [error])
 
     return (

@@ -17,6 +17,7 @@ public interface UsuarioMapper {
     @Mapping(target = "authorities", ignore = true)
     Usuario mapToUsuario(RegistrarseDTO registrarseDTO);
 
+    @Mapping(target = "roles", source = "roles")
     UsuarioDTO mapToUsuarioDTO(Usuario usuario);
 
     @AfterMapping

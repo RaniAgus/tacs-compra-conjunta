@@ -8,4 +8,5 @@ export type UsuarioDTO = {
   articulos: ArticuloDTO[]
   articulosComprados: ArticuloDTO[]
   articulosPublicados: ArticuloDTO[]
+  roles: string[]
 }

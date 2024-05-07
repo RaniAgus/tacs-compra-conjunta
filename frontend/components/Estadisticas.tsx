@@ -1,28 +1,32 @@
+"use client"
 import { EstadisticaDTO } from "@/model/EstadisticaDTO"
-import { getEstadisticas } from "@/service/EstadisticasService"
+import Rol from "./Rol"
 
-const fetchData = async (): Promise<EstadisticaDTO> => {
-  return await getEstadisticas()
+interface Props {
+  estadisticas: EstadisticaDTO
 }
 
-
-export default async function Estadisticas() {
-  const estadisticas = await fetchData()
+export default function Estadisticas(props: Props) {
   return (
-    <section>
-      <div className="flex flex-row justify-between">
-        <h3 className="font-semibold text-foreground/90">
-          Cantidad de publicaciones creadas:
-        </h3>
-        <h3>{estadisticas.cantPublicacionesCreadas}</h3>
-      </div>
+    <Rol rol="ADMIN">
+      <section className="mt-4">
+        <h2 className="text-2xl font-semibold text-foreground/90">
+          Estadisticas
+        </h2>
+        <div className="flex flex-row gap-2 mt-4">
+          <h3 className="font-semibold text-foreground/90">
+            Cantidad de publicaciones creadas:
+          </h3>
+          <h3>{props.estadisticas.cantPublicacionesCreadas}</h3>
+        </div>
 
-      <div className="flex flex-row justify-between">
-        <h3 className="font-semibold text-foreground/90">
-          Cantidad de usuarios unicos:
-        </h3>
-        <h3>{estadisticas.cantUsuariosInteractivos}</h3>
-      </div>
-    </section>
+        <div className="flex flex-row gap-2">
+          <h3 className="font-semibold text-foreground/90">
+            Cantidad de usuarios unicos:
+          </h3>
+          <h3>{props.estadisticas.cantUsuariosInteractivos}</h3>
+        </div>
+      </section>
+    </Rol>
   )
 }

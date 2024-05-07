@@ -20,11 +20,11 @@ import { useAtom } from "jotai"
 import { user } from "@/app/layout"
 import { cerrarSesion } from "@/service/AuthService"
 import toast from "react-hot-toast"
+import Rol from "./Rol"
 
 const menuItems = [
-  { name: "Ver Articulos", page: "/articulos" },
-  { name: "Crear Publicacion", page: "/crear_publicacion" },
-  { name: "Mis Publicaciones", page: "/mis_publicaciones" },
+  { name: "Crear Publicacion", page: "/crear_publicacion", rol: null },
+  { name: "Mis Publicaciones", page: "/mis_publicaciones", rol: "USUARIO" },
 ]
 
 export default function Navbar() {
@@ -69,15 +69,22 @@ export default function Navbar() {
             Compra Conjunta
           </Link>
         </NavbarBrand>
+        <NavbarItem isActive={pathname == "/articulos"}>
+          <Link color="foreground" href="/articulos">
+            Ver Articulos
+          </Link>
+        </NavbarItem>
 
         {usuario && (
           <>
             {menuItems.map((item, index) => (
-              <NavbarItem isActive={pathname == item.page} key={`${item}-${index}`}>
-                <Link color="foreground" href={item.page}>
-                  {item.name}
-                </Link>
-              </NavbarItem>
+              <Rol rol={item.rol!} key={`${item}-${index}`}>
+                <NavbarItem isActive={pathname == item.page}>
+                  <Link color="foreground" href={item.page}>
+                    {item.name}
+                  </Link>
+                </NavbarItem>
+              </Rol>
             ))}
           </>
         )}
@@ -89,27 +96,34 @@ export default function Navbar() {
       </NavbarContent>
 
       <NavbarMenu>
+        <NavbarMenuItem>
+          <Link className="w-full" color="foreground" href="/articulos">
+            Ver Articulos
+          </Link>
+        </NavbarMenuItem>
         {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
-            <Link className="w-full" color="foreground" href={item.page}>
-              {item.name}
-            </Link>
-          </NavbarMenuItem>
+          <Rol rol={item.rol!} key={`${item}-${index}`}>
+            <NavbarMenuItem>
+              <Link className="w-full" color="foreground" href={item.page}>
+                {item.name}
+              </Link>
+            </NavbarMenuItem>
+          </Rol>
         ))}
         {usuario ? (
-          <NavbarMenuItem key={"logout"}>
+          <NavbarMenuItem>
             <NextUILink color="danger" onClick={handleLogout}>
               Cerrar Sesion
             </NextUILink>
           </NavbarMenuItem>
         ) : (
           <>
-            <NavbarMenuItem key={"login-2"}>
+            <NavbarMenuItem>
               <SpecialLink color="primary" href="/login">
                 Iniciar Sesion
               </SpecialLink>
             </NavbarMenuItem>
-            <NavbarMenuItem key={"login-2"}>
+            <NavbarMenuItem>
               <SpecialLink color="warning" href="/registrarse">
                 Registrarse
               </SpecialLink>
