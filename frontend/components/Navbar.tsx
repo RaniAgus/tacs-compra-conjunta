@@ -135,7 +135,7 @@ export default function Navbar() {
   )
 }
 
-function SpecialLink({ color, href, children }: { color: "primary" | "secondary" | "success" | "warning" | "danger" | "foreground", href: string, children: React.ReactNode }) {
+export function SpecialLink({ color, href, children }: { color: "primary" | "secondary" | "success" | "warning" | "danger" | "foreground", href: string, children: React.ReactNode }) {
   return (
     <NextUILink
       as={Link}

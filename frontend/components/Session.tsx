@@ -1,6 +1,7 @@
 import { UsuarioDTO } from '@/model/UsuarioDTO'
 import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, NavbarItem } from '@nextui-org/react'
 import Link from 'next/link'
+import { SpecialLink } from './Navbar'
 
 interface Props {
     usuario: UsuarioDTO | null | undefined
@@ -15,9 +16,9 @@ function Session(props: Props) {
                     <Link href="/login">Iniciar Sesion</Link>
                 </NavbarItem>
                 <NavbarItem className="hidden sm:flex">
-                    <Button as={Link} color="warning" href="#" variant="flat">
+                    <SpecialLink href="/register" color="warning">
                         Registrarse
-                    </Button>
+                    </SpecialLink>
                 </NavbarItem>
             </>
         ) : (
