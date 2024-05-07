@@ -9,3 +9,8 @@ export async function obtenerUsuario(): Promise<UsuarioDTO> {
 export async function obtenerArticulosDelUsuario(): Promise<UsuarioDTO> {
     return await Request("/usuarios/me/articulos", "GET")
 }
+
+
+export async function obtenerMisCompras(): Promise<UsuarioDTO> {
+    return await Request("/usuarios/me/compras", "GET")
+}
