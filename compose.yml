@@ -1,14 +1,33 @@
 services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tacs-web
+    ports:
+      - ${PORT:-3000}:3000
+    environment:
+      - HOSTNAME=0.0.0.0
+      - PORT=3000
+      - BASE_URL=http://backend:8080
+    depends_on:
+      backend:
+        condition: service_healthy
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: tacs-web
+    container_name: tacs-service
     ports:
       - ${PORT:-8080}:8080
     environment:
       - JWT_SECRET_KEY=${JWT_SECRET_KEY:?}
       - JWT_EXPIRATION_TIME=${JWT_EXPIRATION_TIME:?}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 #    depends_on:
 #      db:
 #        condition: service_healthy
@@ -17,10 +36,10 @@ services:
 #    image: tbd
 #    container_name: tacs-db
 #    ports:
-#      - tbd
+#      - ...
 #    environment:
 #    healthcheck:
-#      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME:-postgres}"]
+#      test: ["CMD-SHELL", "..."]
 #      interval: 5s
 #      timeout: 5s
 #      retries: 5
