@@ -30,4 +30,5 @@ COPY --from=builder /build/target/*.jar ./application.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ENTRYPOINT ["java"]
+CMD ["-jar", "application.jar"]
