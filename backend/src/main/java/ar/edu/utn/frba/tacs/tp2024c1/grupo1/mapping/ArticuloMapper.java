@@ -11,11 +11,11 @@ import org.mapstruct.Mapping;
 public interface ArticuloMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "estado", ignore = true)
-    @Mapping(target = "compradores", ignore = true)
+    @Mapping(target = "compradoresIds", ignore = true)
     @Mapping(target = "costo.monto", source = "dto.precio", numberFormat = "#.##")
     @Mapping(target = "costo.tipo", source = "dto.tipoPrecio")
     @Mapping(target = "recepcion", source = "dto.descripcion")
-    Articulo mapToArticulo(CrearArticuloDTO dto, Usuario publicador);
+    Articulo mapToArticulo(CrearArticuloDTO dto, String publicadorId);
 
     ArticuloDTO mapToArticuloDTO(Articulo articulo);
 }

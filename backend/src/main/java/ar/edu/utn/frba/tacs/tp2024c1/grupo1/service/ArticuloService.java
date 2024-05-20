@@ -30,7 +30,7 @@ public class ArticuloService {
     }
 
     public ArticuloDTO crearArticulo(CrearArticuloDTO crearArticuloDTO) {
-        var articulo = articuloMapper.mapToArticulo(crearArticuloDTO, UsuarioUtils.obtenerUsuario());
+        var articulo = articuloMapper.mapToArticulo(crearArticuloDTO, UsuarioUtils.obtenerUsuario().getId());
         articulo.setLink(frontendUrl + "/articulos/" + LinkUtils.toSlug(articulo.getNombre()));
         articulo = articuloRepository.save(articulo);
         return articuloMapper.mapToArticuloDTO(articulo);
@@ -39,7 +39,7 @@ public class ArticuloService {
     public ArticuloDTO agregarComprador(String id) {
         Usuario usuario = UsuarioUtils.obtenerUsuario();
         Articulo articulo = articuloRepository.findById(id).orElseThrow();
-        articulo.agregarComprador(usuario);
+        articulo.agregarComprador(usuario.getId());
 
         return articuloMapper.mapToArticuloDTO(articuloRepository.save(articulo));
     }

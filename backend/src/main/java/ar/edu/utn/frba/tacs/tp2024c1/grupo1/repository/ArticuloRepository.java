@@ -36,7 +36,7 @@ public class ArticuloRepository {
         return articulos;
     }
 
-    public List<Articulo> findByUsuario(Usuario usuario) {
+    /*public List<Articulo> findByUsuario(Usuario usuario) {
         return articulos.stream().filter(articulo -> articulo.getPublicador().equals(usuario)).toList();
-    }
+    }*/
 }

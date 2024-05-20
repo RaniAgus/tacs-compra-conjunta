@@ -23,7 +23,7 @@ class ArticuloTest {
         Articulo articulo = generarArticulo(Estado.VENDIDO, usuario);
 
         assertThrows(ArticuloFinalizadoException.class, () -> {
-                articulo.agregarComprador(comprador);
+                articulo.agregarComprador(comprador.getId());
         });
 
         assertThrows(ArticuloFinalizadoException.class, () -> {
@@ -43,7 +43,7 @@ class ArticuloTest {
         Articulo articulo = generarArticulo(Estado.CANCELADO, usuario);
 
         assertThrows(ArticuloFinalizadoException.class, () -> {
-                articulo.agregarComprador(comprador);
+                articulo.agregarComprador(comprador.getId());
         });
 
         assertThrows(ArticuloFinalizadoException.class, () -> {
@@ -72,13 +72,13 @@ class ArticuloTest {
         Usuario comprador = generarUsuario("ramiro");
 
         Articulo articulo = generarArticulo(Estado.ABIERTO, usuario);
-        articulo.agregarComprador(generarUsuario("pedro"));
-        articulo.agregarComprador(generarUsuario("maria"));
-        articulo.agregarComprador(generarUsuario("gabriela"));
-        articulo.agregarComprador(generarUsuario("agustina"));
+        articulo.agregarComprador(generarUsuario("pedro").getId());
+        articulo.agregarComprador(generarUsuario("maria").getId());
+        articulo.agregarComprador(generarUsuario("gabriela").getId());
+        articulo.agregarComprador(generarUsuario("agustina").getId());
 
         assertThrows(LimiteCompradores.class, () -> {
-                articulo.agregarComprador(comprador);
+                articulo.agregarComprador(comprador.getId());
         });
     }
 
@@ -89,7 +89,7 @@ class ArticuloTest {
         Articulo articulo = generarArticulo(Estado.ABIERTO, usuario);
         
         assertThrows(CompradorInvalidoException.class, () -> {
-                articulo.agregarComprador(usuario);
+                articulo.agregarComprador(usuario.getId());
         });
     }
 
@@ -99,10 +99,10 @@ class ArticuloTest {
         Usuario comprador = generarUsuario("martin");
 
         Articulo articulo = generarArticulo(Estado.ABIERTO, usuario);
-        articulo.agregarComprador(comprador);
+        articulo.agregarComprador(comprador.getId());
 
         assertThrows(CompradorInvalidoException.class, () -> {
-                articulo.agregarComprador(comprador);
+                articulo.agregarComprador(comprador.getId());
         });
     }
 
@@ -112,7 +112,7 @@ class ArticuloTest {
         Usuario comprador = generarUsuario("martin");
 
         Articulo articulo = generarArticulo(Estado.ABIERTO, usuario);
-        articulo.agregarComprador(comprador);
+        articulo.agregarComprador(comprador.getId());
         articulo.setEstado(Estado.VENDIDO);
 
         assertEquals(Estado.VENDIDO, articulo.getEstado());
@@ -123,7 +123,7 @@ class ArticuloTest {
         Usuario usuario = generarUsuario("carlos");
         
         Articulo articuloConCupo = generarArticulo(Estado.ABIERTO, usuario);
-        articuloConCupo.agregarComprador(generarUsuario("martin"));
+        articuloConCupo.agregarComprador(generarUsuario("martin").getId());
         articuloConCupo.setEstado(Estado.CANCELADO);
 
         assertEquals(Estado.CANCELADO, articuloConCupo.getEstado());
@@ -139,7 +139,7 @@ class ArticuloTest {
         Usuario usuario = generarUsuario("carlos");
         
         Articulo articulo = generarArticulo(Estado.ABIERTO, usuario);
-        articulo.agregarComprador(generarUsuario("martin"));
+        articulo.agregarComprador(generarUsuario("martin").getId());
         articulo.setDeadline(ZonedDateTime.now().minusHours(1));
 
         assertThrows(ArticuloFinalizadoException.class, () -> {
@@ -153,7 +153,7 @@ class ArticuloTest {
 
     private Usuario generarUsuario(String nombre) {
         Usuario usuario = new Usuario();
-        usuario.setId(UUID.randomUUID());
+        usuario.setId(UUID.randomUUID().toString());
         usuario.setNombreDeUsuario(nombre);
                 
         return usuario;
@@ -161,12 +161,12 @@ class ArticuloTest {
 
     private Articulo generarArticulo(Estado estado, Usuario usuario) {
         Articulo articulo = new Articulo();
-        articulo.setId(UUID.randomUUID());
+        articulo.setId(UUID.randomUUID().toString());
         articulo.setNombre("Articulo genérico");
         articulo.setEstado(estado);
         articulo.setMaxPersonas(4);
         articulo.setMinPersonas(1);
-        articulo.setPublicador(usuario);
+        articulo.setPublicadorId(usuario.getId());
                 
         return articulo;
     }

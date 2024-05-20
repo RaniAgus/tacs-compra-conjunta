@@ -41,12 +41,12 @@ public class UsuarioService {
     }
 
     public int getTotalUsuariosInteractivos() {
-        Set<Usuario> usuariosInteractivos = new HashSet<>();
+        Set<String> usuariosInteractivos = new HashSet<>();
 
-        List<Usuario> usuariosPublicadores = articuloRepository.findAll().stream().map(Articulo::getPublicador).toList();
-        usuariosInteractivos.addAll(usuariosPublicadores);
+        List<String> usuariosPublicadoresIds = articuloRepository.findAll().stream().map(Articulo::getPublicadorId).toList();
+        usuariosInteractivos.addAll(usuariosPublicadoresIds);
 
-        List<Usuario> usuariosCompradores = articuloRepository.findAll().stream().flatMap(articulo -> articulo.getCompradores().stream()).toList();
+        List<String> usuariosCompradores = articuloRepository.findAll().stream().flatMap(articulo -> articulo.getCompradoresIds().stream()).toList();
         usuariosInteractivos.addAll(usuariosCompradores);
 
         return usuariosInteractivos.size();

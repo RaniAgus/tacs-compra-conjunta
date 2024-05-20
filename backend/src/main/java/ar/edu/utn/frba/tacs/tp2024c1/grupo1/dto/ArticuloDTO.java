@@ -16,7 +16,7 @@ public record ArticuloDTO(
         Integer maxPersonas,
         CostoDTO costo,
         String recepcion,
-        List<UsuarioDTO> compradores,
-        UsuarioDTO publicador,
+        List<String> compradoresIds,
+        String publicadorId,
         String estado
 ) {}
