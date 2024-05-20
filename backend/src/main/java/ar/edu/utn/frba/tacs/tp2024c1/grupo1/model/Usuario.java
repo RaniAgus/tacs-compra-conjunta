@@ -3,6 +3,8 @@ package ar.edu.utn.frba.tacs.tp2024c1.grupo1.model;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,8 +15,10 @@ import java.util.Set;
 import java.util.UUID;
 
 @Data
+@Document(indexName = "usuario")
 public class Usuario implements UserDetails {
-    private UUID id;
+    @Id
+    private String id;
     private String email;
     private String contrasenia;
     private String nombreDeUsuario;

@@ -32,7 +32,7 @@ public class ArticuloController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ArticuloDTO> verArticulo(@PathVariable UUID id) {
+    public ResponseEntity<ArticuloDTO> verArticulo(@PathVariable String id) {
         var articulo = articuloService.verArticulo(id);
         return ResponseEntity.ok(articulo);
     }
@@ -46,14 +46,14 @@ public class ArticuloController {
 
     @PostMapping("/{id}/compradores")
     @PreAuthorize("hasAnyAuthority('USUARIO')")
-    public ResponseEntity<ArticuloDTO> agregarComprador(@PathVariable UUID id) {
+    public ResponseEntity<ArticuloDTO> agregarComprador(@PathVariable String id) {
         var articulo = articuloService.agregarComprador(id);
         return ResponseEntity.ok(articulo);
     }
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('USUARIO')")
-    public ResponseEntity<ArticuloDTO> actualizarEstadoArticulo(@PathVariable UUID id, @RequestParam Estado estado) {
+    public ResponseEntity<ArticuloDTO> actualizarEstadoArticulo(@PathVariable String id, @RequestParam Estado estado) {
         var articulo = articuloService.actualizarEstadoArticulo(id, estado);
         return ResponseEntity.ok(articulo);
     }

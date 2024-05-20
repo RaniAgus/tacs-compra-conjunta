@@ -2,7 +2,7 @@ package ar.edu.utn.frba.tacs.tp2024c1.grupo1.configuration;
 
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Rol;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Usuario;
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.repository.UsuarioRepository;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.repository.EsUsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 public class BoostrapUsersBean {
-    private final UsuarioRepository usuarioRepository;
+    private final EsUsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Bean

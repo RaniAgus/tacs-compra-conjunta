@@ -7,7 +7,7 @@ import lombok.Builder;
 
 @Builder
 public record ArticuloDTO(
-        UUID id,
+        String id,
         String nombre,
         String imagen,
         String link,

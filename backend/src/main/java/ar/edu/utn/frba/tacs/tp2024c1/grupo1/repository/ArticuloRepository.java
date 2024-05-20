@@ -10,10 +10,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
+@Deprecated
 public class ArticuloRepository {
     private final List<Articulo> articulos = new ArrayList<>();
 
-    public Articulo update(Articulo articulo) {
+    /*public Articulo update(Articulo articulo) {
         Articulo articuloViejo = findById(articulo.getId()).orElseThrow();
         articulos.remove(articuloViejo);
         articulos.add(articulo);
@@ -25,7 +26,7 @@ public class ArticuloRepository {
         articulo.setId(UUID.randomUUID());
         articulos.add(articulo);
         return articulo;
-    }
+    }*/
 
     public Optional<Articulo> findById(UUID id) {
         return articulos.stream().filter(articulo -> articulo.getId().equals(id)).findFirst();

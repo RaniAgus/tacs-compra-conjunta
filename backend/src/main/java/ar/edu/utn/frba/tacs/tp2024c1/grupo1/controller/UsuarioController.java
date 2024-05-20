@@ -42,7 +42,7 @@ public class UsuarioController {
 
     @GetMapping("/{id}/articulos")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<List<ArticuloDTO>> getArticulosByUsuario(@PathVariable UUID id) {
+    public ResponseEntity<List<ArticuloDTO>> getArticulosByUsuario(@PathVariable String id) {
         return ResponseEntity.ok(usuarioService.getArticulosDelUsuario(id));
     }
 }

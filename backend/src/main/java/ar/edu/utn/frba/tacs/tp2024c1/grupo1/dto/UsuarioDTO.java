@@ -8,7 +8,7 @@ import lombok.Builder;
 
 @Builder
 public record UsuarioDTO(
-    UUID id,
+    String id,
     String email,
     String nombreDeUsuario,
     Set<Rol> roles

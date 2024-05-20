@@ -9,8 +9,9 @@ import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
+@Deprecated
 public class UsuarioRepository {
-    private final ArticuloRepository articuloRepository;
+    private final EsArticuloRepository articuloRepository;
     private final List<Usuario> usuarios = new ArrayList<>();
 
     public Optional<Usuario> findByUsername(String username) {
@@ -21,11 +22,11 @@ public class UsuarioRepository {
         return usuarios.stream().anyMatch(usuario -> usuario.getNombreDeUsuario().equals(username));
     }
 
-    public Usuario save(Usuario usuario) {
+    /*public Usuario save(Usuario usuario) {
         usuario.setId(UUID.randomUUID());
         usuarios.add(usuario);
         return usuario;
-    }
+    }*/
 
     public List<Usuario> findAll() {
         return usuarios;
@@ -35,7 +36,7 @@ public class UsuarioRepository {
         return usuarios.stream().filter(usuario -> usuario.getId().equals(id)).findFirst();
     }
 
-    public int getTotalUsuariosInteractivos() {
+    /*public int getTotalUsuariosInteractivos() {
         Set<Usuario> usuariosInteractivos = new HashSet<>();
 
         List<Usuario> usuariosPublicadores = articuloRepository.findAll().stream().map(Articulo::getPublicador).toList();
@@ -45,5 +46,5 @@ public class UsuarioRepository {
         usuariosInteractivos.addAll(usuariosCompradores);
 
         return usuariosInteractivos.size();
-    }
+    }*/
 }

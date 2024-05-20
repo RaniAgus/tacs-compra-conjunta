@@ -6,7 +6,7 @@ import ar.edu.utn.frba.tacs.tp2024c1.grupo1.mapping.ArticuloMapper;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Articulo;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Estado;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Usuario;
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.repository.ArticuloRepository;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.repository.EsArticuloRepository;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.utils.LinkUtils;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.utils.UsuarioUtils;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +20,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ArticuloService {
     private final ArticuloMapper articuloMapper;
-    private final ArticuloRepository articuloRepository;
+    private final EsArticuloRepository articuloRepository;
     @Value("${frontendUrl}")
     private String frontendUrl;
 
-    public ArticuloDTO verArticulo(UUID id) {
+    public ArticuloDTO verArticulo(String id) {
         Articulo articulo = articuloRepository.findById(id).orElseThrow();
         return articuloMapper.mapToArticuloDTO(articulo);
     }
@@ -36,12 +36,12 @@ public class ArticuloService {
         return articuloMapper.mapToArticuloDTO(articulo);
     }
 
-    public ArticuloDTO agregarComprador(UUID id) {
+    public ArticuloDTO agregarComprador(String id) {
         Usuario usuario = UsuarioUtils.obtenerUsuario();
         Articulo articulo = articuloRepository.findById(id).orElseThrow();
         articulo.agregarComprador(usuario);
 
-        return articuloMapper.mapToArticuloDTO(articuloRepository.update(articulo));
+        return articuloMapper.mapToArticuloDTO(articuloRepository.save(articulo));
     }
 
     public List<ArticuloDTO> verTodosLosArticulos() {
@@ -49,10 +49,10 @@ public class ArticuloService {
         return articulos.stream().map(articuloMapper::mapToArticuloDTO).toList();
     }
 
-    public ArticuloDTO actualizarEstadoArticulo(UUID id, Estado estado) {
+    public ArticuloDTO actualizarEstadoArticulo(String id, Estado estado) {
         Articulo articulo = articuloRepository.findById(id).orElseThrow();
         articulo.setEstado(estado);
         
-        return articuloMapper.mapToArticuloDTO(articuloRepository.update(articulo));
+        return articuloMapper.mapToArticuloDTO(articuloRepository.save(articulo));
     }
 }
