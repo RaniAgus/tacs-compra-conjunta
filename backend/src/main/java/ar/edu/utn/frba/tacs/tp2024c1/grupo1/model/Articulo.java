@@ -14,7 +14,6 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Data
 @Document(indexName = "articulo")
@@ -30,16 +29,16 @@ public class Articulo {
     private Costo costo;
     private String recepcion;
     @Setter(AccessLevel.NONE)
-    private List<String> compradoresIds = new ArrayList<>();
-    private String publicadorId;
+    private List<Comprador> compradores = new ArrayList<>();
+    private Publicador publicador;
     private Estado estado = Estado.ABIERTO;
 
-    public void agregarComprador(String usuarioId) {
-        if (getMaxPersonas() <= getCompradoresIds().size()) {
+    public void agregarComprador(Usuario usuario) {
+        if (getMaxPersonas() <= getCompradores().size()) {
             throw new LimiteCompradores();
         }
 
-        if (Objects.equals(usuarioId, getPublicadorId())) {
+        if (getPublicador().getId().equals(usuario.getId())) {
             throw new CompradorInvalidoException("El comprador y vendedor no pueden ser la misma persona");
         }
 
@@ -47,11 +46,14 @@ public class Articulo {
             throw new ArticuloFinalizadoException("El artículo está cerrado por lo que no puede ser adquirido");
         }
 
-        if (getCompradoresIds().stream().anyMatch(comp -> Objects.equals(comp, usuarioId))) {
+        if (getCompradores().stream().anyMatch(comp -> comp.getId().equals(usuario.getId()))) {
             throw new CompradorInvalidoException("El comprador ya tenía el artículo");
         }
 
-        this.compradoresIds.add(usuarioId);
+        this.compradores.add(Comprador.builder()
+                .id(usuario.getId())
+                .nombreDeUsuario(usuario.getNombreDeUsuario())
+                .build());
     }
 
     public void setEstado(Estado estado) {
@@ -75,12 +77,12 @@ public class Articulo {
     }
 
     private void validarVenta() {
-        if (getCompradoresIds().size() < getMinPersonas()) {
-            throw new CupoArticuloExcedidoException("Hay menos compradores de los permitidos", getCompradoresIds().size(), getMinPersonas(), getMaxPersonas());
+        if (getCompradores().size() < getMinPersonas()) {
+            throw new CupoArticuloExcedidoException("Hay menos compradores de los permitidos", getCompradores().size(), getMinPersonas(), getMaxPersonas());
         }
 
-        if (getCompradoresIds().size() > getMaxPersonas()) {
-            throw new CupoArticuloExcedidoException("Hay más compradores de los permitidos", getCompradoresIds().size(), getMinPersonas(), getMaxPersonas());
+        if (getCompradores().size() > getMaxPersonas()) {
+            throw new CupoArticuloExcedidoException("Hay más compradores de los permitidos", getCompradores().size(), getMinPersonas(), getMaxPersonas());
         }
 
         ZonedDateTime tiempo = ZonedDateTime.now();

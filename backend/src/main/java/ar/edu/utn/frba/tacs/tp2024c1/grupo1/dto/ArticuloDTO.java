@@ -2,7 +2,6 @@ package ar.edu.utn.frba.tacs.tp2024c1.grupo1.dto;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.UUID;
 import lombok.Builder;
 
 @Builder
@@ -16,7 +15,7 @@ public record ArticuloDTO(
         Integer maxPersonas,
         CostoDTO costo,
         String recepcion,
-        List<String> compradoresIds,
-        String publicadorId,
+        List<CompradorDTO> compradores,
+        PublicadorDTO publicador,
         String estado
 ) {}

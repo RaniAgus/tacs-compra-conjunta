@@ -48,7 +48,7 @@ class ArticuloMapperImplTest {
                 .build());
 
         // Act
-        Articulo result = articuloMapper.mapToArticulo(dto, publicador.getId());
+        Articulo result = articuloMapper.mapToArticulo(dto, publicador);
 
         // Assert
         assertThat(result).isNotNull().extracting(
@@ -60,9 +60,9 @@ class ArticuloMapperImplTest {
                 Articulo::getMaxPersonas,
                 Articulo::getCosto,
                 Articulo::getRecepcion,
-                Articulo::getCompradoresIds,
+                Articulo::getCompradores,
                 Articulo::getEstado,
-                Articulo::getPublicadorId
+                Articulo::getPublicador
         ).containsExactly(
                 dto.nombre(),
                 Imagen.builder().bytes(new byte[]{1, 2, 3}).tipo(TipoImagen.GIF).build(),
@@ -74,7 +74,7 @@ class ArticuloMapperImplTest {
                 dto.descripcion(),
                 List.of(),
                 Estado.ABIERTO,
-                publicador.getId()
+                Publicador.builder().id(publicador.getId()).nombreDeUsuario(publicador.getNombreDeUsuario()).build()
         );
     }
 
@@ -107,7 +107,7 @@ class ArticuloMapperImplTest {
                 ArticuloDTO::maxPersonas,
                 ArticuloDTO::costo,
                 ArticuloDTO::recepcion,
-                ArticuloDTO::compradoresIds,
+                ArticuloDTO::compradores,
                 ArticuloDTO::estado
         ).containsExactly(
                 articulo.getNombre(),

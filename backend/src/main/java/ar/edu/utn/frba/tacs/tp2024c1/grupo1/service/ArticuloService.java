@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +29,7 @@ public class ArticuloService {
     }
 
     public ArticuloDTO crearArticulo(CrearArticuloDTO crearArticuloDTO) {
-        var articulo = articuloMapper.mapToArticulo(crearArticuloDTO, UsuarioUtils.obtenerUsuario().getId());
+        var articulo = articuloMapper.mapToArticulo(crearArticuloDTO, UsuarioUtils.obtenerUsuario());
         articulo.setLink(frontendUrl + "/articulos/" + LinkUtils.toSlug(articulo.getNombre()));
         articulo = articuloRepository.save(articulo);
         return articuloMapper.mapToArticuloDTO(articulo);
@@ -39,7 +38,7 @@ public class ArticuloService {
     public ArticuloDTO agregarComprador(String id) {
         Usuario usuario = UsuarioUtils.obtenerUsuario();
         Articulo articulo = articuloRepository.findById(id).orElseThrow();
-        articulo.agregarComprador(usuario.getId());
+        articulo.agregarComprador(usuario);
 
         return articuloMapper.mapToArticuloDTO(articuloRepository.save(articulo));
     }
