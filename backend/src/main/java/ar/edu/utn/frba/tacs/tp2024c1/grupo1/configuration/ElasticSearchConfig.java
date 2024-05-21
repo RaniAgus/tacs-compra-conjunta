@@ -10,9 +10,6 @@ public class ElasticSearchConfig extends ElasticsearchConfiguration {
     @Value("${spring.elasticsearch.uris}")
     private String uri;
 
-    @Value("${spring.elasticsearch.ssl.fingerprint}")
-    private String fingerprint;
-
     @Value("${spring.elasticsearch.username}")
     private String username;
 
@@ -23,7 +20,6 @@ public class ElasticSearchConfig extends ElasticsearchConfiguration {
     public ClientConfiguration clientConfiguration() {
         return ClientConfiguration.builder()
                 .connectedTo(uri)
-                .usingSsl(fingerprint)
                 .withBasicAuth(username, password)
                 .build();
     }

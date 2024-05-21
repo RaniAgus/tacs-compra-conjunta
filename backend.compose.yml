@@ -12,7 +12,7 @@ services:
     environment:
       - JWT_SECRET_KEY=${JWT_SECRET_KEY:?}
       - JWT_EXPIRATION_TIME=${JWT_EXPIRATION_TIME:?}
-      - ELASTIC_URL=${ELASTIC_USERNAME:?}
+      - ELASTIC_URL=http://es01:9200
       - ELASTIC_USERNAME=elastic
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:?}
     healthcheck:

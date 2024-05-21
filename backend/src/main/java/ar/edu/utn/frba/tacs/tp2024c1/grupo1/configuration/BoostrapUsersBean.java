@@ -18,6 +18,8 @@ public class BoostrapUsersBean {
     @Bean
     public CommandLineRunner createInitialData() {
         return args -> {
+            usuarioRepository.deleteAll();
+
             Usuario usuarioAdmin = new Usuario();
             usuarioAdmin.setNombreDeUsuario("admin");
             usuarioAdmin.setEmail("admin@test.com");
