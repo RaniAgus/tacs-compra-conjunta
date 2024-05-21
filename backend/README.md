@@ -1,3 +1,0 @@
-# Compra Conjunta (backend)
-
-WIP

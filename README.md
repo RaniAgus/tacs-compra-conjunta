@@ -8,12 +8,48 @@ compra de un producto entre varias personas.
 
 - Backend: Java 21, Spring Boot 3.2.4, Maven 3
 - Frontend: Node 18, Next.js 14.2.3 w/React 18
+- Base de Datos: ElasticSearch 8.13.4
 
 ## Cómo correr la aplicación en local
 
-Cada proyecto (frontend y backend) cuenta con un archivo `README.md` en su
-directorio raíz con las instrucciones necesarias para correr la aplicación en
-local.
+### Base de Datos
+
+Para correr la base de datos en local, se puede utilizar el archivo
+`elastic.compose.yml` que se encuentra en la raíz del proyecto:
+
+```bash
+docker compose -f elastic.compose.yml up -d
+```
+
+Y ya vamos a tener la base de datos corriendo en http://localhost:9200/. Podemos
+acceder a la misma a través de Kibana en http://localhost:5601/.
+
+### Backend
+
+El backend depende de contar con una base de datos ElasticSearch corriendo en
+local, por lo que es necesario correr el comando anterior antes de correr la
+aplicación.
+
+Para correr la aplicación en local, se debe ejecutar el método main de la clase
+`Grupo1Application`. Y con esto ya vamos a tener el backend corriendo en
+http://localhost:8080/
+
+### Frontend
+
+El frontend depende de ambos backend y base de datos corriendo en local. Para
+ello, contamos con otro docker compose file con ambos servicios:
+
+```bash
+docker compose -f backend.compose.yml up
+```
+
+Una vez hecho esto, simplemente ejecutamos el comando:
+
+```bash
+npm run dev
+```
+
+Y ya vamos a tener la aplicación corriendo en http://localhost:3000/
 
 ## Cómo correr la aplicación con Docker
 
