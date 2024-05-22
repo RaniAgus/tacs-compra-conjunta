@@ -15,9 +15,9 @@ RUN ./mvnw package
 
 FROM eclipse-temurin:21-jre-alpine
 
-ARG UID=1001
+ARG UID=1000
 
-ARG GID=1001
+ARG GID=1000
 
 RUN addgroup -g "$GID" appuser; \
     adduser -u "$UID" -G appuser -D appuser

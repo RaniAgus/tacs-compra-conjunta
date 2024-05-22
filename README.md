@@ -30,9 +30,19 @@ El backend depende de contar con una base de datos ElasticSearch corriendo en
 local, por lo que es necesario correr el comando anterior antes de correr la
 aplicación.
 
-Para correr la aplicación en local, se debe ejecutar el método main de la clase
-`Grupo1Application`. Y con esto ya vamos a tener el backend corriendo en
-http://localhost:8080/
+Luego, antes de correr la aplicación, es necesario extraer el certificado de
+seguridad de la base de datos. Para ello, contamos con un script:
+
+```bash
+./scripts/extract-cert.sh
+```
+
+Este script extrae el certificado de la base de datos y lo guarda en la carpeta
+`certs` del proyecto.
+
+Ahora sí, para correr la aplicación en local se debe ejecutar el método main de
+la clase `Grupo1Application`. Y con esto ya vamos a tener el backend corriendo
+en http://localhost:8080/
 
 ### Frontend
 
