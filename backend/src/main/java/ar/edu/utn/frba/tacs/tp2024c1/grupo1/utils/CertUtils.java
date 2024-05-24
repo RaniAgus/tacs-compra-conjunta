@@ -25,7 +25,8 @@ public class CertUtils {
             byte[] publicKey = md.digest(cert.getEncoded());
 
             // Convert the fingerprint to hex format
-            return new BigInteger(1, publicKey).toString(16);
+            String fingerprint = new BigInteger(1, publicKey).toString(16);
+            return String.format("%64s", fingerprint).replace(' ', '0');
         } catch (IOException | CertificateException | NoSuchAlgorithmException e) {
             throw new IllegalArgumentException("Error reading certificate", e);
         }
