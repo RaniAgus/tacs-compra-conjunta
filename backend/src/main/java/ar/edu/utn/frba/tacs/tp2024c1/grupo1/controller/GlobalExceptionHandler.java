@@ -14,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
@@ -45,6 +46,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 "status", HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 "errors", Map.of("global", globalErrors, "fields", fieldErrors)
         ));
+    }
+
+    @ExceptionHandler(MultipartException.class)
+    public ResponseEntity<Object> handleMultipartException(MultipartException ex) {
+        return buildDefaultException(HttpStatus.BAD_REQUEST, "Invalid file");
     }
 
     @ExceptionHandler({TokenNoValido.class, CredencialesInvalidas.class})

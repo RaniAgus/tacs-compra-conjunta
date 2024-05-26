@@ -24,33 +24,53 @@ docker compose -f elastic.compose.yml up -d
 Y ya vamos a tener la base de datos corriendo en http://localhost:9200/. Podemos
 acceder a la misma a través de Kibana en http://localhost:5601/.
 
-### Backend
-
-El backend depende de contar con una base de datos ElasticSearch corriendo en
-local, por lo que es necesario correr el comando anterior antes de correr la
-aplicación.
-
-Luego, antes de correr la aplicación, es necesario extraer el certificado de
-seguridad de la base de datos. Para ello, contamos con un script:
+Antes de continuar, si queremos levantar el backend en local, debemos extraer el
+certificado de seguridad de la base de datos. Para ello, contamos con un script:
 
 ```bash
 ./scripts/extract-cert.sh
 ```
 
 Este script extrae el certificado de la base de datos y lo guarda en la carpeta
-`certs` del proyecto.
+`certs` del proyecto para que el backend pueda utilizarlo.
+
+### S3
+
+Para correr un s3 bucket en local, se puede utilizar la imagen de MinIO que se
+encuentra en el archivo `compose.yml`:
+
+```bash
+docker compose up -d s3
+```
+
+Luego, se puede acceder a la consola de MinIO en http://localhost:9001/ con las
+credenciales configuradas en el archivo `.env`.
+
+Antes de continuar, debemos crear un bucket público en MinIO llamado con el
+mismo nombre que la variable de entorno `S3_BUCKET_NAME` en el archivo `.env`.
+
+### Backend
+
+El backend depende de contar con ambos base de datos y s3 corriendo en local,
+por lo que es necesario levantar ambos servicios con:
+
+```sh
+docker compose up -d es01 es02 es03 s3
+```
 
 Ahora sí, para correr la aplicación en local se debe ejecutar el método main de
 la clase `Grupo1Application`. Y con esto ya vamos a tener el backend corriendo
 en http://localhost:8080/
 
+Dicho backend se puede probar a través de la colección de Postman que se
+encuentra en la carpeta `docs` del proyecto.
+
 ### Frontend
 
-El frontend depende de ambos backend y base de datos corriendo en local. Para
-ello, contamos con otro docker compose file con ambos servicios:
+El frontend depende del backend, la base de datos y el s3 para correr en local:
 
 ```bash
-docker compose -f backend.compose.yml up
+docker compose up -d es01 es02 es03 s3 backend
 ```
 
 Una vez hecho esto, simplemente ejecutamos el comando:
@@ -61,10 +81,11 @@ npm run dev
 
 Y ya vamos a tener la aplicación corriendo en http://localhost:3000/
 
-## Cómo correr la aplicación con Docker
+## Cómo correr la aplicación completa con Docker
 
 El proyecto cuenta con un archivo `compose.yml` que permite correr la
-aplicación en un contenedor de Docker.
+aplicación en varios contenedores de Docker, uno para el backend, otro para el
+backend-for-frontend, uno para la base de datos y otro para el s3 bucket.
 
 Para correr la aplicación, primero hay que configurar las variables de entorno
 creando un archivo `.env` en la raíz del proyecto basándose en el archivo
@@ -96,13 +117,6 @@ para poder construir la aplicación.
 Luego, en la segunda capa, se utilizan únicamente las dependencias de ejecución
 además de los archivos generados en la capa anterior. Esta capa corre la
 aplicación en modo no-root, para evitar problemas de seguridad.
-
-## Cómo probar la aplicación backend
-
-Dentro de la carpeta `docs` del proyecto se encuentra una colección y un entorno
-de [Postman] que permiten probar los endpoints de la aplicación.
-
-[Postman]: https://www.postman.com/
 
 ## Integrantes
 

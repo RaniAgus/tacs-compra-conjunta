@@ -19,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArticuloService {
     private final ArticuloMapper articuloMapper;
+    private final StorageService storageService;
     private final EsArticuloRepository articuloRepository;
     @Value("${frontendUrl}")
     private String frontendUrl;
@@ -29,7 +30,8 @@ public class ArticuloService {
     }
 
     public ArticuloDTO crearArticulo(CrearArticuloDTO crearArticuloDTO) {
-        var articulo = articuloMapper.mapToArticulo(crearArticuloDTO, UsuarioUtils.obtenerUsuario());
+        var imagen = storageService.guardarImagen(crearArticuloDTO.imagen());
+        var articulo = articuloMapper.mapToArticulo(crearArticuloDTO, UsuarioUtils.obtenerUsuario(), imagen);
         articulo.setLink(frontendUrl + "/articulos/" + LinkUtils.toSlug(articulo.getNombre()));
         articulo = articuloRepository.save(articulo);
         return articuloMapper.mapToArticuloDTO(articulo);

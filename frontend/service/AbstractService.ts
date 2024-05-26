@@ -1,6 +1,6 @@
 import { cookies } from "next/headers"
 
-const base_url = process.env.BASE_URL!
+const base_url = process.env.BACKEND_URL!
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 

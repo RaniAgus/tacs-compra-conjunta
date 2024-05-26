@@ -22,6 +22,18 @@
 		<jjwt.version>0.12.5</jjwt.version>
 	</properties>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>software.amazon.awssdk</groupId>
+				<artifactId>bom</artifactId>
+				<version>2.25.59</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -34,6 +46,20 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.mapstruct</groupId>
@@ -73,11 +99,6 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
-			<version>3.2.5</version>
-		</dependency>
 
 	</dependencies>
 
@@ -115,7 +136,7 @@
 						</path>
 					</annotationProcessorPaths>
 					<compilerArgs>
-						<arg>-Amapstruct.defaultInjectionStrategy=constructor</arg>
+						<arg>-Amapstruct.defaultInjectionStrategy=field</arg>
 						<arg>-Amapstruct.defaultComponentModel=spring</arg>
 					</compilerArgs>
 				</configuration>

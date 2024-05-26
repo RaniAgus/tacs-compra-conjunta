@@ -82,7 +82,6 @@ class ArticuloControllerTest {
 
     @Test
     @WithMockUser(authorities = "USUARIO")
-    @Disabled("TODO: Implementar validación de imagen")
     void crearArticuloConImagenNoValida() throws Exception {
         // language=json
         var content = """

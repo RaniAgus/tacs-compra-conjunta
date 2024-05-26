@@ -2,19 +2,21 @@
 
 import { PHASE_DEVELOPMENT_SERVER } from 'next/constants.js'
 
-export default (phase, { defaultConfig }) => {
+const config = (phase, { defaultConfig }) => {
     if (phase === PHASE_DEVELOPMENT_SERVER) {
         return {
             env: {
-                BASE_URL: 'http://localhost:8080',
+                BACKEND_URL: 'http://localhost:8080',
             },
         }
     }
 
     return {
         env: {
-            BASE_URL: process.env.BASE_URL,
+            BACKEND_URL: process.env.BACKEND_URL,
         },
         output: 'standalone',
     };
 }
+
+export default config

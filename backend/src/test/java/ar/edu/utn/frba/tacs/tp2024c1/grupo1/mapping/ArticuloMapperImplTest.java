@@ -7,7 +7,9 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.configuration.StorageConfiguration;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.*;
+import co.elastic.clients.elasticsearch.indices.Storage;
 import org.junit.jupiter.api.Test;
 
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.dto.ArticuloDTO;
@@ -21,7 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class ArticuloMapperImplTest {
     @Mock
-    private ImagenMapper imagenMapper;
+    private StorageConfiguration storageConfiguration;
 
     @InjectMocks
     private ArticuloMapperImpl articuloMapper;
@@ -40,15 +42,12 @@ class ArticuloMapperImplTest {
                 .tipoPrecio("POR_PERSONA")
                 .descripcion("descripcion")
                 .build();
-        Usuario publicador = new Usuario();
 
-        when(imagenMapper.mapToImagen(dto.imagen())).thenReturn(Imagen.builder()
-                .bytes(new byte[]{1, 2, 3})
-                .tipo(TipoImagen.GIF)
-                .build());
+        Usuario publicador = new Usuario();
+        Imagen imagen = Imagen.builder().key("key").bucketName("bucket").build();
 
         // Act
-        Articulo result = articuloMapper.mapToArticulo(dto, publicador);
+        Articulo result = articuloMapper.mapToArticulo(dto, publicador, imagen);
 
         // Assert
         assertThat(result).isNotNull().extracting(
@@ -65,7 +64,7 @@ class ArticuloMapperImplTest {
                 Articulo::getPublicador
         ).containsExactly(
                 dto.nombre(),
-                Imagen.builder().bytes(new byte[]{1, 2, 3}).tipo(TipoImagen.GIF).build(),
+                imagen,
                 dto.link(),
                 dto.deadline(),
                 dto.minPersonas(),
@@ -83,7 +82,7 @@ class ArticuloMapperImplTest {
         // Arrange
         Articulo articulo = new Articulo();
         articulo.setNombre("nombre");
-        articulo.setImagen(Imagen.builder().bytes(new byte[]{1, 2, 3}).tipo(TipoImagen.GIF).build());
+        articulo.setImagen(Imagen.builder().bucketName("bucket").key("key").build());
         articulo.setLink("link");
         articulo.setDeadline(ZonedDateTime.now());
         articulo.setMinPersonas(1);
@@ -92,7 +91,7 @@ class ArticuloMapperImplTest {
         articulo.setRecepcion("recepcion");
         articulo.setEstado(Estado.ABIERTO);
 
-        when(imagenMapper.mapToBase64(articulo.getImagen())).thenReturn("data:image/gif;base64,test");
+        when(storageConfiguration.getPublicEndpoint()).thenReturn("http://localhost:9000");
 
         // Act
         ArticuloDTO result = articuloMapper.mapToArticuloDTO(articulo);
@@ -111,7 +110,7 @@ class ArticuloMapperImplTest {
                 ArticuloDTO::estado
         ).containsExactly(
                 articulo.getNombre(),
-                "data:image/gif;base64,test",
+                "http://localhost:9000/key",
                 articulo.getLink(),
                 articulo.getDeadline(),
                 articulo.getMinPersonas(),
