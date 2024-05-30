@@ -9,7 +9,6 @@ import java.util.List;
 
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.configuration.StorageConfiguration;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.*;
-import co.elastic.clients.elasticsearch.indices.Storage;
 import org.junit.jupiter.api.Test;
 
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.dto.ArticuloDTO;
@@ -34,7 +33,6 @@ class ArticuloMapperImplTest {
         CrearArticuloDTO dto = CrearArticuloDTO.builder()
                 .nombre("nombre")
                 .imagen("data:image/gif;base64,test")
-                .link("link")
                 .deadline(ZonedDateTime.now())
                 .minPersonas(1)
                 .maxPersonas(2)
@@ -53,7 +51,6 @@ class ArticuloMapperImplTest {
         assertThat(result).isNotNull().extracting(
                 Articulo::getNombre,
                 Articulo::getImagen,
-                Articulo::getLink,
                 Articulo::getDeadline,
                 Articulo::getMinPersonas,
                 Articulo::getMaxPersonas,
@@ -65,7 +62,6 @@ class ArticuloMapperImplTest {
         ).containsExactly(
                 dto.nombre(),
                 imagen,
-                dto.link(),
                 dto.deadline(),
                 dto.minPersonas(),
                 dto.maxPersonas(),
@@ -83,7 +79,6 @@ class ArticuloMapperImplTest {
         Articulo articulo = new Articulo();
         articulo.setNombre("nombre");
         articulo.setImagen(Imagen.builder().bucketName("bucket").key("key").build());
-        articulo.setLink("link");
         articulo.setDeadline(ZonedDateTime.now());
         articulo.setMinPersonas(1);
         articulo.setMaxPersonas(2);
@@ -100,7 +95,6 @@ class ArticuloMapperImplTest {
         assertThat(result).isNotNull().extracting(
                 ArticuloDTO::nombre,
                 ArticuloDTO::imagen,
-                ArticuloDTO::link,
                 ArticuloDTO::deadline,
                 ArticuloDTO::minPersonas,
                 ArticuloDTO::maxPersonas,
@@ -111,7 +105,6 @@ class ArticuloMapperImplTest {
         ).containsExactly(
                 articulo.getNombre(),
                 "http://localhost:9000/key",
-                articulo.getLink(),
                 articulo.getDeadline(),
                 articulo.getMinPersonas(),
                 articulo.getMaxPersonas(),

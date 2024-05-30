@@ -3,7 +3,7 @@ package ar.edu.utn.frba.tacs.tp2024c1.grupo1.service;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.configuration.StorageConfiguration;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Imagen;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.codec.binary.Base64;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;

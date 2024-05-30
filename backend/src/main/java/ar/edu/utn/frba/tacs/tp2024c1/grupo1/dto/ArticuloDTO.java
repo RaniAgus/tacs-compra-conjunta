@@ -9,7 +9,6 @@ public record ArticuloDTO(
         String id,
         String nombre,
         String imagen,
-        String link,
         ZonedDateTime deadline,
         Integer minPersonas,
         Integer maxPersonas,

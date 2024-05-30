@@ -8,10 +8,8 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -19,14 +17,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Data
-@Document(indexName = "articulo")
 public class Articulo {
     @Id
     private String id;
     private String nombre;
     private Imagen imagen;
-    private String link;
-    @Field(type = FieldType.Date, format = DateFormat.basic_date_time)
+    @Field(targetType = FieldType.DATE_TIME)
     private ZonedDateTime deadline;
     private int minPersonas;
     private int maxPersonas;

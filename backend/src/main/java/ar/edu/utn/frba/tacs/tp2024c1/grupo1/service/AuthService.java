@@ -22,7 +22,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponseDTO registrarse(RegistrarseDTO registrarseDTO) {
-        if (usuarioRepository.existsBynombreDeUsuario(registrarseDTO.nombreDeUsuario())) {
+        if (usuarioRepository.existsByNombreDeUsuario(registrarseDTO.nombreDeUsuario())) {
             throw new UsuarioYaExiste();
         }
 
@@ -39,7 +39,7 @@ public class AuthService {
             throw new CredencialesInvalidas();
         }
 
-        Usuario usuario = usuarioRepository.findBynombreDeUsuario(iniciarSesionDTO.nombreDeUsuario()).orElseThrow();
+        Usuario usuario = usuarioRepository.findByNombreDeUsuario(iniciarSesionDTO.nombreDeUsuario()).orElseThrow();
         return new AuthResponseDTO(jwtService.generarToken(usuario));
     }
 

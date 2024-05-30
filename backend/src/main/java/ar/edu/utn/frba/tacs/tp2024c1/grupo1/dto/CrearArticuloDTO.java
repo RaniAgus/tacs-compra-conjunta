@@ -24,10 +24,6 @@ public record CrearArticuloDTO(
     String imagen,
 
     @Nullable
-    @URL(message = "El link no es válido")
-    String link,
-
-    @Nullable
     @Future(message = "La fecha límite debe ser futura")
     ZonedDateTime deadline,
 
