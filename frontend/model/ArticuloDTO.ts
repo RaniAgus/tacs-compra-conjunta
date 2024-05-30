@@ -5,7 +5,6 @@ export type ArticuloDTO = {
   id: string
   nombre: string
   imagen: string
-  link?: string
   deadline?: string
   minPersonas: number
   maxPersonas: number

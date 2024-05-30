@@ -30,8 +30,8 @@ function ArticulosClient({ articulos }: { articulos: ArticuloDTO[] }) {
     return "¡Faltan " + (maxPersonas - compradores.length) + " compradores!"
   }
 
-  async function copiarLink(link: string) {
-    await navigator.clipboard.writeText(link)
+  async function copiarLinkArticulo(id: string) {
+    await navigator.clipboard.writeText(window.location.origin + "/articulos/" + id)
     toast.success("Link copiado")
   }
 
@@ -92,16 +92,14 @@ function ArticulosClient({ articulos }: { articulos: ArticuloDTO[] }) {
                       </div>
 
                       <div className="flex flex-col justify-between flex-1">
-                        {articulo.link && (
-                          <Button
-                            className="self-end"
-                            isIconOnly
-                            aria-label="Link"
-                            onClick={() => copiarLink(articulo.link!)}
-                          >
-                            <IoCopy />
-                          </Button>
-                        )}
+                        <Button
+                          className="self-end"
+                          isIconOnly
+                          aria-label="Link"
+                          onClick={() => copiarLinkArticulo(articulo.id)}
+                        >
+                          <IoCopy />
+                        </Button>
                         <h3 className="text-end">${articulo.costo.monto}</h3>
                         <Button
                           className="hidden md:block"

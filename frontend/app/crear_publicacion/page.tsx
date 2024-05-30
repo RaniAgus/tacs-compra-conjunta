@@ -9,7 +9,6 @@ import FileInput from "./FileInput"
 
 type FormState = {
   nombre: { value: string; error: string }
-  link: { value: string; error: string }
   imagen: { value: string | null; error: string }
   precio: { value: number; error: string }
   deadline: { value: DateValue | null; error: string }
@@ -23,7 +22,6 @@ export default function CrearPublicacion() {
   const router = useRouter()
   const [formState, setFormState] = useState<FormState>({
     nombre: { value: "", error: "" },
-    link: { value: "", error: "" },
     imagen: { value: null, error: "" },
     precio: { value: 0, error: "" },
     deadline: {
@@ -135,7 +133,6 @@ export default function CrearPublicacion() {
       nombre: formState.nombre.value,
       descripcion: formState.descripcion.value,
       imagen: formState.imagen.value!,
-      link: formState.link.value,
       deadline: formState.deadline.value?.toDate("UTC").toISOString(),
       minPersonas: formState.minPersonas.value,
       maxPersonas: formState.maxPersonas.value,
@@ -189,21 +186,6 @@ export default function CrearPublicacion() {
                 })
             }
           }}
-        />
-        <Input
-          label="Link"
-          labelPlacement="outside"
-          type="text"
-          name="link"
-          id="link"
-          placeholder="Ingrese el link"
-          onChange={(e) =>
-            setFormState({
-              ...formState,
-              link: { value: e.target.value, error: "" },
-            })
-          }
-          errorMessage={formState.link.error}
         />
         <Checkbox
           name="tipoPrecio"
