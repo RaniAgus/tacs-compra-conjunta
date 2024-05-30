@@ -83,6 +83,7 @@ services:
 
   mongo-express:
     image: mongo-express
+    container_name: tacs-db-console
     ports:
       - 8081:8081
     environment:
