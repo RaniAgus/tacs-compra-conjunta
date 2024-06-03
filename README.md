@@ -8,31 +8,9 @@ compra de un producto entre varias personas.
 
 - Backend: Java 21, Spring Boot 3.2.4, Maven 3
 - Frontend: Node 18, Next.js 14.2.3 w/React 18
-- Base de Datos: ElasticSearch 8.13.4
+- Base de Datos: MongoDB 7.0
 
 ## Cómo correr la aplicación en local
-
-### Base de Datos
-
-Para correr la base de datos en local, se puede utilizar el archivo
-`elastic.compose.yml` que se encuentra en la raíz del proyecto:
-
-```bash
-docker compose -f elastic.compose.yml up -d
-```
-
-Y ya vamos a tener la base de datos corriendo en http://localhost:9200/. Podemos
-acceder a la misma a través de Kibana en http://localhost:5601/.
-
-Antes de continuar, si queremos levantar el backend en local, debemos extraer el
-certificado de seguridad de la base de datos. Para ello, contamos con un script:
-
-```bash
-./scripts/extract-cert.sh
-```
-
-Este script extrae el certificado de la base de datos y lo guarda en la carpeta
-`certs` del proyecto para que el backend pueda utilizarlo.
 
 ### S3
 
