@@ -33,7 +33,7 @@ El backend depende de contar con ambos base de datos y s3 corriendo en local,
 por lo que es necesario levantar ambos servicios con:
 
 ```sh
-docker compose up -d es01 es02 es03 s3
+docker compose up -d mongo s3
 ```
 
 Ahora sí, para correr la aplicación en local se debe ejecutar el método main de
