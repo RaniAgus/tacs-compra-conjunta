@@ -1,2 +1,5 @@
 .env
 certs/
+.terraform*
+terraform.tfstate*
+terraform.tfvars

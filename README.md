@@ -96,6 +96,77 @@ Luego, en la segunda capa, se utilizan únicamente las dependencias de ejecució
 además de los archivos generados en la capa anterior. Esta capa corre la
 aplicación en modo no-root, para evitar problemas de seguridad.
 
+## Despliegue
+
+### DigitalOcean Container Registry
+
+Para automatizar el despliegue del backend, contamos con una GitHub Action
+para construir y subir la imagen de Docker a DigitalOcean Container Registry.
+
+Es necesario proveer las siguientes variables antes de ejecutar el pipeline:
+- `registry`: Nombre del registry de DigitalOcean
+- `token`: API Token de DigitalOcean
+
+### Cloudflare R2
+
+En segundo lugar, debemos contar con un R2 Object Storage creado y extraer
+la siguiente información:
+- Account ID y Bucket Name: que servirán para construir la URL hacia el
+  bucket.
+- Access Key ID y Secret Access Key: ambos servirán para conectarse al bucket
+  utilizando la API de AWS S3 (la cual es compatible con Cloudflare R2).
+- Public Domain: dominio público para acceder a las imágenes guardadas en el
+  bucket desde Internet. Podemos generar un **R2.dev subdomain** de forma
+  gratuita a modo de prueba.
+
+### Terraform
+
+Para desplegar la aplicación en los distintos proveedores cloud, se utilizó
+Terraform. En el directorio `terraform` se encuentran los archivos necesarios
+para desplegar la aplicación en MongoDB Atlas, DigitalOcean y Vercel.
+
+**Lo único que se necesita desplegar a mano es el Cloudflare R2, el cual se
+debe configurar manualmente en la consola de Cloudflare.**
+
+Para desplegar la aplicación en cada uno de los proveedores, primero vamos a
+guardar todas las credenciales de cada proveedor en un archivo
+`terraform.tfvars` dentro del directorio `terraform`.
+
+Para esto, nos vamos a basar en todos los archivos `.tfvars` de ejemplo que se
+encuentran en el mismo directorio:
+
+```bash
+cat *.tfvars > terraform.tfvars
+```
+
+Una vez configuradas todas las variables listadas, vamos a inicializar
+Terraform con el siguiente comando:
+
+```bash
+terraform init
+```
+
+Y, por último, vamos a aplicar los cambios con el siguiente comando:
+
+```bash
+terraform apply
+```
+
+Terraform nos imprimirá todos los recursos que serán creados, y una vez
+ingresemos `yes` los creará y guardará su estado en un archivo
+`terraform.tfstate`. Este archivo tiene información sensible en texto
+plano, por lo que **no debe ser pusheado al repositorio**.
+
+En caso de que queramos destruir la infraestructura, simplemente debemos
+ejecutar el siguiente comando:
+
+```bash
+terraform destroy
+```
+
+Y, en base al contenido de `terraform.tfstate` eliminará todos los
+recursos que tengamos levantados.
+
 ## Integrantes
 
 | Apellido y Nombre | GitHub                                               |
