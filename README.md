@@ -48,7 +48,7 @@ encuentra en la carpeta `docs` del proyecto.
 El frontend depende del backend, la base de datos y el s3 para correr en local:
 
 ```bash
-docker compose up -d es01 es02 es03 s3 backend
+docker compose up -d mongo s3 backend
 ```
 
 Una vez hecho esto, simplemente ejecutamos el comando:
