@@ -26,7 +26,7 @@ services:
       - JWT_EXPIRATION_TIME=${JWT_EXPIRATION_TIME:?}
       - MONGO_USERNAME=${MONGO_USERNAME:?}
       - MONGO_PASSWORD=${MONGO_PASSWORD:?}
-      - MONGO_HOST=mongo
+      - MONGO_HOST=mongo:27017
       - MONGO_DB=${MONGO_DB:?}
       - MONGO_AUTH_DB=admin
       - S3_ENDPOINT=http://s3:9000
