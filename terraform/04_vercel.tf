@@ -21,14 +21,20 @@ variable "vercel_project_branch" {
   default  = "main"
 }
 
+variable "vercel_project_name" {
+  type     = string
+  nullable = false
+}
+
 provider "vercel" {
   api_token = var.vercel_api_token
   team      = var.vercel_org_id
 }
 
 resource "vercel_project" "frontend" {
-  name           = "tacs-compra-conjunta"
+  name           = var.vercel_project_name
   framework      = "nextjs"
+  root_directory = "frontend"
   git_repository = {
     type              = "github"
     repo              = var.vercel_project_repo
@@ -39,4 +45,10 @@ resource "vercel_project" "frontend" {
     value  = digitalocean_app.app.live_url
     target = ["production"]
   } ]
+}
+
+
+resource "vercel_deployment" "frontend" {
+  project_id = vercel_project.frontend.id
+  ref        = var.vercel_project_branch
 }
