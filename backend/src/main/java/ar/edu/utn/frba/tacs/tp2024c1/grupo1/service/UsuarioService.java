@@ -49,4 +49,10 @@ public class UsuarioService {
                 articuloRepository.findAll().stream().flatMap(articulo -> articulo.getCompradores().stream()).map(Comprador::getId)
         ).distinct().count();
     }
+
+    public List<ArticuloDTO> getMisCompras(String id) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
+        List<Articulo> articulos = articuloRepository.findByCompradoresId(usuario.getId());
+        return articulos.stream().map(articuloMapper::mapToArticuloDTO).toList();
+    }
 }

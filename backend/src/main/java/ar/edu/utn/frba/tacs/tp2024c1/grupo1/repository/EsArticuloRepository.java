@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface EsArticuloRepository extends MongoRepository<Articulo, String> {
     List<Articulo> findByPublicadorId(String usuarioId);
+    List<Articulo> findByCompradoresId(String usuarioId);
 }

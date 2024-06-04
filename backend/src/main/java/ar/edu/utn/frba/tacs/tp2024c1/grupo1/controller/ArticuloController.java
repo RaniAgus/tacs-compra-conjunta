@@ -43,6 +43,13 @@ public class ArticuloController {
         return ResponseEntity.ok(articulo);
     }
 
+    @DeleteMapping("/{id}/compradores")
+    @PreAuthorize("hasAnyAuthority('USUARIO')")
+    public ResponseEntity<ArticuloDTO> eliminarComprador(@PathVariable String id) {
+        var articulo = articuloService.eliminarComprador(id);
+        return ResponseEntity.ok(articulo);
+    }
+
     @PatchMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('USUARIO')")
     public ResponseEntity<ArticuloDTO> actualizarEstadoArticulo(@PathVariable String id, @RequestParam Estado estado) {
