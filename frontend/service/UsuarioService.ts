@@ -12,6 +12,6 @@ export async function obtenerArticulosDelUsuario(): Promise<ArticuloDTO[]> {
 }
 
 
-export async function obtenerMisCompras(): Promise<UsuarioDTO> {
+export async function obtenerMisCompras(): Promise<ArticuloDTO[]> {
     return await Request("/usuarios/me/compras", "GET")
 }

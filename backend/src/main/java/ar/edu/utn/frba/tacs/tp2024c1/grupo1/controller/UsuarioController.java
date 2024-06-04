@@ -45,4 +45,11 @@ public class UsuarioController {
     public ResponseEntity<List<ArticuloDTO>> getArticulosByUsuario(@PathVariable String id) {
         return ResponseEntity.ok(usuarioService.getArticulosDelUsuario(id));
     }
+
+    @GetMapping("/me/compras")
+    @PreAuthorize("hasAnyAuthority('USUARIO')")
+    public ResponseEntity<List<ArticuloDTO>> getMisCompras() {
+        var usuario = UsuarioUtils.obtenerUsuario();
+        return ResponseEntity.ok(usuarioService.getMisCompras(usuario.getId()));
+    }
 }

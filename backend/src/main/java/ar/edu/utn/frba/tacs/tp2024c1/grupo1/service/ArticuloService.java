@@ -39,6 +39,14 @@ public class ArticuloService {
         return articuloMapper.mapToArticuloDTO(articuloRepository.save(articulo));
     }
 
+    public ArticuloDTO eliminarComprador(String id) {
+        Usuario usuario = UsuarioUtils.obtenerUsuario();
+        Articulo articulo = articuloRepository.findById(id).orElseThrow();
+        articulo.eliminarComprador(usuario);
+
+        return articuloMapper.mapToArticuloDTO(articuloRepository.save(articulo));
+    }
+
     public List<ArticuloDTO> verTodosLosArticulos() {
         List<Articulo> articulos = articuloRepository.findAll();
         return articulos.stream().map(articuloMapper::mapToArticuloDTO).toList();

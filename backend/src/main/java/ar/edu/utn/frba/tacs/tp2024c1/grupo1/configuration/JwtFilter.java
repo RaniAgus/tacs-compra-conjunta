@@ -36,13 +36,6 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             String token = authHeader.substring(7);
 
-            // TODO: Remove when persistence is implemented
-            if (token.contains("conito")) {
-                UserDetails userDetails = userDetailService.loadUserByUsername("admin");
-                passFilter(request, response, filterChain, userDetails);
-                return;
-            }
-
             String nombreDeUsuario = jwtService.extractUsername(token);
             if (nombreDeUsuario == null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 filterChain.doFilter(request, response);

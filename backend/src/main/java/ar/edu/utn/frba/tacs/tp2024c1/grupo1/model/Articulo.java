@@ -56,6 +56,18 @@ public class Articulo {
                 .build());
     }
 
+    public void eliminarComprador(Usuario usuario) {
+        if (getEstado().esFinal()) {
+            throw new ArticuloFinalizadoException("El artículo está cerrado por lo que no puede cancelar la compra");
+        }
+
+        if (getCompradores().stream().noneMatch(comp -> comp.getId().equals(usuario.getId()))) {
+            throw new CompradorInvalidoException("El comprador no tenía el artículo");
+        }
+
+        this.compradores.removeIf(comp -> comp.getId().equals(usuario.getId()));
+    }
+
     public void setEstado(Estado estado) {
         if (this.estado == null || Objects.equals(estado, getEstado())) {
             this.estado = estado;

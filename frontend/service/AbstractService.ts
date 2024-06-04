@@ -23,7 +23,8 @@ export async function Request(url: string, method: HttpMethod, body: any = {}, u
     const response = await fetch(base_url + url, {
         method,
         headers: useToken ? tokenHeaders : defaultHeaders,
-        body: method !== 'GET' ? JSON.stringify(body) : undefined
+        body: method !== 'GET' ? JSON.stringify(body) : undefined,
+        next: { revalidate: 0 }
     })
 
     const data = await response.json()
