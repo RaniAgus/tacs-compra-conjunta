@@ -28,18 +28,24 @@ public class StorageService {
         var contentType = "image/" + parts[0];
         var content = Base64.decodeBase64(parts[1]);
 
-        var request = PutObjectRequest.builder()
-                .bucket(storageConfiguration.getBucketName())
-                .key(key)
-                .contentType(contentType)
-                .build();
-
-        s3Client.putObject(request, RequestBody.fromBytes(content));
+        s3Client.putObject(r -> r
+                        .bucket(storageConfiguration.getBucketName())
+                        .key(key)
+                        .contentType(contentType),
+                RequestBody.fromBytes(content)
+        );
 
         return Imagen.builder()
                 .bucketName(storageConfiguration.getBucketName())
                 .key(key)
                 .contentType(contentType)
                 .build();
+    }
+
+    public void borrarImagen(Imagen imagen) {
+        s3Client.deleteObject(r -> r
+                .bucket(imagen.bucketName())
+                .key(imagen.key())
+        );
     }
 }

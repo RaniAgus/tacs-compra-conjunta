@@ -50,10 +50,7 @@ public class Articulo {
             throw new CompradorInvalidoException("El comprador ya tenía el artículo");
         }
 
-        this.compradores.add(Comprador.builder()
-                .id(usuario.getId())
-                .nombreDeUsuario(usuario.getNombreDeUsuario())
-                .build());
+        this.compradores.add(new Comprador(usuario.getId(), usuario.getNombreDeUsuario()));
     }
 
     public void eliminarComprador(Usuario usuario) {

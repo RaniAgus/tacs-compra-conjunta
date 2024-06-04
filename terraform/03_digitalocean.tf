@@ -43,29 +43,14 @@ resource "digitalocean_app" "app" {
     }
 
     env {
-      key   = "MONGO_USERNAME"
-      value = var.mongodb_app_username
-      scope = "RUN_TIME"
-      type  = "SECRET"
-    }
-
-    env {
-      key   = "MONGO_PASSWORD"
-      value = var.mongodb_app_password
-      scope = "RUN_TIME"
-      type  = "SECRET"
-    }
-
-    env {
-      key   = "MONGO_HOST_NAME"
-      value = "mongodb+srv"
-      scope = "RUN_TIME"
-      type  = "GENERAL"
-    }
-
-    env {
-      key   = "MONGO_HOST"
-      value = trimprefix(mongodbatlas_cluster.cluster.connection_strings[0].standard_srv, "mongodb+srv://")
+      key   = "MONGO_URI"
+      value = join("", [
+        "mongodb+srv://",
+        var.mongodb_app_username, ":", var.mongodb_app_password, "@",
+        trimprefix(mongodbatlas_cluster.cluster.connection_strings[0].standard_srv, "mongodb+srv://"),
+        "/", var.mongodbatlas_cluster_name,
+        "?retryWrites=true&w=majority&appName=", var.mongodbatlas_cluster_name
+      ])
       scope = "RUN_TIME"
       type  = "SECRET"
     }

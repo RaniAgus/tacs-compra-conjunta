@@ -1,8 +1,11 @@
 package ar.edu.utn.frba.tacs.tp2024c1.grupo1.controller;
 
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.*;
+import com.mongodb.MongoCommandException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.mongodb.util.MongoDbErrorCodes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -79,10 +82,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildDefaultException(HttpStatus.CONFLICT, ex.getMessage());
     }
 
+    @ExceptionHandler(DataAccessException.class)
+    public ResponseEntity<Object> handleDataAccessException(DataAccessException ex) {
+        if (ex.getCause() instanceof MongoCommandException e
+            && MongoDbErrorCodes.isDataIntegrityViolationCode(e.getErrorCode())) {
+            return buildDefaultException(HttpStatus.CONFLICT, "El recurso fue modificado. Por favor, intente nuevamente");
+        }
+        return handleException(ex);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception ex) {
         log.error("Internal server error: {}", ex.getMessage(), ex);
-        return buildDefaultException(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong");
+        return buildDefaultException(HttpStatus.INTERNAL_SERVER_ERROR, "Algo salió mal");
     }
 
     private ResponseEntity<Object> buildDefaultException(HttpStatus status, String message) {
