@@ -25,6 +25,7 @@ import Rol from "./Rol"
 const menuItems = [
   { name: "Crear Publicacion", page: "/crear_publicacion", rol: null },
   { name: "Mis Publicaciones", page: "/mis_publicaciones", rol: "USUARIO" },
+  { name: "Mis Compras", page: "/mis_compras", rol: "USUARIO" },
 ]
 
 export default function Navbar() {
