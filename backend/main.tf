@@ -1,29 +1,10 @@
-variable "do_token" {
-  type      = string
-  nullable  = false
-  sensitive = true
-}
-
-variable "do_registry" {
-  type      = string
-  nullable  = false
-  sensitive = true
-}
-
-variable "do_repository" {
-  type    = string
-  default = "tacs_compra_conjunta"
-}
-
-variable "do_backend_tag" {
-  type      = string
-  default = "backend"
-}
-
-variable "jwt_secret_key" {
-  type      = string
-  nullable  = false
-  sensitive = true
+terraform {
+  required_providers {
+    digitalocean = {
+      source  = "digitalocean/digitalocean"
+      version = "~> 2.0"
+    }
+  }
 }
 
 provider "digitalocean" {
@@ -32,7 +13,7 @@ provider "digitalocean" {
 
 resource "digitalocean_app" "app" {
   spec {
-    name   = "tacs-compra-conjunta"
+    name   = var.do_app_name
     region = "nyc"
 
     env {
@@ -44,52 +25,42 @@ resource "digitalocean_app" "app" {
 
     env {
       key   = "MONGO_URI"
-      value = "mongodb+srv://${
-        var.mongodb_app_username
-      }:${
-        var.mongodb_app_password
-      }@${
-        trimprefix(mongodbatlas_cluster.cluster.connection_strings[0].standard_srv, "mongodb+srv://")
-      }/${
-        var.mongodbatlas_cluster_name
-      }?retryWrites=true&w=majority&appName=${
-        var.mongodbatlas_cluster_name
-      }"
+      value = var.database_uri
       scope = "RUN_TIME"
       type  = "SECRET"
     }
 
     env {
       key   = "S3_ACCESS_KEY"
-      value = var.cloudflare_access_key
+      value = var.s3_access_key
       scope = "RUN_TIME"
       type  = "SECRET"
     }
 
     env {
       key   = "S3_SECRET_KEY"
-      value = var.cloudflare_secret_key
+      value = var.s3_secret_key
       scope = "RUN_TIME"
       type  = "SECRET"
     }
 
     env {
       key   = "S3_ENDPOINT"
-      value = "https://${var.cloudflare_account_id}.r2.cloudflarestorage.com"
+      value = var.s3_endpoint
       scope = "RUN_TIME"
       type  = "SECRET"
     }
 
     env {
       key   = "S3_PUBLIC_ENDPOINT"
-      value = var.cloudflare_public_endpoint
+      value = var.s3_public_endpoint
       scope = "RUN_TIME"
       type  = "GENERAL"
     }
 
     env {
       key   = "S3_BUCKET_NAME"
-      value = var.cloudflare_bucket_name
+      value = var.s3_bucket_name
       scope = "RUN_TIME"
       type  = "SECRET"
     }

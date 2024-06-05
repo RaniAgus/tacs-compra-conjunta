@@ -1,5 +1,0 @@
-cloudflare_account_id = "<your_cloudflare_account_id>"
-cloudflare_access_key = "<your_cloudflare_access_key>"
-cloudflare_secret_key = "<your_cloudfare_secret_key>"
-cloudflare_bucket_name = "compra-conjunta"
-cloudflare_public_endpoint = "https://pub-endpoint.r2.dev"

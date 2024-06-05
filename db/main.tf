@@ -1,53 +1,10 @@
-variable "mongodbatlas_public_key" {
-  type      = string
-  nullable  = false
-  sensitive = true
-}
-
-variable "mongodbatlas_private_key" {
-  type      = string
-  nullable  = false
-  sensitive = true
-}
-
-variable "mongodbatlas_project_name" {
-  type    = string
-  default = "tacs"
-}
-
-variable "mongodbatlas_allowed_cidr_block" {
-  type    = string
-  default = "0.0.0.0/0"
-}
-
-variable "mongodbatlas_cluster_name" {
-  type    = string
-  default = "compraconjunta"
-}
-
-variable "mongodb_auth_database_name" {
-  type    = string
-  default = "admin"
-}
-
-variable "mongodb_admin_username" {
-  type    = string
-  default = "admin"
-}
-
-variable "mongodb_admin_password" {
-  type     = string
-  nullable = false
-}
-
-variable "mongodb_app_username" {
-  type    = string
-  default = "appuser"
-}
-
-variable "mongodb_app_password" {
-  type     = string
-  nullable = false
+terraform {
+  required_providers {
+    mongodbatlas = {
+      source  = "mongodb/mongodbatlas"
+      version = "~> 1.0"
+    }
+  }
 }
 
 provider "mongodbatlas" {
@@ -95,7 +52,7 @@ resource "mongodbatlas_database_user" "admin" {
   }
 }
 
-resource "mongodbatlas_database_user" "app" {
+resource "mongodbatlas_database_user" "appuser" {
   username           = var.mongodb_app_username
   password           = var.mongodb_app_password
   project_id         = mongodbatlas_project.project.id

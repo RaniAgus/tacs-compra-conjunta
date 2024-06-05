@@ -71,7 +71,7 @@ services:
       MONGO_INITDB_DATABASE: ${MONGO_DB:?}
     volumes:
       - mongo-data:/data/db
-      - ./scripts/mongo-init.js:/mongo-init.js:ro
+      - ./db/mongo-init.js:/mongo-init.js:ro
     healthcheck:
       test: |
         mongosh /mongo-init.js --port 27017 --quiet
