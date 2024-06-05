@@ -107,6 +107,10 @@ resource "digitalocean_app" "app" {
       instance_size_slug = "basic-xxs"
       http_port          = 8080
 
+      health_check {
+        http_path = "/health"
+      }
+
       image {
         registry_type = "DOCR"
         registry      = var.do_registry
