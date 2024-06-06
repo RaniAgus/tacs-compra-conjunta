@@ -128,13 +128,12 @@ debe configurar manualmente en la consola de Cloudflare.**
 
 Para desplegar la aplicación en cada uno de los proveedores, primero vamos a
 guardar todas las credenciales de cada proveedor en un archivo
-`terraform.tfvars` dentro del directorio `terraform`.
+`terraform.tfvars` dentro de la raíz del repositorio.
 
-Para esto, nos vamos a basar en el archivo `example.tfvars` que se encuentra en
-la raíz del repositorio:
+Para esto, nos vamos a basar en el archivo `example.tfvars`:
 
 ```bash
-cp example.tfvars > terraform.tfvars
+cp example.tfvars terraform.tfvars
 ```
 
 Una vez configuradas todas las variables listadas, vamos a inicializar
