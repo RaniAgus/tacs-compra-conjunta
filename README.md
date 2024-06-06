@@ -24,9 +24,6 @@ docker compose up -d s3
 Luego, se puede acceder a la consola de MinIO en http://localhost:9001/ con las
 credenciales configuradas en el archivo `.env`.
 
-Antes de continuar, debemos crear un bucket público en MinIO llamado con el
-mismo nombre que la variable de entorno `S3_BUCKET_NAME` en el archivo `.env`.
-
 ### Backend
 
 El backend depende de contar con ambos base de datos y s3 corriendo en local,
