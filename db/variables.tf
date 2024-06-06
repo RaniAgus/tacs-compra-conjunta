@@ -1,4 +1,3 @@
-
 variable "mongodbatlas_public_key" {
   type      = string
   nullable  = false
