@@ -163,8 +163,8 @@ ejecutar el siguiente comando:
 terraform destroy
 ```
 
-Y, en base al contenido de `terraform.tfstate` eliminará todos los
-recursos que tengamos levantados.
+Y en base al contenido de `terraform.tfstate` eliminará todos los recursos que
+tengamos levantados.
 
 ## Integrantes
 
