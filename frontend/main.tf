@@ -26,6 +26,7 @@ resource "vercel_project" "frontend" {
     value  = var.backend_url
     target = ["production"]
   } ]
+  ignore_command = "git diff HEAD^ HEAD --quiet -- ."
 }
 
 resource "vercel_deployment" "frontend" {
