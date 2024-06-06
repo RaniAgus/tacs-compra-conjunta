@@ -166,28 +166,6 @@ terraform destroy
 Y, en base al contenido de `terraform.tfstate` eliminará todos los
 recursos que tengamos levantados.
 
-#### Terraform Import
-
-En caso de que queramos importar un recurso ya existente a Terraform, podemos
-hacerlo con los siguientes comandos:
-
-```bash
-export MONGODB_ATLAS_PROJECT_ID='<project_id>'
-export DIGITALOCEAN_APP_ID='<app_id>'
-export VERCEL_PROJECT_ID='<project_id>'
-
-terraform import "module.db.mongodbatlas_project.project" "$MONGODB_ATLAS_PROJECT_ID"
-terraform import "module.db.mongodbatlas_cluster.cluster" "$MONGODB_ATLAS_PROJECT_ID-compraconjunta"
-terraform import "module.db.mongodbatlas_database_user.admin" "$MONGODB_ATLAS_PROJECT_ID-admin-admin"
-terraform import "module.db.mongodbatlas_database_user.appuser" "$MONGODB_ATLAS_PROJECT_ID-appuser-admin"
-terraform import "module.db.mongodbatlas_project_ip_access_list.ip" "$MONGODB_ATLAS_PROJECT_ID-0.0.0.0/0"
-terraform import "module.backend.digitalocean_app.app" "$DIGITALOCEAN_APP_ID"
-terraform import "module.frontend.vercel_project.frontend" "$VERCEL_PROJECT_ID"
-```
-
-Nota: El único servicio que no vamos a poder importar es el
-`module.frontend.vercel_deployment.frontend` :(
-
 ## Integrantes
 
 | Apellido y Nombre | GitHub                                               |
