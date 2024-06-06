@@ -119,8 +119,9 @@ la siguiente información:
 ### Terraform
 
 Para desplegar la aplicación en los distintos proveedores cloud, se utilizó
-Terraform. En el directorio `terraform` se encuentran los archivos necesarios
-para desplegar la aplicación en MongoDB Atlas, DigitalOcean y Vercel.
+Terraform. Los directorios `db`, `backend` y `frontend` contienen los módulos
+necesarios para desplegar la base de datos, el backend y el frontend
+respectivamente.
 
 **Lo único que se necesita desplegar a mano es el Cloudflare R2, el cual se
 debe configurar manualmente en la consola de Cloudflare.**
@@ -129,21 +130,21 @@ Para desplegar la aplicación en cada uno de los proveedores, primero vamos a
 guardar todas las credenciales de cada proveedor en un archivo
 `terraform.tfvars` dentro del directorio `terraform`.
 
-Para esto, nos vamos a basar en todos los archivos `.tfvars` de ejemplo que se
-encuentran en el mismo directorio:
+Para esto, nos vamos a basar en el archivo `example.tfvars` que se encuentra en
+la raíz del repositorio:
 
 ```bash
-cat *.tfvars > terraform.tfvars
+cp example.tfvars > terraform.tfvars
 ```
 
 Una vez configuradas todas las variables listadas, vamos a inicializar
-Terraform con el siguiente comando:
+Terraform:
 
 ```bash
 terraform init
 ```
 
-Y, por último, vamos a aplicar los cambios con el siguiente comando:
+Por último, vamos a aplicar los cambios:
 
 ```bash
 terraform apply
