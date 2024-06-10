@@ -24,7 +24,6 @@ variable "vercel_project_repo" {
 variable "vercel_project_branch" {
   type     = string
   nullable = false
-  default  = "main"
 }
 
 variable "vercel_project_name" {

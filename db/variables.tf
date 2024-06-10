@@ -27,13 +27,14 @@ variable "mongodbatlas_cluster_name" {
 }
 
 variable "mongodb_auth_database_name" {
-  type      = string
-  default   = "admin"
+  type     = string
+  nullable = false
 }
 
 variable "mongodb_admin_username" {
-  type    = string
-  default = "admin"
+  type      = string
+  nullable  = false
+  sensitive = true
 }
 
 variable "mongodb_admin_password" {
@@ -43,8 +44,9 @@ variable "mongodb_admin_password" {
 }
 
 variable "mongodb_app_username" {
-  type    = string
-  default = "appuser"
+  type      = string
+  nullable  = false
+  sensitive = true
 }
 
 variable "mongodb_app_password" {

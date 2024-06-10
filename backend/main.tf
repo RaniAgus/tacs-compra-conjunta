@@ -67,7 +67,7 @@ resource "digitalocean_app" "app" {
 
     env {
       key   = "S3_REGION"
-      value = "us-east-1"
+      value = var.s3_region
       scope = "RUN_TIME"
       type  = "SECRET"
     }
@@ -84,9 +84,9 @@ resource "digitalocean_app" "app" {
 
       image {
         registry_type = "DOCR"
-        registry      = var.do_registry
-        repository    = var.do_repository
-        tag           = var.do_backend_tag
+        registry      = var.do_container_registry
+        repository    = var.do_container_repository
+        tag           = var.do_container_tag
 
         deploy_on_push {
           enabled = true

@@ -23,7 +23,6 @@ resource "mongodbatlas_project" "project" {
 resource "mongodbatlas_project_ip_access_list" "ip" {
   project_id = mongodbatlas_project.project.id
   cidr_block = var.mongodbatlas_allowed_cidr_block
-  comment    = "CIDR Block for accessing the cluster"
 }
 
 resource "mongodbatlas_cluster" "cluster" {

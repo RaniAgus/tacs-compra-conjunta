@@ -15,20 +15,19 @@ variable "do_token" {
   sensitive = true
 }
 
-variable "do_registry" {
+variable "do_container_registry" {
   type      = string
   nullable  = false
-  sensitive = true
 }
 
-variable "do_repository" {
-  type    = string
-  default = "tacs_compra_conjunta"
+variable "do_container_repository" {
+  type     = string
+  nullable = false
 }
 
-variable "do_backend_tag" {
-  type      = string
-  default = "backend"
+variable "do_container_tag" {
+  type     = string
+  nullable = false
 }
 
 variable "jwt_secret_key" {
@@ -57,7 +56,12 @@ variable "s3_secret_key" {
 
 variable "s3_bucket_name" {
   type      = string
-  nullable  = true
+  nullable  = false
+}
+
+variable "s3_region" {
+  type      = string
+  nullable  = false
 }
 
 variable "s3_public_endpoint" {

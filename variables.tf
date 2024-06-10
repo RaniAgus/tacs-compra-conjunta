@@ -86,9 +86,3 @@ variable "github_repo" {
   default   = "fpesce27/TP_TACS_2024C1_GRUPO_1"
   sensitive = true
 }
-
-variable "github_production_branch" {
-  type     = string
-  nullable = false
-  default  = "main"
-}
