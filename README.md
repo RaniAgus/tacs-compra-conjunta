@@ -126,15 +126,14 @@ respectivamente.
 **Lo único que se necesita desplegar a mano es el Cloudflare R2, el cual se
 debe configurar manualmente en la consola de Cloudflare.**
 
-Para desplegar la aplicación en cada uno de los proveedores, primero vamos a
-guardar todas las credenciales de cada proveedor en un archivo
-`terraform.tfvars` dentro de la raíz del repositorio.
+Para desplegar la aplicación en cada uno de los proveedores primero vamos a
+configurar todas las variables definidas en el archivo `variables.tf`. Para
+ello, podemos elegir una de las siguientes dos opciones:
 
-Para esto, nos vamos a basar en el archivo `example.tfvars`:
-
-```bash
-cp example.tfvars terraform.tfvars
-```
+1. Guardarlas en un archivo `terraform.tfvars` dentro de la raíz del
+   repositorio, basándonos en el archivo `example.tfvars`.
+2. Configurar variables de entorno agregando el prefijo `TF_VAR_` a cada
+   variable, por ejemplo: `var.example` -> `TF_VAR_example`.
 
 Una vez configuradas todas las variables listadas, vamos a inicializar
 Terraform:
