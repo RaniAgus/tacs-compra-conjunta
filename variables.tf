@@ -77,7 +77,7 @@ variable "vercel_org_id" {
 
 variable "vercel_project_name" {
   type    = string
-  default = "compra-conjunta-backend"
+  default = "compra-conjunta-frontend"
   sensitive = true
 }
 
