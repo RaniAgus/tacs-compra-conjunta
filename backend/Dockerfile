@@ -11,7 +11,7 @@ RUN chmod +x mvnw; \
 
 COPY src ./src
 
-RUN ./mvnw package
+RUN ./mvnw package -o -DskipTests
 
 FROM eclipse-temurin:21-jre-alpine
 
