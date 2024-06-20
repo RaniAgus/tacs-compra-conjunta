@@ -3,17 +3,6 @@ name: DigitalOcean Container Registry
 # Configures this workflow to run every time a change is pushed to the branch called `latest`.
 on:
   workflow_dispatch:
-    inputs:
-      registry:
-        description: 'DigitalOcean registry name'
-        required: true
-      image:
-        description: 'Docker image name'
-        required: true
-        default: 'tacs_compra_conjunta'
-      token:
-        description: 'DigitalOcean access token'
-        required: true
 
 # There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
@@ -32,7 +21,7 @@ jobs:
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
-          token: ${{ github.event.inputs.token }}
+          token: ${{ secrets.DO_TOKEN }}
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 1200
       # This step uses [docker/metadata-action](https://github.com/docker/metadata-action#about) to extract tags and
@@ -42,7 +31,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: registry.digitalocean.com/${{ github.event.inputs.registry }}/${{ github.event.inputs.image }}
+          images: registry.digitalocean.com/${{ secrets.DOCR_NAMESPACE }}/tacs_compra_conjunta
           tags: backend
       # This step uses the `docker/build-push-action` action to build the image, based on your repository's
       # `Dockerfile`. If the build succeeds, it pushes the image to DigitalOcean Container Registry.
