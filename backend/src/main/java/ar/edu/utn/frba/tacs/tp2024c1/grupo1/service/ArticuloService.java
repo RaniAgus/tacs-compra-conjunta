@@ -2,6 +2,7 @@ package ar.edu.utn.frba.tacs.tp2024c1.grupo1.service;
 
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.dto.ArticuloDTO;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.dto.CrearArticuloDTO;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.dto.EstadisticaDTO;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.mapping.ArticuloMapper;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Articulo;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Estado;
@@ -64,11 +65,28 @@ public class ArticuloService {
         return articulos.stream().map(articuloMapper::mapToArticuloDTO).toList();
     }
 
+    public List<ArticuloDTO> getArticulosDelUsuario(String id) {
+        List<Articulo> articulos = articuloRepository.findByPublicadorId(id);
+        return articulos.stream().map(articuloMapper::mapToArticuloDTO).toList();
+    }
+
+    public List<ArticuloDTO> getMisCompras(String id) {
+        List<Articulo> articulos = articuloRepository.findByCompradoresId(id);
+        return articulos.stream().map(articuloMapper::mapToArticuloDTO).toList();
+    }
+
     @Transactional(label = {"mongo:readConcern=snapshot", "mongo:writeConcern=majority"})
     public ArticuloDTO actualizarEstadoArticulo(String id, Estado estado) {
         Articulo articulo = articuloRepository.findById(id).orElseThrow();
         articulo.setEstado(estado);
         
         return articuloMapper.mapToArticuloDTO(articuloRepository.save(articulo));
+    }
+
+    public EstadisticaDTO getEstadisticasBasicas() {
+        return EstadisticaDTO.builder()
+                .cantPublicacionesCreadas(articuloRepository.count())
+                .cantUsuariosInteractivos(articuloRepository.countAllPublicadoresAndCompradores())
+                .build();
     }
 }

@@ -8,6 +8,8 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 
@@ -17,6 +19,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Data
+@Document("articulo")
+@CompoundIndex(name = "publicador_id", def = "{'publicador.id': 1}")
+@CompoundIndex(name = "compradores_id", def = "{'compradores.id': 1}")
 public class Articulo {
     @Id
     private String id;

@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,11 +15,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Document("usuario")
 public class Usuario implements UserDetails {
     @Id
     private String id;
     private String email;
     private String contrasenia;
+    @Indexed(unique = true)
     private String nombreDeUsuario;
     @Setter(AccessLevel.NONE)
     private Set<Rol> roles = new HashSet<>();
