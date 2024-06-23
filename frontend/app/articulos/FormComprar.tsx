@@ -5,6 +5,8 @@ import toast from "react-hot-toast"
 import { FaCreditCard } from "react-icons/fa"
 
 import { comprarArticulo } from "@/service/ArticulosService"
+import { handleErrorClientSide } from '../utils/ClientErrorUtils'
+import { useRouter } from 'next/navigation'
 
 type FormComprarState = {
   articuloId: string
@@ -20,6 +22,7 @@ type FormState = {
 }
 
 function FormComprar({ articuloId, onClose }: FormComprarState) {
+  const router = useRouter()
   const [formState, setFormState] = useState<FormState>({
     numeroTarjeta: { value: undefined, error: "" },
     nombreTitular: { value: undefined, error: "" },
@@ -122,6 +125,7 @@ function FormComprar({ articuloId, onClose }: FormComprarState) {
       return
     }
     await comprarArticulo(articuloId)
+      .then(handleErrorClientSide(router))
       .then(() => {
         toast.success("Articulo comprado exitosamente")
         onClose()

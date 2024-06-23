@@ -6,6 +6,7 @@ import { DateValue } from "@internationalized/date"
 import toast from "react-hot-toast"
 import { crearArticulo } from "@/service/ArticulosService"
 import FileInput from "./FileInput"
+import { handleErrorClientSide } from '../utils/ClientErrorUtils'
 
 type FormState = {
   nombre: { value: string; error: string }
@@ -141,6 +142,7 @@ export default function CrearPublicacion() {
     }
 
     await crearArticulo(crearArticuloDTO)
+      .then(handleErrorClientSide(router))
       .then(() => {
         toast.success("Publicacion creada exitosamente")
         router.replace("/mis_publicaciones")

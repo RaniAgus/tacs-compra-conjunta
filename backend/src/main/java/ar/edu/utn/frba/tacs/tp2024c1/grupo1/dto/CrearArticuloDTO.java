@@ -8,7 +8,6 @@ import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import lombok.Builder;
-import org.hibernate.validator.constraints.URL;
 
 @Builder
 @Range(min = "minPersonas", max = "maxPersonas", message = "La cantidad mínima de personas debe ser menor o igual a la cantidad máxima de personas")

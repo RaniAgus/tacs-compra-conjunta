@@ -6,13 +6,10 @@ import ar.edu.utn.frba.tacs.tp2024c1.grupo1.dto.CrearArticuloDTO;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Articulo;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Imagen;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Usuario;
-import lombok.AllArgsConstructor;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Base64;
 
 @Mapper(uses = StorageConfiguration.class, injectionStrategy = InjectionStrategy.FIELD)
 public abstract class ArticuloMapper {

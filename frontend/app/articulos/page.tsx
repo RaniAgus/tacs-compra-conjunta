@@ -9,16 +9,15 @@ import { UsuarioDTO } from "@/model/UsuarioDTO"
 import { useDisclosure } from "@nextui-org/react"
 import ModalComprar from "./ModalComprar"
 import ArticulosClient from "./ArticulosClient"
+import toast from 'react-hot-toast'
+import { handleErrorServerSide } from '../utils/ServerErrorUtils'
 
 const fetchData = async (): Promise<ArticuloDTO[]> => {
-  return await getArticulos()
+  // Obtener articulos y mostrar los que tengan estado ABIERTO
+  return handleErrorServerSide(await getArticulos()).filter((articulo) => articulo.estado === "ABIERTO")
 }
 
 export default async function Articulos() {
-  // Obtener articulos y mostrar los que tengan estado ABIERTO
-  const articulos = await fetchData().then((articulos) =>
-    articulos.filter((articulo) => articulo.estado === "ABIERTO")
-  )
-
+  const articulos = await fetchData()
   return <ArticulosClient articulos={articulos} />
 }

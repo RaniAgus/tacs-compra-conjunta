@@ -1,20 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { cookies } from "next/headers";
+import { obtenerUsuario } from './service/UsuarioService';
 
-export function middleware(request: NextRequest) {
-    const token = cookies().get('token')
+export async function middleware(request: NextRequest) {
+  const [usuario] = await obtenerUsuario()
+  if (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/register')) {
+    return usuario ? NextResponse.redirect(new URL('/', request.url)) : NextResponse.next()
+  }
 
-    if (!token?.value) {
-        const url = request.nextUrl.clone()
-        url.pathname = '/login'
-        return NextResponse.redirect(url)
-    }
+  if (!usuario) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
 
-    return NextResponse.next()
+  return NextResponse.next()
 }
 
 export const config = {
   matcher: [
-    '/((?!login|register|forgot-password|_next|articulos).*)',
+    '/((?!_next|articulos).*)',
   ],
 }

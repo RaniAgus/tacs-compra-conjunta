@@ -1,10 +1,11 @@
+"use server"
+
+import { LOGIN_ERROR, TOKEN } from '@/app/utils/constants'
 import { cookies } from "next/headers"
 
 const base_url = process.env.BACKEND_URL!
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
-
-export const TOKEN = "token"
 
 export async function Request(url: string, method: HttpMethod, body: any = {}, useToken = true) {
     const defaultHeaders: HeadersInit = {
@@ -17,7 +18,7 @@ export async function Request(url: string, method: HttpMethod, body: any = {}, u
     }
 
     if (useToken && !cookies().get(TOKEN)) {
-        return undefined
+        return redirectToLoginError()
     }
 
     const response = await fetch(base_url + url, {
@@ -29,13 +30,36 @@ export async function Request(url: string, method: HttpMethod, body: any = {}, u
 
     const data = await response.json()
 
-    if (!response.ok) {
-        console.log(data)
-        if (data.errors?.fields) {
-            throw new Error(Object.values(data.errors.fields).join("\n"))
-        }
-        throw new Error(data.error || data.title)
+    if (response.ok) {
+        return success(data)
     }
 
-    return data
+    if (response.status === 401) {
+        return redirectToLoginError()
+    }
+
+    if (data.errors?.fields) {
+        return error(Object.values(data.errors.fields).join("\n"))
+    }
+
+    return error(data.error || data.title)
 }
+
+export async function success<T>(data: T): Promise<[T?, string?]> {
+    return [data, undefined]
+}
+
+export async function error<T>(error: string): Promise<[T?, string?]> {
+    return [undefined, error]
+}
+
+export async function redirectToLoginError<T>(): Promise<[T?, string?]> {
+    return [undefined, LOGIN_ERROR]
+}
+
+export async function map<T, U>([data, error]: [T?, string?], f: (data: T) => U): Promise<[U?, string?]> {
+    if (error) {
+      return [undefined, error]
+    }
+    return [f(data!), undefined]
+  }

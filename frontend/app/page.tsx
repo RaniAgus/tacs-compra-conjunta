@@ -4,6 +4,7 @@ import { getEstadisticas } from "@/service/EstadisticasService";
 import { Button, Image } from "@nextui-org/react";
 import { Metadata } from "next";
 import Link from "next/link";
+import { handleErrorServerSide } from './utils/ServerErrorUtils';
 
 export const metadata: Metadata = {
   title: "Compra Conjunta",
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 const fetchData = async (): Promise<EstadisticaDTO> => {
-  return await getEstadisticas()
+  return handleErrorServerSide(await getEstadisticas())
 }
 
 export default async function Home() {

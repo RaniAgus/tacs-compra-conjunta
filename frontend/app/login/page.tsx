@@ -1,14 +1,15 @@
 "use client"
-import { Button, Divider, Input } from "@nextui-org/react"
-import { useAtom } from "jotai"
-import Link from "next/link"
+
+import { useAtom } from 'jotai'
+import { user } from '../layout'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { handleErrorClientSide } from '../utils/ClientErrorUtils'
+import { iniciarSesion } from '@/service/AuthService'
 import toast from 'react-hot-toast'
+import { Button, Input } from '@nextui-org/react'
 import { IoEyeOffSharp, IoEyeSharp } from 'react-icons/io5'
-import { iniciarSesion } from '../../service/AuthService'
-import { user } from "../layout"
-import useUsuario from "@/hooks/useUsuario"
+import Link from 'next/link'
 
 function Login() {
     const [usuario, setUsuario] = useAtom(user)
@@ -18,6 +19,10 @@ function Login() {
         username: { value: "", error: "" },
         password: { value: "", error: "" }
     })
+
+    useEffect(() => {
+      setUsuario(null)
+    }, [setUsuario]);
 
     const isValidData = () => {
         const isValidUsername = formState.username.value !== ""
@@ -51,11 +56,14 @@ function Login() {
             contrasenia: formState.password.value
         }
 
-        await iniciarSesion(iniciarSesionDTO).then(() => {
-            setUsuario(null) // This is to trigger the useUsuario hook
-            toast.success("Inicio de sesion exitoso")
-            router.replace("/")
-        }).catch((error) => toast.error(error.message))
+        await iniciarSesion(iniciarSesionDTO)
+            .then(handleErrorClientSide(router))
+            .then(() => {
+                setUsuario(null) // This is to trigger the useUsuario hook
+                toast.success("Inicio de sesion exitoso")
+                router.push("/")
+            })
+            .catch((error) => toast.error(error.message))
 
     }
 
@@ -92,15 +100,12 @@ function Login() {
                     isInvalid={formState.password.error !== ""}
                     errorMessage={formState.password.error}
                 />
-                <Link href="/forgot-password">¿Olvidaste tu contraseña?</Link>
                 <Button color="primary" fullWidth onClick={handleSubmit}>Iniciar Sesion</Button>
             </div>
             <div className="flex flex-col items-center gap-4">
                 <span>
                     ¿No tienes cuenta? <Link href="/register" className="underline">Registrate</Link>
                 </span>
-                <Divider />
-                <Button color="success">Continuar con Google</Button>
             </div>
         </div>
     )

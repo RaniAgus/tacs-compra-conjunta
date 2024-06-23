@@ -36,11 +36,13 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
 
   const handleLogout = async () => {
-    await cerrarSesion().then(() => {
-      setUsuario(null)
-      router.replace("/login")
-      toast.success("Cierre de sesion exitoso")
-    }).catch((error) => toast.error(error.message))
+    await cerrarSesion()
+      .then(() => {
+        setUsuario(null)
+        router.replace("/login")
+        toast.success("Cierre de sesion exitoso")
+      })
+      .catch((error) => toast.error(error.message))
   }
 
   useEffect(() => {

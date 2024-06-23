@@ -3,15 +3,14 @@ import { UsuarioDTO } from "@/model/UsuarioDTO"
 import { Request } from "./AbstractService"
 import { ArticuloDTO } from "@/model/ArticuloDTO"
 
-export async function obtenerUsuario(): Promise<UsuarioDTO> {
+export async function obtenerUsuario(): Promise<[UsuarioDTO?, string?]> {
     return await Request("/usuarios/me", "GET")
 }
 
-export async function obtenerArticulosDelUsuario(): Promise<ArticuloDTO[]> {
+export async function obtenerArticulosDelUsuario(): Promise<[ArticuloDTO[]?, string?]> {
     return await Request("/usuarios/me/articulos", "GET")
 }
 
-
-export async function obtenerMisCompras(): Promise<ArticuloDTO[]> {
+export async function obtenerMisCompras(): Promise<[ArticuloDTO[]?, string?]> {
     return await Request("/usuarios/me/compras", "GET")
 }

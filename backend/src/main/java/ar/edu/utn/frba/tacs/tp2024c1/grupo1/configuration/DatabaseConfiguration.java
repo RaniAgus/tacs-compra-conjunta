@@ -6,6 +6,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
+import org.springframework.lang.NonNull;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -29,14 +30,14 @@ public class DatabaseConfiguration {
 
     public static class ZonedDateTimeReadConverter implements Converter<Date, ZonedDateTime> {
         @Override
-        public ZonedDateTime convert(Date date) {
+        public ZonedDateTime convert(@NonNull Date date) {
             return date.toInstant().atZone(ZoneId.systemDefault());
         }
     }
 
     public static class ZonedDateTimeWriteConverter implements Converter<ZonedDateTime, Date> {
         @Override
-        public Date convert(ZonedDateTime zonedDateTime) {
+        public Date convert(@NonNull ZonedDateTime zonedDateTime) {
             return Date.from(zonedDateTime.toInstant());
         }
     }

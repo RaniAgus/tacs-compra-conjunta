@@ -1,9 +1,10 @@
 import { ArticuloDTO } from "@/model/ArticuloDTO"
 import { obtenerMisCompras } from "@/service/UsuarioService"
 import ComprasClient from "./ComprasClient"
+import { handleErrorServerSide } from '../utils/ServerErrorUtils'
 
 const fetchData = async (): Promise<ArticuloDTO[]> => {
-  return await obtenerMisCompras()
+  return handleErrorServerSide(await obtenerMisCompras())
 }
 
 async function MisCompras() {

@@ -9,6 +9,8 @@ import {
   Button,
 } from "@nextui-org/react"
 import toast from "react-hot-toast"
+import { handleErrorClientSide } from '../utils/ClientErrorUtils'
+import { useRouter } from 'next/navigation'
 
 type ModalCancelarCompraProps = {
   isOpen: boolean
@@ -21,8 +23,11 @@ function ModalCancelarCompra({
   onOpenChange,
   selectedArticulo,
 }: ModalCancelarCompraProps) {
+  const router = useRouter()
+
   async function handleCancelarCompra(onClose: () => void) {
     await cancelarCompraArticulo(selectedArticulo.id)
+      .then(handleErrorClientSide(router))
       .then(() => {
         toast.success("Compra cancelada exitosamente")
         onClose()

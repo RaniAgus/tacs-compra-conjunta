@@ -3,11 +3,12 @@ import { useAtom } from 'jotai'
 import React, { useState } from 'react'
 import { user } from '../layout'
 import { useRouter } from 'next/navigation'
-import { iniciarSesion, registrarse } from '@/service/AuthService'
+import { registrarse } from '@/service/AuthService'
 import toast from 'react-hot-toast'
-import { Button, Divider, Input } from '@nextui-org/react'
+import { Button, Input } from '@nextui-org/react'
 import { IoEyeOffSharp, IoEyeSharp } from 'react-icons/io5'
 import Link from 'next/link'
+import { handleErrorClientSide } from '../utils/ClientErrorUtils'
 
 function Register() {
   const [usuario, setUsuario] = useAtom(user)
@@ -53,11 +54,14 @@ function Register() {
       contrasenia: formState.password.value
     }
 
-    await registrarse(registrarseDTO).then(() => {
-      setUsuario(null) // This is to trigger the useUsuario hook
-      toast.success("Registro exitoso")
-      router.replace("/")
-    }).catch((error) => toast.error(error.message))
+    await registrarse(registrarseDTO)
+      .then(handleErrorClientSide(router))
+      .then(() => {
+        setUsuario(null) // This is to trigger the useUsuario hook
+        toast.success("Registro exitoso")
+        router.replace("/")
+      })
+      .catch((error) => toast.error(error.message))
 
   }
 
@@ -120,8 +124,6 @@ function Register() {
         <span>
           ¿Ya tienes cuenta? <Link href="/login" className="underline">Iniciar Sesion</Link>
         </span>
-        <Divider   />
-        <Button color="success">Continuar con Google</Button>
       </div>
     </div>
   )
