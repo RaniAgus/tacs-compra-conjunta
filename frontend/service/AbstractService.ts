@@ -18,7 +18,7 @@ export async function Request(url: string, method: HttpMethod, body: any = {}, u
     }
 
     if (useToken && !cookies().get(TOKEN)) {
-        return redirectToLoginError()
+        return error(LOGIN_ERROR)
     }
 
     const response = await fetch(base_url + url, {
@@ -35,7 +35,7 @@ export async function Request(url: string, method: HttpMethod, body: any = {}, u
     }
 
     if (response.status === 401) {
-        return redirectToLoginError()
+        return error(LOGIN_ERROR)
     }
 
     if (data.errors?.fields) {
@@ -53,13 +53,9 @@ export async function error<T>(error: string): Promise<[T?, string?]> {
     return [undefined, error]
 }
 
-export async function redirectToLoginError<T>(): Promise<[T?, string?]> {
-    return [undefined, LOGIN_ERROR]
-}
-
 export async function map<T, U>([data, error]: [T?, string?], f: (data: T) => U): Promise<[U?, string?]> {
     if (error) {
-      return [undefined, error]
+        return [undefined, error]
     }
     return [f(data!), undefined]
-  }
+}
