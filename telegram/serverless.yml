@@ -1,0 +1,29 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: raniagus
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: tacs-telegram-integration
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: tacs-telegram-integration
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  environment:
+    TELEGRAM_BOT_TOKEN: ${ssm(us-east-1):/telegram/bot/token}
+    TELEGRAM_WEBHOOK_SECRET: ${ssm(us-east-1):/telegram/webhook/secret}
+    REDIS_ENDPOINT: ${ssm(us-east-1):/redis/endpoint}
+    BACKEND_URL: ${ssm(us-east-1):/backend/url}
+
+functions:
+  webhook:
+    handler: handler.webhook
+    events:
+      - http:
+          path: webhook
+          method: post
+
+package:
+  exclude:
+    - scripts/**
+    - Dockerfile
+    - README.md

@@ -86,3 +86,39 @@ variable "github_repo" {
   default   = "fpesce27/TP_TACS_2024C1_GRUPO_1"
   sensitive = true
 }
+
+variable "upstash_user" {
+  type      = string
+  nullable  = false
+  sensitive = true
+}
+
+variable "upstash_api_key" {
+  type      = string
+  nullable  = false
+  sensitive = true
+}
+
+variable "telegram_bot_token" {
+  type      = string
+  nullable  = false
+  sensitive = true
+}
+
+variable "telegram_webhook_secret" {
+  type      = string
+  nullable  = false
+  sensitive = true
+}
+
+variable "aws_access_key" {
+  type      = string
+  nullable  = false
+  sensitive = true
+}
+
+variable "aws_secret_key" {
+  type      = string
+  nullable  = false
+  sensitive = true
+}

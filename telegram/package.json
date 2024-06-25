@@ -1,0 +1,18 @@
+{
+  "name": "tacs-telegram-integration",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "echo \"Use 'sls' cli to deploy the service or run the functions locally\"",
+    "set:webhook": "node setWebhook.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@telegraf/session": "^2.0.0-beta.7",
+    "redis": "^4.6.14",
+    "telegraf": "^4.16.3"
+  }
+}

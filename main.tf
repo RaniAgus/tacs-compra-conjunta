@@ -45,3 +45,19 @@ module "frontend" {
 
   backend_url = module.backend.backend_url
 }
+
+module "telegram" {
+  source = "./telegram"
+
+  telegram_bot_token      = var.telegram_bot_token
+  telegram_webhook_secret = var.telegram_webhook_secret
+
+  upstash_user    = var.upstash_user
+  upstash_api_key = var.upstash_api_key
+  upstash_db_name = "tacs-compra-conjunta-cache"
+
+  aws_access_key = var.aws_access_key
+  aws_secret_key = var.aws_secret_key
+
+  backend_url = module.backend.backend_url
+}

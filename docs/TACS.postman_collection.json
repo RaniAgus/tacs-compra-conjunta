@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b29c8331-a6df-4f78-aaff-af9b1cb6c10b",
+		"_postman_id": "a5daf142-6f0b-4516-a877-3f857adc6703",
 		"name": "TACS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "16182491"
@@ -37,7 +37,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nombre\": \"Frutos Secos 10kg\",\n    \"descripcion\": \"Cada uno se lleva 2kg\",\n    \"precio\": \"19.98\",\n    \"imagen\": \"data:image/gif;base64,R0lGODlhAQABAAAAACw=\",\n    \"tipoPrecio\": \"POR_PERSONA\",\n    \"minPersonas\": 5,\n    \"maxPersonas\": 5,\n    \"deadline\": \"2024-05-10T00:00:00-03:00\"\n}",
+							"raw": "{\n    \"nombre\": \"Frutos Secos 10kg\",\n    \"descripcion\": \"Cada uno se lleva 2kg\",\n    \"precio\": \"19.98\",\n    \"imagen\": \"data:image/gif;base64,R0lGODlhAQABAAAAACw=\",\n    \"tipoPrecio\": \"POR_PERSONA\",\n    \"minPersonas\": 5,\n    \"maxPersonas\": 5,\n    \"deadline\": \"2025-05-10T00:00:00-03:00\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -167,6 +167,24 @@
 				},
 				{
 					"name": "Ver Todos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const [{ id }] = pm.response.json()",
+									"pm.collectionVariables.set('ARTICULO_ID', id)",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(id).not.to.be.null",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -522,6 +540,70 @@
 							],
 							"path": [
 								"registrarse"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Estadisticas",
+			"item": [
+				{
+					"name": "Basicas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{TACS_BASE_URL}}/estadisticas/basicas",
+							"host": [
+								"{{TACS_BASE_URL}}"
+							],
+							"path": [
+								"estadisticas",
+								"basicas"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Telegram",
+			"item": [
+				{
+					"name": "Handle Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"body\": \"{}\",\n    \"headers\": {\n        \"X-Telegram-Bot-Api-Secret-Token\": \"{{TELEGRAM_WEBHOOK_SECRET}}\"\n    }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{TACS_SLS_URL}}/2015-03-31/functions/function/invocations",
+							"host": [
+								"{{TACS_SLS_URL}}"
+							],
+							"path": [
+								"2015-03-31",
+								"functions",
+								"function",
+								"invocations"
 							]
 						}
 					},

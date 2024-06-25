@@ -39,7 +39,6 @@ function Session(props: Props) {
                         <p className="font-semibold">Sesion Iniciada como</p>
                         <p className="font-semibold">{props.usuario?.email}</p>
                     </DropdownItem>
-                    <DropdownItem key="settings">Ajustes</DropdownItem>
                     <DropdownItem key="logout" color="danger" onClick={props.handleLogout}>
                         Cerrar Sesion
                     </DropdownItem>

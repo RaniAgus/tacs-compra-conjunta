@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: tacs-frontend
     ports:
-      - ${PORT:-3000}:3000
+      - ${NEXT_PORT:-3000}:3000
     environment:
       - HOSTNAME=0.0.0.0
       - PORT=3000
@@ -14,13 +14,30 @@ services:
       backend:
         condition: service_healthy
 
+  telegram:
+    build:
+      context: ./telegram
+      dockerfile: Dockerfile
+    container_name: tacs-telegram
+    ports:
+      - ${SLS_PORT:-8082}:8080
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:?}
+      - TELEGRAM_WEBHOOK_SECRET=${TELEGRAM_WEBHOOK_SECRET:?}
+      - REDIS_ENDPOINT=http://redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+      # backend:
+      #   condition: service_healthy
+
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     container_name: tacs-backend
     ports:
-      - ${BACKEND_PORT:-8080}:8080
+      - ${JAVA_PORT:-8080}:8080
     environment:
       - JWT_SECRET_KEY=${JWT_SECRET_KEY:?}
       - JWT_EXPIRATION_TIME=${JWT_EXPIRATION_TIME:?}
@@ -94,6 +111,17 @@ services:
     depends_on:
       mongo:
         condition: service_healthy
+
+  redis:
+    image: redis
+    container_name: tacs-redis
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   s3-data:
