@@ -80,35 +80,16 @@ public class Articulo {
             throw new ArticuloFinalizadoException("El articulo ya cerró por lo que no puede ser modificado");
         }
 
-        switch (estado) {
-            case Estado.VENDIDO -> validarVenta();
-            case Estado.CANCELADO -> validarCancelacion();
-            case Estado.ABIERTO -> {
-                // No se necesita validar nada más
+        if (estado == Estado.VENDIDO) {
+            if (getCompradores().size() < getMinPersonas()) {
+                throw new CupoArticuloExcedidoException("Hay menos compradores de los permitidos", getCompradores().size(), getMinPersonas(), getMaxPersonas());
+            }
+
+            if (getCompradores().size() > getMaxPersonas()) {
+                throw new CupoArticuloExcedidoException("Hay más compradores de los permitidos", getCompradores().size(), getMinPersonas(), getMaxPersonas());
             }
         }
+
         this.estado = estado;
-    }
-
-    private void validarVenta() {
-        if (getCompradores().size() < getMinPersonas()) {
-            throw new CupoArticuloExcedidoException("Hay menos compradores de los permitidos", getCompradores().size(), getMinPersonas(), getMaxPersonas());
-        }
-
-        if (getCompradores().size() > getMaxPersonas()) {
-            throw new CupoArticuloExcedidoException("Hay más compradores de los permitidos", getCompradores().size(), getMinPersonas(), getMaxPersonas());
-        }
-
-        ZonedDateTime tiempo = ZonedDateTime.now();
-        if (getDeadline() != null && tiempo.isAfter(this.getDeadline())) {
-            throw new ArticuloFinalizadoException("El articulo está por encima del deadline por lo que será finalizado automáticamente");
-        }
-    }
-
-    private void validarCancelacion() {
-        ZonedDateTime tiempo = ZonedDateTime.now();
-        if (getDeadline() != null && tiempo.isAfter(this.getDeadline())) {
-            throw new ArticuloFinalizadoException("El articulo está por encima del deadline por lo que será finalizado automáticamente");
-        }
     }
 }

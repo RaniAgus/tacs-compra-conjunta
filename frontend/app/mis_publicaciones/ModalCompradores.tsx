@@ -34,10 +34,10 @@ function ModalCompradores({
   async function handleCancelarPublicacion() {
     await cancelarPublicacion(selectedArticulo.id)
       .then(handleErrorClientSide(router))
-      .then((articuloDTO: ArticuloDTO) => {
+      .then((nuevoArticulo: ArticuloDTO) => {
         setArticulosClient((articulos: ArticuloDTO[]) =>
           articulos.map((articulo) =>
-            articulo.id === selectedArticulo.id ? articuloDTO : articulo
+            articulo.id === selectedArticulo.id ? nuevoArticulo : articulo
           )
         )
         toast.success("La publicacion se ha cancelado")
@@ -52,10 +52,10 @@ function ModalCompradores({
   async function handleCerrarPublicacion() {
     await cerrarPublicacion(selectedArticulo.id)
       .then(handleErrorClientSide(router))
-      .then((articuloDTO: ArticuloDTO) => {
+      .then((nuevoArticulo: ArticuloDTO) => {
         setArticulosClient((articulos: ArticuloDTO[]) =>
           articulos.map((articulo) =>
-            articulo.id === selectedArticulo.id ? articuloDTO : articulo
+            articulo.id === selectedArticulo.id ? nuevoArticulo : articulo
           )
         )
         toast.success("La publicacion se ha cerrado")
