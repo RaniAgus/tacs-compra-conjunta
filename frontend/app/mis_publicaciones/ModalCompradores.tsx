@@ -20,7 +20,7 @@ type ModalCompradoresProps = {
   isOpen: boolean
   onOpenChange: (isOpen: boolean) => void
   selectedArticulo: ArticuloDTO
-  setArticulosClient: (articulos: any) => any
+  setArticulosClient: (callback: (articulos: ArticuloDTO[]) => ArticuloDTO[]) => void
 }
 
 function ModalCompradores({
@@ -34,11 +34,11 @@ function ModalCompradores({
   async function handleCancelarPublicacion() {
     await cancelarPublicacion(selectedArticulo.id)
       .then(handleErrorClientSide(router))
-      .then(() => {
+      .then((nuevoArticulo) => {
         setArticulosClient((articulos) =>
           articulos.map((articulo) =>
             articulo.id === selectedArticulo.id
-              ? articuloDTO
+              ? nuevoArticulo
               : articulo
           )
         )
@@ -54,11 +54,11 @@ function ModalCompradores({
   async function handleCerrarPublicacion() {
     await cerrarPublicacion(selectedArticulo.id)
       .then(handleErrorClientSide(router))
-      .then((articuloDTO) => {
+      .then((nuevoArticulo) => {
         setArticulosClient((articulos) =>
           articulos.map((articulo) =>
             articulo.id === selectedArticulo.id
-              ? articuloDTO
+              ? nuevoArticulo
               : articulo
           )
         )
