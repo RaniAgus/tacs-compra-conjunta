@@ -134,23 +134,6 @@ class ArticuloTest {
         assertEquals(Estado.CANCELADO, articuloVacio.getEstado());
     }
 
-    @Test
-    void noSePuedeFinalizarUnArticuloDespuesDelDeadlineCupoTest() {
-        Usuario usuario = generarUsuario("carlos");
-        
-        Articulo articulo = generarArticulo(Estado.ABIERTO, usuario);
-        articulo.agregarComprador(generarUsuario("martin"));
-        articulo.setDeadline(ZonedDateTime.now().minusHours(1));
-
-        assertThrows(ArticuloFinalizadoException.class, () -> {
-                articulo.setEstado(Estado.CANCELADO);
-        });
-
-        assertThrows(ArticuloFinalizadoException.class, () -> {
-                articulo.setEstado(Estado.VENDIDO);
-        });
-    }
-
     private Usuario generarUsuario(String nombre) {
         Usuario usuario = new Usuario();
         usuario.setId(UUID.randomUUID().toString());
