@@ -6,7 +6,7 @@ import { DateValue } from "@internationalized/date"
 import toast from "react-hot-toast"
 import { crearArticulo } from "@/service/ArticulosService"
 import FileInput from "./FileInput"
-import { handleErrorClientSide } from '../utils/ClientErrorUtils'
+import { handleErrorClientSide } from "../utils/ClientErrorUtils"
 
 type FormState = {
   nombre: { value: string; error: string }
@@ -53,68 +53,54 @@ export default function CrearPublicacion() {
       formState.maxPersonas.value > 0 &&
       formState.maxPersonas.value > formState.minPersonas.value
 
+    const newFormState = { ...formState }
     if (!isValidNombre) {
-      setFormState({
-        ...formState,
-        nombre: {
-          value: formState.nombre.value,
-          error: "El nombre es requerido",
-        },
-      })
-    } else if (!isValidDescripcion) {
-      setFormState({
-        ...formState,
-        descripcion: {
-          value: formState.descripcion.value,
-          error: "La descripcion es requerida",
-        },
-      })
-    } else if (!isValidImagen) {
-      setFormState({
-        ...formState,
-        imagen: {
-          value: formState.imagen.value,
-          error: "La imagen es requerida",
-        },
-      })
-    } else if (!isValidPrecio) {
-      setFormState({
-        ...formState,
-        precio: {
-          value: formState.precio.value,
-          error: "El precio es requerido",
-        },
-      })
-    } else if (!isValidMinPersonas) {
-      setFormState({
-        ...formState,
-        minPersonas: {
-          value: formState.minPersonas.value,
-          error: "El minimo de personas es requerido",
-        },
-      })
-      if (formState.minPersonas.value > formState.maxPersonas.value) {
-        setFormState({
-          ...formState,
-          minPersonas: {
-            value: formState.minPersonas.value,
-            error: "El minimo de personas debe ser menor al maximo",
-          },
-          maxPersonas: {
-            value: formState.maxPersonas.value,
-            error: "El maximo de personas debe ser mayor al minimo",
-          },
-        })
+      newFormState.nombre = {
+        value: formState.nombre.value,
+        error: "El nombre es requerido",
       }
-    } else if (!isValidMaxPersonas) {
-      setFormState({
-        ...formState,
-        maxPersonas: {
-          value: formState.maxPersonas.value,
-          error: "El maximo de personas es requerido",
-        },
-      })
     }
+    if (!isValidDescripcion) {
+      newFormState.descripcion = {
+        value: formState.descripcion.value,
+        error: "La descripcion es requerida",
+      }
+    }
+    if (!isValidImagen) {
+      newFormState.imagen = {
+        value: formState.imagen.value,
+        error: "La imagen es requerida",
+      }
+    }
+    if (!isValidPrecio) {
+      newFormState.precio = {
+        value: formState.precio.value,
+        error: "El precio es requerido",
+      }
+    }
+    if (!isValidMinPersonas) {
+      newFormState.minPersonas = {
+        value: formState.minPersonas.value,
+        error: "El minimo de personas es requerido",
+      }
+      if (formState.minPersonas.value > formState.maxPersonas.value) {
+        newFormState.minPersonas = {
+          value: formState.minPersonas.value,
+          error: "El minimo de personas debe ser menor al maximo",
+        }
+        newFormState.maxPersonas = {
+          value: formState.maxPersonas.value,
+          error: "El maximo de personas debe ser mayor al minimo",
+        }
+      }
+    }
+    if (!isValidMaxPersonas) {
+      newFormState.maxPersonas = {
+        value: formState.maxPersonas.value,
+        error: "El maximo de personas es requerido",
+      }
+    }
+    setFormState(newFormState)
 
     return (
       isValidNombre &&
@@ -170,6 +156,7 @@ export default function CrearPublicacion() {
               nombre: { value: e.target.value, error: "" },
             })
           }
+          isInvalid={formState.nombre.error.length > 0}
           errorMessage={formState.nombre.error}
         />
         <FileInput
@@ -221,6 +208,7 @@ export default function CrearPublicacion() {
               precio: { value: Number(e.target.value), error: "" },
             })
           }
+          isInvalid={formState.precio.error.length > 0}
           errorMessage={formState.precio.error}
         />
         <div className="grid grid-cols-2 gap-4">
@@ -238,6 +226,7 @@ export default function CrearPublicacion() {
                 minPersonas: { value: Number(e.target.value), error: "" },
               })
             }
+            isInvalid={formState.minPersonas.error.length > 0}
             errorMessage={formState.minPersonas.error}
           />
           <Input
@@ -254,6 +243,7 @@ export default function CrearPublicacion() {
                 maxPersonas: { value: Number(e.target.value), error: "" },
               })
             }
+            isInvalid={formState.maxPersonas.error.length > 0}
             errorMessage={formState.maxPersonas.error}
           />
         </div>
@@ -269,6 +259,7 @@ export default function CrearPublicacion() {
               deadline: { value: e, error: "" },
             })
           }
+          isInvalid={formState.deadline.error.length > 0}
           errorMessage={formState.deadline.error}
         />
         <Input
@@ -284,6 +275,7 @@ export default function CrearPublicacion() {
               descripcion: { value: e.target.value, error: "" },
             })
           }
+          isInvalid={formState.descripcion.error.length > 0}
           errorMessage={formState.descripcion.error}
         />
         <Button color="primary" type="submit">

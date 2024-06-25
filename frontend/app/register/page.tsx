@@ -26,26 +26,32 @@ function Register() {
     const isValidEmail = formState.email.value !== "" && formState.email.value.includes("@")
     const isValidPassword = formState.password.value !== ""
 
+    const newFormState = { ...formState }
+
     if (!isValidUsername) {
-      setFormState({ ...formState, username: { ...formState.username, error: "El nombre de usuario es requerido" } })
+      newFormState.username={ value: formState.username.value, error: "El nombre de usuario es requerido" }
     }
 
     if (!isValidEmail) {
-      setFormState({ ...formState, email: { ...formState.email, error: "El correo electronico es requerido" } })
+      newFormState.email= { value: formState.email.value, error: "El correo electronico es requerido" }
     }
 
     if (!isValidPassword) {
-      setFormState({ ...formState, password: { ...formState.password, error: "La contraseña es requerida" } })
+      newFormState.password= { value:formState.password.value, error: "La contraseña es requerida" }
     }
 
     if (formState.confirmPassword.value !== formState.password.value) {
-      setFormState({ ...formState, confirmPassword: { ...formState.confirmPassword, error: "Las contraseñas no coinciden" } })
+      newFormState.confirmPassword={value: formState.confirmPassword.value, error: "Las contraseñas no coinciden" }
     }
+
+    setFormState(newFormState)
 
     return isValidUsername && isValidEmail && isValidPassword && formState.confirmPassword.value === formState.password.value
   }
 
-  async function handleSubmit() {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
     if (!isValidData()) return
 
     const registrarseDTO: RegistrarseDTO = {
@@ -68,7 +74,7 @@ function Register() {
   return (
     <div className="flex flex-col gap-8 items-center w-full max-w-xl mx-auto">
       <h1 className="text-center font-bold text-2xl">Registrarse</h1>
-      <div className="flex flex-col items-center gap-4">
+      <form className="flex flex-col items-center gap-4" onSubmit={handleSubmit}>
         <Input
           placeholder="Ingrese su nombre de usuario"
           label="Nombre de usuario"
@@ -76,7 +82,7 @@ function Register() {
           isClearable
           value={formState.username.value}
           onChange={(e) => setFormState({ ...formState, username: { value: e.target.value, error: "" } })}
-          isInvalid={formState.username.error !== ""}
+          isInvalid={formState.username.error.length>0}
           errorMessage={formState.username.error}
         />
         <Input
@@ -86,7 +92,7 @@ function Register() {
           isClearable
           value={formState.email.value}
           onChange={(e) => setFormState({ ...formState, email: { value: e.target.value, error: "" } })}
-          isInvalid={formState.email.error !== ""}
+          isInvalid={formState.email.error.length>0}
           errorMessage={formState.email.error}
         />
         <Input
@@ -105,7 +111,7 @@ function Register() {
           type={isVisible ? "text" : "password"}
           value={formState.password.value}
           onChange={(e) => setFormState({ ...formState, password: { value: e.target.value, error: "" } })}
-          isInvalid={formState.password.error !== ""}
+          isInvalid={formState.password.error.length>0}
           errorMessage={formState.password.error}
         />
         <Input
@@ -115,11 +121,11 @@ function Register() {
           type='password'
           value={formState.confirmPassword.value}
           onChange={(e) => setFormState({ ...formState, confirmPassword: { value: e.target.value, error: "" } })}
-          isInvalid={formState.confirmPassword.error !== ""}
+          isInvalid={formState.confirmPassword.error.length>0}
           errorMessage={formState.confirmPassword.error}
         />
-        <Button color="primary" fullWidth onClick={handleSubmit}>Registrarse</Button>
-      </div>
+        <Button type="submit" color="primary" fullWidth>Registrarse</Button>
+      </form>
       <div className="flex flex-col items-center gap-4">
         <span>
           ¿Ya tienes cuenta? <Link href="/login" className="underline">Iniciar Sesion</Link>

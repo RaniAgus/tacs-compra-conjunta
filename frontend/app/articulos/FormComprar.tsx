@@ -5,8 +5,8 @@ import toast from "react-hot-toast"
 import { FaCreditCard } from "react-icons/fa"
 
 import { comprarArticulo } from "@/service/ArticulosService"
-import { handleErrorClientSide } from '../utils/ClientErrorUtils'
-import { useRouter } from 'next/navigation'
+import { handleErrorClientSide } from "../utils/ClientErrorUtils"
+import { useRouter } from "next/navigation"
 
 type FormComprarState = {
   articuloId: string
@@ -57,57 +57,45 @@ function FormComprar({ articuloId, onClose }: FormComprarState) {
 
   function isValidData() {
     const isValidNumeroTarjeta = formState.numeroTarjeta.value?.length === 16
-    const isValidNombreTitular = formState.nombreTitular.value?.length ?? 0 > 0
+    const isValidNombreTitular = (/^[a-zA-ZÀ-ÿ' -]+$/).test(formState.nombreTitular.value || "")
     const isValidDocumentoIdentidad =
       formState.documentoIdentidad.value?.length === 8
     const isValidFechaExpiracion = formState.fechaExpiracion.value?.length === 7
     const isValidCVV = formState.cvv.value?.length === 3
 
+    const newFormState = { ...formState }
+
     if (!isValidNumeroTarjeta) {
-      setFormState({
-        ...formState,
-        numeroTarjeta: {
-          value: formState.numeroTarjeta.value,
-          error: "El numero de tarjeta debe tener 16 digitos",
-        },
-      })
+      newFormState.numeroTarjeta = {
+        value: formState.numeroTarjeta.value,
+        error: "El numero de tarjeta debe tener 16 digitos",
+      }
     }
     if (!isValidNombreTitular) {
-      setFormState({
-        ...formState,
-        nombreTitular: {
-          value: formState.nombreTitular.value,
-          error: "El nombre del titular es requerido",
-        },
-      })
+      newFormState.nombreTitular = {
+        value: formState.nombreTitular.value,
+        error: "El nombre del titular es requerido",
+      }
     }
     if (!isValidDocumentoIdentidad) {
-      setFormState({
-        ...formState,
-        documentoIdentidad: {
-          value: formState.documentoIdentidad.value,
-          error: "El documento de identidad debe tener 8 digitos",
-        },
-      })
+      newFormState.documentoIdentidad = {
+        value: formState.documentoIdentidad.value,
+        error: "El documento de identidad debe tener 8 digitos",
+      }
     }
     if (!isValidFechaExpiracion) {
-      setFormState({
-        ...formState,
-        fechaExpiracion: {
-          value: formState.fechaExpiracion.value,
-          error: "La fecha de expiracion es requerida",
-        },
-      })
+      newFormState.fechaExpiracion = {
+        value: formState.fechaExpiracion.value,
+        error: "La fecha de expiracion es requerida",
+      }
     }
     if (!isValidCVV) {
-      setFormState({
-        ...formState,
-        cvv: {
-          value: formState.cvv.value,
-          error: "El CVV debe tener 3 digitos",
-        },
-      })
+      newFormState.cvv = {
+        value: formState.cvv.value,
+        error: "El CVV debe tener 3 digitos",
+      }
     }
+    setFormState(newFormState)
 
     return (
       isValidNumeroTarjeta &&
@@ -157,6 +145,7 @@ function FormComprar({ articuloId, onClose }: FormComprarState) {
         }
         value={formState.numeroTarjeta.value}
         onChange={handleChangeInput}
+        isInvalid={formState.numeroTarjeta.error.length > 0}
         errorMessage={formState.numeroTarjeta.error}
       />
       <Input
@@ -170,6 +159,7 @@ function FormComprar({ articuloId, onClose }: FormComprarState) {
         maxLength={50}
         value={formState.nombreTitular.value}
         onChange={handleChangeInput}
+        isInvalid={formState.nombreTitular.error.length > 0}
         errorMessage={formState.nombreTitular.error}
       />
       <Input
@@ -183,6 +173,7 @@ function FormComprar({ articuloId, onClose }: FormComprarState) {
         maxLength={8}
         value={formState.documentoIdentidad.value}
         onChange={handleChangeInput}
+        isInvalid={formState.documentoIdentidad.error.length > 0}
         errorMessage={formState.documentoIdentidad.error}
       />
       <div className="grid grid-cols-2 gap-4">
@@ -195,6 +186,7 @@ function FormComprar({ articuloId, onClose }: FormComprarState) {
           type="month"
           value={formState.fechaExpiracion.value}
           onChange={handleChangeInput}
+          isInvalid={formState.fechaExpiracion.error.length > 0}
           errorMessage={formState.fechaExpiracion.error}
         />
         <Input
@@ -208,6 +200,7 @@ function FormComprar({ articuloId, onClose }: FormComprarState) {
           type="number"
           value={formState.cvv.value}
           onChange={handleChangeInput}
+          isInvalid={formState.cvv.error.length > 0}
           errorMessage={formState.cvv.error}
         />
       </div>

@@ -48,7 +48,9 @@ function Login() {
         return isValidUsername && isValidPassword
     }
 
-    async function handleSubmit() {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+
         if (!isValidData()) return
 
         const iniciarSesionDTO: IniciarSesionDTO = {
@@ -70,7 +72,7 @@ function Login() {
     return (
         <div className="flex flex-col gap-8 items-center w-full max-w-xl mx-auto">
             <h1 className="text-center font-bold text-2xl">Inciar Sesion</h1>
-            <div className="flex flex-col items-center gap-4">
+            <form className="flex flex-col items-center gap-4" onSubmit={handleSubmit}>
                 <Input
                     placeholder="Ingrese su nombre de usuario"
                     label="Nombre de usuario"
@@ -100,8 +102,8 @@ function Login() {
                     isInvalid={formState.password.error !== ""}
                     errorMessage={formState.password.error}
                 />
-                <Button color="primary" fullWidth onClick={handleSubmit}>Iniciar Sesion</Button>
-            </div>
+                <Button type="submit" color="primary" fullWidth>Iniciar Sesion</Button>
+            </form>
             <div className="flex flex-col items-center gap-4">
                 <span>
                     ¿No tienes cuenta? <Link href="/register" className="underline">Registrate</Link>
