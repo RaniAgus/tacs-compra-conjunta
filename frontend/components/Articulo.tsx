@@ -42,7 +42,7 @@ function Articulo(props: Props) {
                             <h4>
                                 {compradoresFaltan(
                                     props.articulo.maxPersonas,
-                                    props.articulo.compradores
+                                    props.articulo.compradores.length
                                 )}
                             </h4>
 

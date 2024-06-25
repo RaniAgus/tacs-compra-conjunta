@@ -11,9 +11,12 @@ export const cierraEn = (deadline: string) => {
     if (days == 0) return "Cierra hoy"
 }
 
-export const compradoresFaltan = (maxPersonas: number, compradores: UsuarioDTO[]) => {
-    return "¡Faltan " + (maxPersonas - compradores.length) + " compradores!"
-}
+export function compradoresFaltan(maxPersonas: number, compradoresLength: number) {
+    if (maxPersonas - compradoresLength == 0) {
+      return "¡Ya se completó!"
+    }
+    return "¡Faltan " + (maxPersonas - compradoresLength) + " compradores!"
+  }
 
 export const copiarLinkArticulo = async (id: string) => {
     await navigator.clipboard.writeText(window.location.origin + "/articulos/" + id)
