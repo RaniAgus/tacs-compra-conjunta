@@ -20,7 +20,7 @@ export const Novedades = () => {
     }, [])
 
 
-    const markAsRead = async (id) => {
+    const markAsRead = async (id: string) => {
         await leerNovedad(id).then(handleErrorClientSide(router))
         setUnreadNotifications(unreadNotifications.filter((notification) => notification.id !== id))
     }
@@ -85,7 +85,7 @@ export const Novedades = () => {
     )
 }
 
-function BellIcon(props) {
+function BellIcon(props: any) {
     return (
         <svg
             {...props}
@@ -106,7 +106,7 @@ function BellIcon(props) {
 }
 
 
-function RefreshCwIcon(props) {
+function RefreshCwIcon(props: any) {
     return (
         <svg
             {...props}
