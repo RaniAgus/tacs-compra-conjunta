@@ -1,8 +1,8 @@
 "use client"
+import { user } from "@/app/layout"
 import useUsuario from "@/hooks/useUsuario"
+import { cerrarSesion } from "@/service/AuthService"
 import {
-  Button,
-  Link as NextUILink,
   Navbar as Nav,
   NavbarBrand,
   NavbarContent,
@@ -10,17 +10,17 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
+  Link as NextUILink
 } from "@nextui-org/react"
+import { useAtom } from "jotai"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import React, { useEffect } from "react"
-import Session from "./Session"
-import { ThemeSwitcher } from "./ThemeSwitcher"
-import { useAtom } from "jotai"
-import { user } from "@/app/layout"
-import { cerrarSesion } from "@/service/AuthService"
 import toast from "react-hot-toast"
 import Rol from "./Rol"
+import Session from "./Session"
+import { ThemeSwitcher } from "./ThemeSwitcher"
+import { Novedades } from "./Novedades"
 
 const menuItems = [
   { name: "Crear Publicacion", page: "/crear_publicacion", rol: null },
@@ -95,6 +95,7 @@ export default function Navbar() {
 
       <NavbarContent className="hidden sm:flex" justify="end">
         <ThemeSwitcher />
+        {usuario && <Novedades />}
         <Session usuario={usuario} handleLogout={handleLogout} />
       </NavbarContent>
 
@@ -150,3 +151,4 @@ export function SpecialLink({ color, href, children }: { color: "primary" | "sec
     </NextUILink>
   )
 }
+

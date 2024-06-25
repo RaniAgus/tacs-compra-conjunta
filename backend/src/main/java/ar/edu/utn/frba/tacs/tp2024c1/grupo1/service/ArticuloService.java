@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -21,6 +22,7 @@ public class ArticuloService {
     private final ArticuloMapper articuloMapper;
     private final StorageService storageService;
     private final EsArticuloRepository articuloRepository;
+    private final NovedadesService novedadesService;
 
     public ArticuloDTO verArticulo(String id) {
         Articulo articulo = articuloRepository.findById(id).orElseThrow();
@@ -79,8 +81,9 @@ public class ArticuloService {
     public ArticuloDTO actualizarEstadoArticulo(String id, Estado estado) {
         Articulo articulo = articuloRepository.findById(id).orElseThrow();
         articulo.setEstado(estado);
-        
-        return articuloMapper.mapToArticuloDTO(articuloRepository.save(articulo));
+        Articulo articuloGuardado = articuloRepository.save(articulo);
+        novedadesService.notificarCambioDeEstadoArticulo(articuloGuardado, ZonedDateTime.now());
+        return articuloMapper.mapToArticuloDTO(articuloGuardado);
     }
 
     public EstadisticaDTO getEstadisticasBasicas() {
