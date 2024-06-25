@@ -4,11 +4,16 @@ El objetivo del TP es desarrollar una aplicación que sirva para realizar una
 compra de un producto entre varias personas.
 [Ver enunciado](https://docs.google.com/document/d/e/2PACX-1vRg7hKBnJ80MhyYrISjxbkf13QVZpInt-D6Fgg32tB_BTJwxDdVVlg3PjHW6Qzv-AlopUPsJDJoajPy/pub)
 
+Es posible acceder a través del
+[sitio web](https://compra-conjunta-frontend.vercel.app/) o el
+[bot de Telegram](https://web.telegram.org/k/#@TACSCompraConjuntaBot).
+
 ## Tecnologías
 
 - Backend: Java 21, Spring Boot 3.2.4, Maven 3
 - Frontend: Node 18, Next.js 14.2.3 w/React 18
-- Base de Datos: MongoDB 7.0
+- Telegram: Serverless Framework 4.1.6
+- Bases de Datos: MongoDB 7.0 y Upstash (Redis)
 
 ## Cómo correr la aplicación en local
 
