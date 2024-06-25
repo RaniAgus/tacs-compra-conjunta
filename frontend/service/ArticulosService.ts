@@ -17,3 +17,11 @@ export async function comprarArticulo(articuloId: string): Promise<[ArticuloDTO?
 export async function cancelarCompraArticulo(articuloId: string): Promise<[ArticuloDTO?, string?]> {
   return await Request(`/articulos/${articuloId}/compradores`, "DELETE")
 }
+
+export async function cerrarPublicacion(articuloId: string): Promise<[ArticuloDTO?, string?]> {
+  return await Request(`/articulos/${articuloId}?estado=VENDIDO`, "PATCH")
+}
+
+export async function cancelarPublicacion(articuloId: string): Promise<[ArticuloDTO?, string?]> {
+  return await Request(`/articulos/${articuloId}?estado=CANCELADO`, "PATCH")
+}

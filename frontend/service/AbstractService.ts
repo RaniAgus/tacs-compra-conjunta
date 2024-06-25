@@ -5,7 +5,7 @@ import { cookies } from "next/headers"
 
 const base_url = process.env.BACKEND_URL!
 
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
 export async function Request(url: string, method: HttpMethod, body: any = {}, useToken = true) {
     const defaultHeaders: HeadersInit = {

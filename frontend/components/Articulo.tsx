@@ -23,7 +23,7 @@ function Articulo(props: Props) {
                         className="w-full object-cover max-h-[150px] rounded-lg"
                         src={props.articulo.imagen}
                         alt="Articulo"
-                        width="100%"
+                        width={150}
                         height={150}
                     />
                     <div className="flex flex-row flex-1 gap-8">

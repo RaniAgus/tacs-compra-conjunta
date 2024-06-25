@@ -14,6 +14,7 @@ import Link from "next/link"
 import ModalCompradores from "./ModalCompradores"
 
 function PublicacionesClient({ articulos }: { articulos: ArticuloDTO[] }) {
+  const [articulosClient, setArticulosClient] = useState<ArticuloDTO[]>(articulos)
   const [selectedArticulo, setSelectedArticulo] = useState<ArticuloDTO | null>(null)
   const { isOpen, onOpenChange } = useDisclosure()
 
@@ -54,7 +55,7 @@ function PublicacionesClient({ articulos }: { articulos: ArticuloDTO[] }) {
       {articulos?.length > 0 && (
         <>
           <div className="flex flex-col gap-4 pb-10">
-            {articulos.map((articulo) => (
+            {articulosClient.map((articulo) => (
               <Card
                 key={articulo.id}
                 isBlurred
@@ -136,6 +137,7 @@ function PublicacionesClient({ articulos }: { articulos: ArticuloDTO[] }) {
             isOpen={isOpen}
             onOpenChange={onOpenChange}
             selectedArticulo={selectedArticulo!}
+            setArticulosClient={setArticulosClient}
           />
         </>
       )}
