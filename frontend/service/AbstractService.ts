@@ -28,6 +28,10 @@ export async function Request(url: string, method: HttpMethod, body: any = {}, u
         next: { revalidate: 0 }
     })
 
+    if (response.status === 204) {
+        return success(undefined)
+    }
+
     const data = await response.json()
 
     if (response.ok) {
