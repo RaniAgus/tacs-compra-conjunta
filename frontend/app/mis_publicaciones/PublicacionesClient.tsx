@@ -8,14 +8,16 @@ import { FaUsers } from "react-icons/fa"
 import { IoCopy } from "react-icons/io5"
 
 import { ArticuloDTO } from "@/model/ArticuloDTO"
-import { UsuarioDTO } from "@/model/UsuarioDTO"
 import { useDisclosure } from "@nextui-org/use-disclosure"
 import Link from "next/link"
 import ModalCompradores from "./ModalCompradores"
 
 function PublicacionesClient({ articulos }: { articulos: ArticuloDTO[] }) {
-  const [articulosClient, setArticulosClient] = useState<ArticuloDTO[]>(articulos)
-  const [selectedArticulo, setSelectedArticulo] = useState<ArticuloDTO | null>(null)
+  const [articulosClient, setArticulosClient] =
+    useState<ArticuloDTO[]>(articulos)
+  const [selectedArticulo, setSelectedArticulo] = useState<ArticuloDTO | null>(
+    null
+  )
   const { isOpen, onOpenChange } = useDisclosure()
 
   function cierraEn(deadline: string) {
@@ -28,12 +30,17 @@ function PublicacionesClient({ articulos }: { articulos: ArticuloDTO[] }) {
     if (days == 0) return "Cierra hoy"
   }
 
-  function compradoresFaltan(maxPersonas: number, compradores: UsuarioDTO[]) {
-    return "¡Faltan " + (maxPersonas - compradores.length) + " compradores!"
+  function compradoresFaltan(maxPersonas: number, compradoresLength: number) {
+    if (maxPersonas - compradoresLength == 0) {
+      return "¡Ya se completó!"
+    }
+    return "¡Faltan " + (maxPersonas - compradoresLength) + " compradores!"
   }
 
   async function copiarLinkArticulo(id: string) {
-    await navigator.clipboard.writeText(window.location.origin + "/articulos/" + id)
+    await navigator.clipboard.writeText(
+      window.location.origin + "/articulos/" + id
+    )
     toast.success("Link copiado")
   }
 
@@ -85,7 +92,7 @@ function PublicacionesClient({ articulos }: { articulos: ArticuloDTO[] }) {
                         <h4>
                           {compradoresFaltan(
                             articulo.maxPersonas,
-                            articulo.compradores
+                            articulo.compradores.length
                           )}
                         </h4>
 

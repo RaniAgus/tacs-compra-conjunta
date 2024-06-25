@@ -20,7 +20,7 @@ type ModalCompradoresProps = {
   isOpen: boolean
   onOpenChange: (isOpen: boolean) => void
   selectedArticulo: ArticuloDTO
-  setArticulosClient: (articulos: any) => any
+  setArticulosClient: React.Dispatch<React.SetStateAction<ArticuloDTO[]>>
 }
 
 function ModalCompradores({
@@ -34,12 +34,10 @@ function ModalCompradores({
   async function handleCancelarPublicacion() {
     await cancelarPublicacion(selectedArticulo.id)
       .then(handleErrorClientSide(router))
-      .then(() => {
-        setArticulosClient((articulos) =>
+      .then((articuloDTO: ArticuloDTO) => {
+        setArticulosClient((articulos: ArticuloDTO[]) =>
           articulos.map((articulo) =>
-            articulo.id === selectedArticulo.id
-              ? articuloDTO
-              : articulo
+            articulo.id === selectedArticulo.id ? articuloDTO : articulo
           )
         )
         toast.success("La publicacion se ha cancelado")
@@ -54,12 +52,10 @@ function ModalCompradores({
   async function handleCerrarPublicacion() {
     await cerrarPublicacion(selectedArticulo.id)
       .then(handleErrorClientSide(router))
-      .then((articuloDTO) => {
-        setArticulosClient((articulos) =>
+      .then((articuloDTO: ArticuloDTO) => {
+        setArticulosClient((articulos: ArticuloDTO[]) =>
           articulos.map((articulo) =>
-            articulo.id === selectedArticulo.id
-              ? articuloDTO
-              : articulo
+            articulo.id === selectedArticulo.id ? articuloDTO : articulo
           )
         )
         toast.success("La publicacion se ha cerrado")
@@ -82,8 +78,7 @@ function ModalCompradores({
             <ModalBody>
               {selectedArticulo.compradores.map((comprador) => (
                 <div key={comprador.id}>
-                  <h3>{comprador.nombre}</h3>
-                  <p>{comprador.email}</p>
+                  <h3>{comprador.nombreDeUsuario}</h3>
                 </div>
               ))}
             </ModalBody>
@@ -95,29 +90,28 @@ function ModalCompradores({
                   compradores
                 </p>
               )}
-              {
-
-              <div className="w-full flex flex-row items-center gap-4">
-                <Button
-                  className="w-full flex-1"
-                  color="danger"
-                  onClick={handleCancelarPublicacion}
-                >
-                  Cancelar Publicacion
-                </Button>
-                <Button
-                  className="w-full flex-1"
-                  color="success"
-                  onClick={handleCerrarPublicacion}
-                  isDisabled={
-                    selectedArticulo.compradores.length <
-                    selectedArticulo.minPersonas
-                  }
-                >
-                  Cerrar publicacion
-                </Button>
-              </div>
-              }
+              {selectedArticulo.estado === "ABIERTO" && (
+                <div className="w-full flex flex-row items-center gap-4">
+                  <Button
+                    className="w-full flex-1"
+                    color="danger"
+                    onClick={handleCancelarPublicacion}
+                  >
+                    Cancelar Publicacion
+                  </Button>
+                  <Button
+                    className="w-full flex-1"
+                    color="success"
+                    onClick={handleCerrarPublicacion}
+                    isDisabled={
+                      selectedArticulo.compradores.length <
+                      selectedArticulo.minPersonas
+                    }
+                  >
+                    Cerrar publicacion
+                  </Button>
+                </div>
+              )}
             </ModalFooter>
           </>
         )}

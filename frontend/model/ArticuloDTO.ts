@@ -10,7 +10,7 @@ export type ArticuloDTO = {
   maxPersonas: number
   costo: CostoDTO
   recepcion: string
-  compradores: UsuarioDTO[]
+  compradores: {id:string, nombreDeUsuario:string}[]
   publicador: UsuarioDTO
   estado: string
 }
