@@ -86,7 +86,7 @@ public class ArticuloService {
     public EstadisticaDTO getEstadisticasBasicas() {
         return EstadisticaDTO.builder()
                 .cantPublicacionesCreadas(articuloRepository.count())
-                .cantUsuariosInteractivos(articuloRepository.countAllPublicadoresAndCompradores())
+                .cantUsuariosInteractivos(articuloRepository.countAllPublicadoresAndCompradores().orElse(0L))
                 .build();
     }
 }

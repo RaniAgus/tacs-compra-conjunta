@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EsArticuloRepository extends MongoRepository<Articulo, String> {
     List<Articulo> findByPublicadorId(String usuarioId);
@@ -17,5 +18,5 @@ public interface EsArticuloRepository extends MongoRepository<Articulo, String> 
             "{ $group: { _id: '$_id' } }",
             "{ $count: 'count' }"
     })
-    long countAllPublicadoresAndCompradores();
+    Optional<Long> countAllPublicadoresAndCompradores();
 }
