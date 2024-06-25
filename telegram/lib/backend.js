@@ -9,13 +9,11 @@ module.exports.getArticulos = async (ctx, url) => {
   });
 
   if (response.status === 401) {
-    await ctx.reply('Debe iniciar sesión primero');
-    return ctx.scene.enter(loginScene.id);
+    throw new Error('Debe iniciar sesión primero utilizando el comando /login');
   }
 
   if (!response.ok) {
-    await ctx.reply('Error al obtener los artículos');
-    return ctx.scene.leave();
+    throw new Error('Error al obtener los artículos');
   }
 
   return response.json();
@@ -31,8 +29,7 @@ module.exports.iniciarSesion = async (ctx, data) => {
   });
 
   if (!response.ok) {
-    await ctx.reply('Usuario o contraseña incorrectos');
-    return ctx.scene.leave();
+    throw new Error('Usuario o contraseña incorrectos');
   }
 
   ctx.session = await response.json();

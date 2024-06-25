@@ -15,7 +15,17 @@ bot.use(session({ store }));
 bot.use(stage.middleware());
 
 bot.start((ctx) => ctx.reply(
-  `Hola ${ctx.from.first_name}! Bienvenido a la compra conjunta de productos.`
+`Hola ${ctx.from.first_name}! Bienvenido a la compra conjunta de productos.
+Ingresá /help para ver los comandos disponibles.`
+));
+
+bot.help((ctx) => ctx.reply(
+`Comandos disponibles:
+/login - Iniciar sesión
+/logout - Cerrar sesión
+/articulos - Ver artículos disponibles
+/compras - Ver mis artículos comprados
+/publicaciones - Ver mis publicaciones`
 ));
 
 bot.command('login', ctx => ctx.scene.enter(loginScene.id));
@@ -26,26 +36,38 @@ bot.command('logout', ctx => {
 })
 
 bot.command('articulos', async ctx => {
-  const articulos = await getArticulos(ctx, '/articulos');
-  await ctx.reply(`${articulos.length} artículo${s(articulos)} disponible${s(articulos)}:`);
-  await mostrarArticulos(ctx, articulos, articulo => `${articulo.nombre} - \$${articulo.costo.monto} ${articulo.costo.tipo === 'POR_PERSONA' ? 'por persona' : 'fijo'}`);
+  try {
+    const articulos = await getArticulos(ctx, '/articulos');
+    await ctx.reply(`${articulos.length} artículo${s(articulos)} disponible${s(articulos)}:`);
+    await mostrarArticulos(ctx, articulos, articulo => `${articulo.nombre} - \$${articulo.costo.monto} ${articulo.costo.tipo === 'POR_PERSONA' ? 'por persona' : 'fijo'}`);
+  } catch (err) {
+    await ctx.reply(err.message);
+  }
   return ctx.scene.leave();
 });
 
 bot.command('compras', async ctx => {
-  const articulos = await getArticulos(ctx, '/usuarios/me/compras');
-  await ctx.reply(`${articulos.length} artículo${s(articulos)} comprado${s(articulos)}:`);
-  await mostrarArticulos(ctx, articulos, articulo => `${articulo.nombre} - \$${articulo.costo.monto} ${articulo.costo.tipo === 'POR_PERSONA' ? 'por persona' : 'fijo'}\n Estado: ${articulo.estado} \n ${compradoresFaltan(articulo.maxPersonas, articulo.compradores.length)}`);
+  try {
+    const articulos = await getArticulos(ctx, '/usuarios/me/compras');
+    await ctx.reply(`${articulos.length} artículo${s(articulos)} comprado${s(articulos)}:`);
+    await mostrarArticulos(ctx, articulos, articulo => `${articulo.nombre} - \$${articulo.costo.monto} ${articulo.costo.tipo === 'POR_PERSONA' ? 'por persona' : 'fijo'}\n Estado: ${articulo.estado} \n ${compradoresFaltan(articulo.maxPersonas, articulo.compradores.length)}`);
+  } catch (err) {
+    await ctx.reply(err.message);
+  }
   return ctx.scene.leave();
 });
 
 bot.command('publicaciones', async ctx => {
-  const articulos = await getArticulos(ctx, '/usuarios/me/articulos');
-  await ctx.reply(`${articulos.length} artículo${s(articulos)} publicado${s(articulos)}:`);
-  await mostrarArticulos(ctx, articulos, articulo => {
-    const compradores = articulo.compradores.map(comprador => `- ${comprador.nombreDeUsuario}`).join('\n');
-    return `${articulo.nombre} - \$${articulo.costo.monto} ${articulo.costo.tipo === 'POR_PERSONA' ? 'por persona' : 'fijo'}\n Estado: ${articulo.estado} \n ${compradoresFaltan(articulo.maxPersonas, articulo.compradores.length)} \n Compradores:\n ${compradores}`
-  });
+  try {
+    const articulos = await getArticulos(ctx, '/usuarios/me/articulos');
+    await ctx.reply(`${articulos.length} artículo${s(articulos)} publicado${s(articulos)}:`);
+    await mostrarArticulos(ctx, articulos, articulo => {
+      const compradores = articulo.compradores.map(comprador => `- ${comprador.nombreDeUsuario}`).join('\n');
+      return `${articulo.nombre} - \$${articulo.costo.monto} ${articulo.costo.tipo === 'POR_PERSONA' ? 'por persona' : 'fijo'}\n Estado: ${articulo.estado} \n ${compradoresFaltan(articulo.maxPersonas, articulo.compradores.length)} \n Compradores:\n ${compradores}`
+    });
+  } catch (err) {
+    await ctx.reply(err.message);
+  }
   return ctx.scene.leave();
 });
 
