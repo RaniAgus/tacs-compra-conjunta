@@ -1,3 +1,13 @@
+terraform {
+  cloud {
+    organization = "raniagus"
+
+    workspaces {
+      name = "tacs-compra-conjunta"
+    }
+  }
+}
+
 module "db" {
   source = "./db"
 

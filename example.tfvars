@@ -15,3 +15,12 @@ cloudflare_public_endpoint = "https://pub-endpoint.r2.dev"
 
 vercel_api_token = "your_vercel_api_token"
 vercel_org_id    = "your_vercel_team_id"
+
+upstash_user    = "your_upstash_user"
+upstash_api_key = "your_upstash_api_key"
+
+telegram_bot_token      = "your_telegram_bot_token"
+telegram_webhook_secret = "a_telegram_webhook_secret"
+
+aws_public_key = "your_aws_public_key"
+aws_secret_key = "value_aws_secret_key"
