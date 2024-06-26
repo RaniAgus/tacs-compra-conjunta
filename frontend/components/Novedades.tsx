@@ -53,11 +53,11 @@ export const Novedades = () => {
                                 variant="light"
                                 size="sm"
                                 onClick={markAllAsRead}
-                                className={'border-0 hover:bg-neutral-200' + `${!hasUnreadNotifications ? "hidden" : ""}`}
+                                isDisabled={!hasUnreadNotifications}
                             >
                                 Leer todas
                             </Button>
-                            <Button variant="light" isIconOnly={true} onClick={() => setGenerate(g => !g)} className='border-0 '>
+                            <Button variant="light" isIconOnly={true} onClick={() => setGenerate(g => !g)}>
                                 <RefreshCwIcon className="h-4 w-4" />
                             </Button>
                         </div>
@@ -71,7 +71,7 @@ export const Novedades = () => {
                                 ? "opacity-60 cursor-default hover:bg-transparent"
                                 : "cursor-pointer hover:bg-neutral-200 dark:hover:bg-neutral-700"
                                 }`}
-                            onClick={() => markAsRead(notification.id)}
+                            onClick={notification.isRead ? undefined : () => markAsRead(notification.id)}
                         >
                             <div>
                                 <div className="flex flex-row gap-2">
