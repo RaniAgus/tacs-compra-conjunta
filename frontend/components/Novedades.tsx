@@ -5,77 +5,84 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export const Novedades = () => {
-    const [unreadNotifications, setUnreadNotifications] = useState<NovedadDTO[]>([] as NovedadDTO[])
+    const [unreadNotifications, setUnreadNotifications] = useState<(NovedadDTO & { isRead?: true })[]>([])
+    const [generate, setGenerate] = useState(false)
     const router = useRouter();
-
-    const setNovedades = async () => {
-        const novedades = await getNovedades().then(handleErrorClientSide(router))
-        if (novedades) {
-            setUnreadNotifications(novedades)
-        }
-    }
-
+    useEffect(() => { import ('@github/relative-time-element') }, []);
     useEffect(() => {
-        setNovedades()
-    }, [])
+        getNovedades()
+            .then(handleErrorClientSide(router))
+            .then((novedades) => setUnreadNotifications((notifications) => {
+                const newNotifications = novedades.filter((novedad) => !notifications.some((notification) => notification.id === novedad.id))
+                return [...newNotifications, ...notifications];
+            }))
+    }, [router, generate])
 
 
     const markAsRead = async (id: string) => {
         await leerNovedad(id).then(handleErrorClientSide(router))
-        setUnreadNotifications(unreadNotifications.filter((notification) => notification.id !== id))
+        setUnreadNotifications(unreadNotifications.map((notification) => notification.id === id ?
+            { ...notification, isRead: true } : notification))
     }
+
     const markAllAsRead = async () => {
         await leerTodasNovedades().then(handleErrorClientSide(router))
-        setUnreadNotifications([])
+        setUnreadNotifications(unreadNotifications.map((notification) => ({ ...notification, isRead: true })));
     }
-    const hasUnreadNotifications = unreadNotifications.length > 0
+
+    const hasUnreadNotifications = unreadNotifications.filter((notification) => !notification.isRead).length > 0
 
     return (
-        <Dropdown className="relative">
+        <Dropdown className="relative" closeOnSelect={false}>
             <DropdownTrigger>
-                <Button variant="ghost">
+                <Button variant="light" isIconOnly={true}>
                     <BellIcon className="h-6 w-6" />
-                    {hasUnreadNotifications && <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500" />}
+                    {hasUnreadNotifications && <span className="absolute top-1 right-1 h-2 w-2 rounded-lg bg-red-500" />}
                 </Button>
             </DropdownTrigger>
 
-            <DropdownMenu className="w-[400px] p-4 max-h-screen overflow-auto bg-gray-200 dark:bg-gray-500 rounded-lg">
-                <DropdownItem className="nextuidropdown">
-                    <div className="flex flex-row gap-2 items-center">
+            <DropdownMenu className="w-[400px] p-4 max-h-screen overflow-auto">
+                <DropdownItem
+                    className="nextuidropdown"
+                    onClick={(e) => e.preventDefault()}
+                >
+                    <div className="flex flex-row gap-2 items-center justify-between">
                         <h3 className="text-lg font-medium">Novedades</h3>
                         <div className="flex items-center gap-2">
                             <Button
-                                variant="ghost"
+                                variant="light"
                                 size="sm"
                                 onClick={markAllAsRead}
-                                className={`${!hasUnreadNotifications ? "hidden" : ""}`}
+                                className={'border-0 hover:bg-neutral-200' + `${!hasUnreadNotifications ? "hidden" : ""}`}
                             >
                                 Leer todas
                             </Button>
-                            <Button variant="ghost" onClick={setNovedades}>
+                            <Button variant="light" isIconOnly={true} onClick={() => setGenerate(g => !g)} className='border-0 '>
                                 <RefreshCwIcon className="h-4 w-4" />
                             </Button>
                         </div>
                     </div>
                 </DropdownItem>
-                <DropdownItem className="nextuidropdown h-full">
+                <DropdownItem className="nextuidropdown h-full" onClick={(e) => e.preventDefault()}>
                     {unreadNotifications.map((notification) => (
                         <div
                             key={notification.id}
-                            className={`flex items-center justify-between rounded-md p-2 transition-colors ${notification
-                                ? "opacity-50 cursor-default hover:bg-transparent"
-                                : "cursor-pointer hover:bg-muted novedad"
+                            className={`grid grid-cols-[1fr_9em_2em] items-center rounded-md p-2 transition-colors ${notification.isRead
+                                ? "opacity-60 cursor-default hover:bg-transparent"
+                                : "cursor-pointer hover:bg-neutral-200 dark:hover:bg-neutral-700"
                                 }`}
                             onClick={() => markAsRead(notification.id)}
                         >
                             <div>
                                 <div className="flex flex-row gap-2">
                                     <p className="font-medium">{notification.nombre}</p>
-                                    <p className="text-sm">${notification.monto}</p>
                                 </div>
-                                <p className="text-sm text-muted-foreground">{notification.estado} el {new Date(notification.hora).toUTCString()}</p>
+                                <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                                    {notification.estado === "VENDIDO" ? `Comprado por \$${notification.monto} ` : "Cancelado "}
+                                </p>
                             </div>
-                            {!notification && <span className="ml-4 h-2 w-2 rounded-full bg-red-500" />}
+                            <relative-time datetime={notification.hora}></relative-time>
+                            {!notification.isRead && <span className="z-10 ml-4 h-2 w-2 rounded-full bg-red-500" />}
                         </div>
                     ))}
                 </DropdownItem>
