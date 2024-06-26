@@ -23,11 +23,13 @@ public class NovedadesService {
     }
 
     public void deleteNovedad(String id) {
-        novedadesRepository.delete(novedadesRepository.findById(id).orElseThrow());
+        Usuario usuario = UsuarioUtils.obtenerUsuario();
+        novedadesRepository.deleteAllByIdAndIdUsuario(id, usuario.getId());
     }
 
     public void deleteAllNovedades() {
-        novedadesRepository.deleteAll();
+        Usuario usuario = UsuarioUtils.obtenerUsuario();
+        novedadesRepository.deleteAllByIdUsuario(usuario.getId());
     }
 
     public void notificarCambioDeEstadoArticulo(Articulo articulo, ZonedDateTime hora) {
