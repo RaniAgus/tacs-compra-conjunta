@@ -10,6 +10,7 @@ import toast from 'react-hot-toast'
 import { Button, Input } from '@nextui-org/react'
 import { IoEyeOffSharp, IoEyeSharp } from 'react-icons/io5'
 import Link from 'next/link'
+import { LOGIN_ERROR } from '../utils/constants'
 
 function Login() {
     const [usuario, setUsuario] = useAtom(user)
@@ -59,13 +60,16 @@ function Login() {
         }
 
         await iniciarSesion(iniciarSesionDTO)
-            .then(handleErrorClientSide(router))
+            .then(handleErrorClientSide())
             .then(() => {
                 setUsuario(null) // This is to trigger the useUsuario hook
                 toast.success("Inicio de sesion exitoso")
                 router.push("/")
             })
-            .catch((error) => toast.error(error.message))
+            .catch((error) => error.message === LOGIN_ERROR ?
+                  toast.error("Usuario o contraseña incorrectos")
+                : toast.error(error.message)
+            );
 
     }
 
