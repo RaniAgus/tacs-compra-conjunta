@@ -15,6 +15,8 @@ Es posible acceder a través del
 - Telegram: Serverless Framework 4.1.6
 - Bases de Datos: MongoDB 7.0 y Upstash (Redis)
 
+![tacs](docs/diagram.png)
+
 ## Cómo correr la aplicación en local
 
 ### S3
