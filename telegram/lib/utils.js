@@ -2,6 +2,25 @@ const { Context } = require('telegraf');
 const { Articulo } = require('./backend');
 
 /**
+ *
+ * @param {Context<import('@telegraf/types').Update>} ctx
+ * @param {Array<Articulo>} articulos
+ * @param {{ type: string, showCompradores?: true }} options
+ *
+ * @returns {{ title: string, media: import('@telegraf/types').InputMediaPhoto[]}}
+ */
+const convertToMediaGroup = (articulos, opts) => {
+  return {
+    title: `${articulos.length} artículo${s(articulos)} ${opts.type}${s(articulos)}`,
+    media: articulos.map(articulo => ({
+      type: 'photo',
+      media: articulo.imagen,
+      caption: `${articulo.nombre} - ${costo(articulo)}\n${estado(articulo)}${compradores(articulo, opts)}`,
+    })),
+  };
+}
+
+/**
  * @param {Articulo} articulo
  * @returns {string} El costo del artículo formateado.
  */
@@ -46,21 +65,6 @@ const s = (value, plural = 's', singular = '') => {
   return (Array.isArray(value) ? value.length : value) === 1 ? singular : plural;
 }
 
-/**
- *
- * @param {Context<import('@telegraf/types').Update>} ctx
- * @param {Array<Articulo>} articulos
- * @param {{ showCompradores?: true }} options
- */
-const mostrarArticulos = async (ctx, articulos, opts) => {
-  for (const articulo of articulos) {
-    await ctx.replyWithPhoto({ url: articulo.imagen }, {
-      caption: `${articulo.nombre} - ${costo(articulo)}\n${estado(articulo)}${compradores(articulo, opts)}`,
-    });
-  }
-}
-
 module.exports = {
-  s,
-  mostrarArticulos,
+  convertToMediaGroup,
 };

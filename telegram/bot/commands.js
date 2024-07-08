@@ -1,7 +1,7 @@
 const { Middleware, Context } = require('telegraf');
 const scenes = require('./scenes');
 const { getArticulos } = require('../lib/backend');
-const { s, mostrarArticulos } = require('../lib/utils');
+const { convertToMediaGroup } = require('../lib/utils');
 
 /**
  * @typedef {Object} Command
@@ -32,8 +32,9 @@ commands.articulos = {
   handler: async ctx => {
     try {
       const articulos = await getArticulos('/articulos', ctx.session.token);
-      await ctx.reply(`${articulos.length} artículo${s(articulos)} disponible${s(articulos)}:`);
-      await mostrarArticulos(ctx, articulos);
+      const { title, media } = convertToMediaGroup(articulos, { type: 'disponible' });
+      await ctx.reply(title);
+      await ctx.sendMediaGroup(media, { disable_notification: true });
     } catch (err) {
       await ctx.reply(err.message);
     }
@@ -46,8 +47,9 @@ commands.compras = {
   handler: async ctx => {
     try {
       const articulos = await getArticulos('/usuarios/me/compras', ctx.session.token);
-      await ctx.reply(`${articulos.length} artículo${s(articulos)} comprado${s(articulos)}:`);
-      await mostrarArticulos(ctx, articulos);
+      const { title, media } = convertToMediaGroup(articulos, { type: 'comprado' });
+      await ctx.reply(title);
+      await ctx.sendMediaGroup(media, { disable_notification: true });
     } catch (err) {
       await ctx.reply(err.message);
     }
@@ -60,8 +62,9 @@ commands.publicaciones = {
   handler: async ctx => {
     try {
       const articulos = await getArticulos('/usuarios/me/articulos', ctx.session.token);
-      await ctx.reply(`${articulos.length} artículo${s(articulos)} publicado${s(articulos)}:`);
-      await mostrarArticulos(ctx, articulos, { showCompradores: true });
+      const { title, media } = convertToMediaGroup(articulos, { type: 'publicado', showCompradores: true });
+      await ctx.reply(title);
+      await ctx.sendMediaGroup(media, { disable_notification: true });
     } catch (err) {
       await ctx.reply(err.message);
     }
