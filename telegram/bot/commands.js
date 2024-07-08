@@ -1,7 +1,7 @@
 const { Middleware, Context } = require('telegraf');
 const scenes = require('./scenes');
 const { getArticulos } = require('../lib/backend');
-const { s, mostrarArticulos } = require('../lib/utils');
+const { s, mostrarArticulos, compradoresFaltan } = require('../lib/utils');
 
 /**
  * @typedef {Object} Command
