@@ -42,7 +42,7 @@ Este paso solo es necesario la primera vez que se configura el webhook, ya que
 debemos indicarle a Telegram la URL del mismo.
 
 ```sh
-npm run set:webhook "$(sls info --verbose 2> /dev/null | grep POST | awk '{print $4}')"
+npm run bot:deploy
 ```
 
 ## Chequear logs
@@ -51,4 +51,14 @@ Si queremos ver los logs del webhook, podemos hacerlo con el siguiente comando:
 
 ```sh
 sls logs -f webhook
+```
+
+## Destruir
+
+Si queremos destruir la infraestructura creada, podemos hacerlo con los
+siguientes comandos:
+
+```sh
+sls remove
+npm run bot:remove
 ```

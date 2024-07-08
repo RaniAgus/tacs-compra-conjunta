@@ -1,4 +1,5 @@
 const { Telegram } = require('telegraf');
+const commands = require('../bot/commands');
 
 const TELEGRAM_BOT_TOKEN      = process.env.TELEGRAM_BOT_TOKEN,
       TELEGRAM_WEBHOOK_SECRET = process.env.TELEGRAM_WEBHOOK_SECRET,
@@ -15,7 +16,7 @@ if (!TELEGRAM_BOT_TOKEN) {
 }
 
 if (!WEBHOOK_URL) {
-  errors.push('Expected usage: npm run set:webhook <WEBHOOK_URL>');
+  errors.push('Expected usage: npm run bot:deploy <WEBHOOK_URL>');
 }
 
 if (errors.length > 0) {
@@ -25,10 +26,18 @@ if (errors.length > 0) {
 
 const telegram = new Telegram(TELEGRAM_BOT_TOKEN);
 
-telegram.setWebhook(WEBHOOK_URL, { secret_token: TELEGRAM_WEBHOOK_SECRET })
-   .then(() => {
-     console.log('Webhook set successfully: ', WEBHOOK_URL);
-   })
-   .catch(err => {
-     console.error('Error setting webhook: ', err);
-   });
+telegram.setWebhook(WEBHOOK_URL, {
+  secret_token: TELEGRAM_WEBHOOK_SECRET,
+}).then(() => {
+  console.log('Webhook set successfully: ', WEBHOOK_URL);
+}).catch(err => {
+  console.error('Error setting webhook: ', err);
+});
+
+telegram.setMyCommands(
+  Object.entries(commands).map(([command, { description }]) => ({ command, description }))
+).then(() => {
+  console.log('Commands set successfully');
+}).catch(err => {
+  console.error('Error setting commands: ', err);
+});

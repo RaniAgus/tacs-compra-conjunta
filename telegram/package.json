@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "echo \"Use 'sls' cli to deploy the service or run the functions locally\"",
-    "set:webhook": "node setWebhook.js"
+    "bot:deploy": "node scripts/deploy.js \"$(sls info --verbose | grep POST | awk '{print $4}')\"",
+    "bot:remove": "node scripts/remove.js"
   },
   "keywords": [],
   "author": "",
