@@ -23,7 +23,7 @@ scenes.login = new Scenes.WizardScene(
     ctx.wizard.state.data.contrasenia = ctx.message.text;
     ctx.deleteMessage(ctx.message.message_id);
     try {
-      ctx.session = await iniciarSesion(ctx, ctx.wizard.state.data);
+      ctx.session = await iniciarSesion(ctx.wizard.state.data);
       await ctx.reply("Inicio de sesión exitoso");
     } catch (err) {
       await ctx.reply(err.message);
