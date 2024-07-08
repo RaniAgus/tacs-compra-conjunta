@@ -1,8 +1,13 @@
 const { Scenes } = require('telegraf');
 const { iniciarSesion } = require('../lib/backend');
 
-module.exports.loginScene = new Scenes.WizardScene(
-  "Login",
+/**
+ * @type {{[name: string]: Scenes.BaseScene<Scenes.SceneContext>}}
+ */
+const scenes = {};
+
+scenes.login = new Scenes.WizardScene(
+  'login',
   async (ctx) => {
     ctx.wizard.state.data = {};
     await ctx.reply("Ingrese su usuario");
@@ -18,7 +23,7 @@ module.exports.loginScene = new Scenes.WizardScene(
     ctx.wizard.state.data.contrasenia = ctx.message.text;
     ctx.deleteMessage(ctx.message.message_id);
     try {
-      await iniciarSesion(ctx, ctx.wizard.state.data);
+      ctx.session = await iniciarSesion(ctx, ctx.wizard.state.data);
       await ctx.reply("Inicio de sesión exitoso");
     } catch (err) {
       await ctx.reply(err.message);
@@ -26,3 +31,5 @@ module.exports.loginScene = new Scenes.WizardScene(
     return ctx.scene.leave();
   },
 );
+
+module.exports = scenes;
