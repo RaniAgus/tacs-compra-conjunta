@@ -1,6 +1,6 @@
-const { bot } = require('./scenes');
+const bot = require('./bot');
 
-module.exports.webhook = async (event, context, callback) => {
+module.exports.webhook = async (event, _context, _callback) => {
   if (event.headers?.['X-Telegram-Bot-Api-Secret-Token'] !== process.env.TELEGRAM_WEBHOOK_SECRET) {
     return {
       statusCode: 403,
