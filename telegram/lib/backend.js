@@ -29,6 +29,10 @@ module.exports.getArticulos = async (url, token) => {
   });
 
   if (response.status === 401) {
+    throw new Error('Sesión expirada, inicie sesión nuevamente utilizando el comando /login');
+  }
+
+  if (response.status === 403) {
     throw new Error('Debe iniciar sesión primero utilizando el comando /login');
   }
 
