@@ -1,7 +1,7 @@
 const { Middleware, Context } = require('telegraf');
 const scenes = require('./scenes');
 const { getArticulos } = require('../lib/backend');
-const { s, mostrarArticulos, compradoresFaltan } = require('../lib/utils');
+const { s, mostrarArticulos } = require('../lib/utils');
 
 /**
  * @typedef {Object} Command
@@ -33,7 +33,7 @@ commands.articulos = {
     try {
       const articulos = await getArticulos('/articulos', ctx.session.token);
       await ctx.reply(`${articulos.length} artículo${s(articulos)} disponible${s(articulos)}:`);
-      await mostrarArticulos(ctx, articulos, articulo => `${articulo.nombre} - \$${articulo.costo.monto} ${articulo.costo.tipo === 'POR_PERSONA' ? 'por persona' : 'fijo'}`);
+      await mostrarArticulos(ctx, articulos);
     } catch (err) {
       await ctx.reply(err.message);
     }
@@ -47,7 +47,7 @@ commands.compras = {
     try {
       const articulos = await getArticulos('/usuarios/me/compras', ctx.session.token);
       await ctx.reply(`${articulos.length} artículo${s(articulos)} comprado${s(articulos)}:`);
-      await mostrarArticulos(ctx, articulos, articulo => `${articulo.nombre} - \$${articulo.costo.monto} ${articulo.costo.tipo === 'POR_PERSONA' ? 'por persona' : 'fijo'}\n Estado: ${articulo.estado} \n ${compradoresFaltan(articulo.maxPersonas, articulo.compradores.length)}`);
+      await mostrarArticulos(ctx, articulos);
     } catch (err) {
       await ctx.reply(err.message);
     }
@@ -61,10 +61,7 @@ commands.publicaciones = {
     try {
       const articulos = await getArticulos('/usuarios/me/articulos', ctx.session.token);
       await ctx.reply(`${articulos.length} artículo${s(articulos)} publicado${s(articulos)}:`);
-      await mostrarArticulos(ctx, articulos, articulo => {
-        const compradores = articulo.compradores.map(comprador => `- ${comprador.nombreDeUsuario}`).join('\n');
-        return `${articulo.nombre} - \$${articulo.costo.monto} ${articulo.costo.tipo === 'POR_PERSONA' ? 'por persona' : 'fijo'}\n Estado: ${articulo.estado} \n ${compradoresFaltan(articulo.maxPersonas, articulo.compradores.length)} \n Compradores:\n ${compradores}`
-      });
+      await mostrarArticulos(ctx, articulos, { showCompradores: true });
     } catch (err) {
       await ctx.reply(err.message);
     }

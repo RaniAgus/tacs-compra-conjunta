@@ -24,19 +24,14 @@ module.exports.webhook = async (event, _context, _callback) => {
 
   try {
     await bot.handleUpdate(body);
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Update handled',
-      })
-    };
   } catch (err) {
     console.error('Error handling update:', err);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: 'Error handling update',
-      })
-    };
   }
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: 'Update handled',
+    })
+  };
 };
