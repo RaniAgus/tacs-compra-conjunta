@@ -7,7 +7,17 @@ const base_url = process.env.BACKEND_URL!
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
-export async function Request(url: string, method: HttpMethod, body: any = {}, useToken = true) {
+export type Result<T> = { ok: true, data: T } | { ok: false, error: string };
+
+function success<T>(data: T): Result<T> {
+    return { ok: true, data };
+}
+
+function error<T>(error: string): Result<T> {
+    return { ok: false, error };
+}
+
+export async function Request<T>(url: string, method: HttpMethod, body: any = {}, useToken = true): Promise<Result<T>> {
     const defaultHeaders: HeadersInit = {
         'Content-Type': 'application/json',
     }
@@ -29,7 +39,7 @@ export async function Request(url: string, method: HttpMethod, body: any = {}, u
     })
 
     if (response.status === 204) {
-        return success(undefined)
+        return success(null as any)
     }
 
     const data = await response.json()
@@ -43,23 +53,8 @@ export async function Request(url: string, method: HttpMethod, body: any = {}, u
     }
 
     if (data.errors?.fields) {
-        return error(Object.values(data.errors.fields).join("\n"))
+        return error(Object.values(data.errors.fields).join(', '))
     }
 
     return error(data.error || data.title)
-}
-
-export async function success<T>(data: T): Promise<[T?, string?]> {
-    return [data, undefined]
-}
-
-export async function error<T>(error: string): Promise<[T?, string?]> {
-    return [undefined, error]
-}
-
-export async function map<T, U>([data, error]: [T?, string?], f: (data: T) => U): Promise<[U?, string?]> {
-    if (error) {
-        return [undefined, error]
-    }
-    return [f(data!), undefined]
 }

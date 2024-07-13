@@ -1,11 +1,15 @@
 import { redirect } from 'next/navigation';
 import { LOGIN_ERROR } from './constants';
+import { Result } from '@/service/AbstractService';
 
-export const handleErrorServerSide = <T>([data, error]: [T?, string?]): T => {
-  if (error === LOGIN_ERROR) {
-    redirect('/login');
-  } else if (error) {
-    throw new Error(error);
+export const handleErrorServerSide = <T>(result: Result<T>): T => {
+  if (result.ok) {
+    return result.data;
   }
-  return data!;
+
+  if (result.error === LOGIN_ERROR) {
+    redirect('/login');
+  }
+
+  throw new Error(result.error);
 }

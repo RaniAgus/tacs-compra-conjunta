@@ -2,23 +2,20 @@ import { NextRequest, NextResponse } from 'next/server'
 import { obtenerUsuario } from './service/UsuarioService';
 
 export async function middleware(request: NextRequest) {
-  const [usuario, error] = await obtenerUsuario()
+  const { ok } = await obtenerUsuario()
 
-  const isLoginOrRegisterPath =
-    request.nextUrl.pathname.startsWith('/login') ||
-    request.nextUrl.pathname.startsWith('/register')
+  if (ok !== [
+    '/login',
+    '/register',
+  ].includes(request.nextUrl.pathname)) {
+    return NextResponse.next()
+  }
 
-  const isUserLoggedIn = usuario !== undefined && error === undefined
-
-  if (isLoginOrRegisterPath && isUserLoggedIn) {
+  if (ok) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  if (!isLoginOrRegisterPath && !isUserLoggedIn) {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
-
-  return NextResponse.next()
+  return NextResponse.redirect(new URL('/login', request.url))
 }
 
 export const config = {
