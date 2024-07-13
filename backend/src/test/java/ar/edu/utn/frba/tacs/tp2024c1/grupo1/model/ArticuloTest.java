@@ -3,7 +3,6 @@ package ar.edu.utn.frba.tacs.tp2024c1.grupo1.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.CompradorInvalidoException;
@@ -11,7 +10,7 @@ import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.CupoArticuloExcedidoExcept
 import org.junit.jupiter.api.Test;
 
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.ArticuloFinalizadoException;
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.LimiteCompradores;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.LimiteCompradoresException;
 
 class ArticuloTest {
 
@@ -77,7 +76,7 @@ class ArticuloTest {
         articulo.agregarComprador(generarUsuario("gabriela"));
         articulo.agregarComprador(generarUsuario("agustina"));
 
-        assertThrows(LimiteCompradores.class, () -> {
+        assertThrows(LimiteCompradoresException.class, () -> {
                 articulo.agregarComprador(comprador);
         });
     }

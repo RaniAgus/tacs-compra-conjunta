@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.configuration.JwtFilter;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.component.JwtFilter;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.dto.ArticuloDTO;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.dto.CrearArticuloDTO;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.service.ArticuloService;

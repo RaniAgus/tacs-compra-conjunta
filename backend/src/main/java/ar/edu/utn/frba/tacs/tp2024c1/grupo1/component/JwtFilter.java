@@ -1,6 +1,6 @@
-package ar.edu.utn.frba.tacs.tp2024c1.grupo1.configuration;
+package ar.edu.utn.frba.tacs.tp2024c1.grupo1.component;
 
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.TokenNoValido;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.TokenNoValidoException;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -50,7 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             passFilter(request, response, filterChain, userDetails);
         } catch (Exception e) {
-            handlerExceptionResolver.resolveException(request, response, null, new TokenNoValido());
+            handlerExceptionResolver.resolveException(request, response, null, new TokenNoValidoException());
         }
     }
 

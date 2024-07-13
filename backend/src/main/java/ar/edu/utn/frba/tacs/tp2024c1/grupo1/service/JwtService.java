@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.tacs.tp2024c1.grupo1.service;
 
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.configuration.JwtProperties;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.configuration.JwtConfiguration;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -19,13 +19,13 @@ import java.util.function.Function;
 @Service
 @RequiredArgsConstructor
 public class JwtService {
-    private final JwtProperties jwtProperties;
+    private final JwtConfiguration jwtConfiguration;
 
     public String generarToken(Usuario usuario) {
         return Jwts.builder()
                 .subject(usuario.getNombreDeUsuario())
                 .issuedAt(Date.from(Instant.now()))
-                .expiration(Date.from(Instant.now().plus(jwtProperties.getExpirationTime(), ChronoUnit.MINUTES)))
+                .expiration(Date.from(Instant.now().plus(jwtConfiguration.getExpirationTime(), ChronoUnit.MINUTES)))
                 .signWith(getSigningKey())
                 .compact();
     }
@@ -57,7 +57,7 @@ public class JwtService {
     }
 
     private SecretKey getSigningKey() {
-        byte[] secretBytes = Decoders.BASE64.decode(jwtProperties.getSecretKey());
+        byte[] secretBytes = Decoders.BASE64.decode(jwtConfiguration.getSecretKey());
         return Keys.hmacShaKeyFor(secretBytes);
     }
 

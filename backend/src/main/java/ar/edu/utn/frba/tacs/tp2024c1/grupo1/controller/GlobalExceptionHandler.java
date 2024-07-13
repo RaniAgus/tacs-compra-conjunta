@@ -56,7 +56,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildDefaultException(HttpStatus.BAD_REQUEST, "Invalid file");
     }
 
-    @ExceptionHandler({TokenNoValido.class, CredencialesInvalidas.class})
+    @ExceptionHandler({TokenNoValidoException.class, CredencialesInvalidasException.class})
     public ResponseEntity<Object> handleUnauthorized(Exception ex) {
         return buildDefaultException(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
@@ -75,8 +75,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             ArticuloFinalizadoException.class,
             CompradorInvalidoException.class,
             CupoArticuloExcedidoException.class,
-            LimiteCompradores.class,
-            UsuarioYaExiste.class,
+            LimiteCompradoresException.class,
+            UsuarioYaExisteException.class,
     })
     public ResponseEntity<Object> handleConflict(Exception ex) {
         return buildDefaultException(HttpStatus.CONFLICT, ex.getMessage());

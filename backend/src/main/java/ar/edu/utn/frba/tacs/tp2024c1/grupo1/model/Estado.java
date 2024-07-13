@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 public enum Estado {
     ABIERTO(false),
+    COMPLETO(false),
     VENDIDO(true),
     CANCELADO(true);
 

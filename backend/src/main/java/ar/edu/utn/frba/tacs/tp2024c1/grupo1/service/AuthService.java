@@ -3,8 +3,8 @@ package ar.edu.utn.frba.tacs.tp2024c1.grupo1.service;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.dto.AuthResponseDTO;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.dto.IniciarSesionDTO;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.dto.RegistrarseDTO;
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.CredencialesInvalidas;
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.UsuarioYaExiste;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.CredencialesInvalidasException;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.UsuarioYaExisteException;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.mapping.UsuarioMapper;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.model.Usuario;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.repository.EsUsuarioRepository;
@@ -23,7 +23,7 @@ public class AuthService {
 
     public AuthResponseDTO registrarse(RegistrarseDTO registrarseDTO) {
         if (usuarioRepository.existsByNombreDeUsuario(registrarseDTO.nombreDeUsuario())) {
-            throw new UsuarioYaExiste();
+            throw new UsuarioYaExisteException();
         }
 
         Usuario usuario = usuarioMapper.mapToUsuario(registrarseDTO);
@@ -36,7 +36,7 @@ public class AuthService {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(iniciarSesionDTO.nombreDeUsuario(), iniciarSesionDTO.contrasenia()));
         } catch (Exception e) {
-            throw new CredencialesInvalidas();
+            throw new CredencialesInvalidasException();
         }
 
         Usuario usuario = usuarioRepository.findByNombreDeUsuario(iniciarSesionDTO.nombreDeUsuario()).orElseThrow();

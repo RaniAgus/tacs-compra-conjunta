@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.tacs.tp2024c1.grupo1.configuration;
 
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.component.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

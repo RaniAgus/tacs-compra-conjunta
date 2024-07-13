@@ -3,7 +3,7 @@ package ar.edu.utn.frba.tacs.tp2024c1.grupo1.model;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.ArticuloFinalizadoException;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.CompradorInvalidoException;
 import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.CupoArticuloExcedidoException;
-import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.LimiteCompradores;
+import ar.edu.utn.frba.tacs.tp2024c1.grupo1.exception.LimiteCompradoresException;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -39,12 +39,12 @@ public class Articulo {
     private Estado estado = Estado.ABIERTO;
 
     public void agregarComprador(Usuario usuario) {
-        if (getMaxPersonas() <= getCompradores().size()) {
-            throw new LimiteCompradores();
-        }
-
         if (getPublicador().getId().equals(usuario.getId())) {
             throw new CompradorInvalidoException("El comprador y vendedor no pueden ser la misma persona");
+        }
+
+        if (getEstado().equals(Estado.COMPLETO)) {
+            throw new LimiteCompradoresException("Se alcanzó el límite de compradores para este artículo.");
         }
 
         if (getEstado().esFinal()) {
@@ -56,6 +56,10 @@ public class Articulo {
         }
 
         this.compradores.add(new Comprador(usuario.getId(), usuario.getNombreDeUsuario()));
+
+        if (getCompradores().size() >= getMaxPersonas()) {
+            setEstado(Estado.COMPLETO);
+        }
     }
 
     public void eliminarComprador(Usuario usuario) {
@@ -68,6 +72,7 @@ public class Articulo {
         }
 
         this.compradores.removeIf(comp -> comp.getId().equals(usuario.getId()));
+        setEstado(Estado.ABIERTO);
     }
 
     public void setEstado(Estado estado) {
@@ -80,14 +85,12 @@ public class Articulo {
             throw new ArticuloFinalizadoException("El articulo ya cerró por lo que no puede ser modificado");
         }
 
-        if (estado == Estado.VENDIDO) {
-            if (getCompradores().size() < getMinPersonas()) {
-                throw new CupoArticuloExcedidoException("Hay menos compradores de los permitidos", getCompradores().size(), getMinPersonas(), getMaxPersonas());
-            }
+        if (estado == Estado.COMPLETO && (getCompradores().size() != getMaxPersonas())) {
+            throw new LimiteCompradoresException("No se puede completar el artículo si no se llegó al límite de compradores");
+        }
 
-            if (getCompradores().size() > getMaxPersonas()) {
-                throw new CupoArticuloExcedidoException("Hay más compradores de los permitidos", getCompradores().size(), getMinPersonas(), getMaxPersonas());
-            }
+        if (estado == Estado.VENDIDO && getCompradores().size() < getMinPersonas()) {
+            throw new CupoArticuloExcedidoException("Hay menos compradores de los permitidos", getCompradores().size(), getMinPersonas(), getMaxPersonas());
         }
 
         this.estado = estado;
