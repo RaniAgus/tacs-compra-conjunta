@@ -5,7 +5,7 @@ compra de un producto entre varias personas.
 [Ver enunciado](https://docs.google.com/document/d/e/2PACX-1vRg7hKBnJ80MhyYrISjxbkf13QVZpInt-D6Fgg32tB_BTJwxDdVVlg3PjHW6Qzv-AlopUPsJDJoajPy/pub)
 
 Es posible acceder a través del
-[sitio web](https://compra-conjunta-frontend.vercel.app/) o el
+[sitio web](https://tacs-compra-conjunta.vercel.app/) o el
 [bot de Telegram](https://web.telegram.org/k/#@TACSCompraConjuntaBot).
 
 ## Tecnologías
