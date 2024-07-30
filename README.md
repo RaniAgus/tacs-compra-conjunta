@@ -181,3 +181,5 @@ tengamos levantados.
 | Lingeri, Martín   | [@MartinLingeri](https://github.com/MartinLingeri)   |
 | Pesce, Franco     | [@fpesce27](https://github.com/fpesce27)             |
 | Ranieri, Agustín  | [@RaniAgus](https://github.com/RaniAgus)             |
+
+Nota: 10
