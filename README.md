@@ -172,6 +172,12 @@ terraform destroy
 Y en base al contenido de `terraform.tfstate` eliminará todos los recursos que
 tengamos levantados.
 
+### Telegram Bot
+
+Por último, el Bot de Telegram es un webhook que se despliega a través de la
+CLI de Serverless Framework. Las instrucciones están en la carpeta
+[telegram](./telegram).
+
 ## Integrantes
 
 | Apellido y Nombre | GitHub                                               |
