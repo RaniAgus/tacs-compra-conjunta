@@ -1,0 +1,46 @@
+@startuml diagram
+
+actor "Web User" as user
+
+folder frontend as folder_frontend {
+  node "Next.js\nFrontend" as frontend
+  cloud "..." as frontend_cloud
+  node "Next.js\nBackend for\nFrontend" as bff
+}
+
+folder backend as folder_backend {
+  node "Spring Boot\nMain Service" as backend
+}
+
+folder "db" as folder_db {
+  database "Mongo Cluster\nMain Database" as db
+}
+
+actor "Telegram User" as telegram_user
+
+node "Telegram Bot" as telegram_ui
+
+cloud "..." as telegram_cloud
+
+folder telegram as folder_telegram {
+  node "Serverless\nWebhook Handler" as telegram
+  database "Redis\nSession Store" as redis
+  database "AWS SSM\nParameter Store" as ssm
+}
+
+database "Images\nS3 Bucket" as s3
+
+user -right-> frontend
+frontend -right-> frontend_cloud
+frontend_cloud -right-> bff
+bff -down-> backend
+backend -down-> db
+backend -left-> s3
+telegram_user -right-> telegram_ui
+telegram_ui -right-> telegram_cloud
+telegram_cloud -down-> telegram
+telegram -down-> redis
+telegram -right-> ssm
+telegram --> backend
+
+@enduml

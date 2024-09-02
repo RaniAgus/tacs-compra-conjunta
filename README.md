@@ -178,6 +178,9 @@ Por último, el Bot de Telegram es un webhook que se despliega a través de la
 CLI de Serverless Framework. Las instrucciones están en la carpeta
 [telegram](./telegram).
 
+El bot consume el backend y las credenciales SSM desplegadas previamente con
+Terraform, por lo que no es necesario agregar ninguna configuración adicional.
+
 ## Integrantes
 
 | Apellido y Nombre | GitHub                                               |
